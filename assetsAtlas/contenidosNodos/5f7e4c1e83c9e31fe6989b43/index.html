@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecuaciones</title>
+</head>
+
+<body>
+
+    <p>Al percibir un grupo de personas, nuestra mente es capaz de hacer algunas afirmaciones acerca
+        de la igualdad o desigualdad de esas personas.
+    </p>
+
+    <p>A veces podemos afirmar:</p>
+    <div class="cuadrito">
+        <ul>
+            <li>Jose es más alto que Juan</li>
+            <li>Rosita es igual de alta que Jennifer</li>
+            <li>Nicolás es menos veloz que Samurai</li>
+        </ul>
+    </div>
+
+    <p>Con los números sucede lo mismo. Al verlos y compararlos, podemos hacer afirmaciones sobre ellos. Por ejemplo:
+    </p>
+
+    <div class="cuadrito revelable" id="cuadro1" onclick="revelar(event)">
+        <ul class="primario">
+            <li>El 2 es más grande que el 1</li>
+            <li>El 7 es más grande que el 5</li>
+            <li>El 100 es menos grande que el 178</li>
+            <li>El 8 es igual de grande que el 8</li>
+        </ul>
+        <ul class="secundario">
+            <li>2 > 1</li>
+            <li>7 > 5</li>
+            <li>100 < 178</li>
+            <li>8 = 8</li>
+        </ul>
+    </div>
+
+    <p>
+        Para escribir esas afirmaciones se usan tres símbolos.
+    </p>
+
+    <ul>
+        <li>Igual: <span class="rojo simbolo">=</span> </li><br>
+        <li>Mayor: <span class="verde simbolo">></span> </li><br>
+        <li>Menor: <span class="verde simbolo">
+                < </span>
+        </li><br>
+    </ul>
+
+    <p>Gracias a ellos, las afirmaciones de arriba se pueden escribir de forma más concisa ¡Has click en el cuadrito
+        para probar!</p>
+
+        <p>Cuando afirmamos que dos números son iguales, decimos que hemos escrito una <span class="rojo">Ecuacion</span> . Cuando uno es mayor o menor que el otro,
+            decimos que hemos escrito una <span class="rojo">Inecuacion</span>
+        </p>
+
+    <p>Frecuentemente las ecuaciones y las inecuaciones se escriben acerca de números expresados por referencia</p>
+
+    <p>como estos números:</p>
+
+    <ul>
+        <li>4x2</li>
+        <li>80-8</li>
+        <li>9x8</li>
+        <li>19-6</li>
+    </ul>
+
+    <p>Acerca de ellos podemos afirmar que:</p>
+
+    <div class="cuadrito revelable" id="cuadro2" onclick="revelar2(event)">
+        <ul class="primario">
+            <li>El 4x2 es menor que el 9x8</li>
+            <li>El 19-6 es menor que el 80-8 </li>
+            <li>El 80-8 es igual que el 9x8</li>
+            <li>El 9x8 es mayor que el 19-6</li>
+        </ul>
+        <ul class="secundario">
+            <li>4x2<9x8 </li>
+            <li>19-6<80-8</li>
+            <li>80-8=9x8</li>
+            <li>9x8 > 19-6</li>
+        </ul>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
+
+<style>
+    body {
+        font-size: 22px;
+    }
+
+    h1 {
+        padding-left: 10px;
+    }
+
+    p {
+        padding-left: 20px;
+        padding-right: 20px;
+
+    }
+
+    h2 {
+        padding-left: 10px;
+    }
+
+    .cuadrito {
+        border-radius: 10px;
+        border: 1px solid black;
+        background-color: aqua;
+        display: inline-block;
+        padding: 20px;
+    }
+
+    .simbolo {
+        padding: 2px 3px;
+        border: 1px solid rgb(58, 0, 0);
+        border-radius: 5px;
+        background-color: rgb(255, 209, 209);
+        font-weight: bold;
+    }
+
+    .rojo {
+        color: red;
+    }
+
+    .verde {
+        color: green;
+    }
+
+    .revelable:not(.revelado)>.primario {
+        display: block;
+    }
+
+    .revelable:not(.revelado)>.secundario {
+        display: none;
+    }
+
+    .revelable.revelado>.primario {
+        display: none;
+    }
+
+    .revelable.revelado>.secundario {
+        display: block;
+    }
+</style>
+
+<script>
+    function revelar(e) {
+        console.log(`Click en ${e.target.id}`);
+        document.getElementById("cuadro1").classList.toggle("revelado");
+    }
+    function revelar2(e) {
+        console.log(`Click en ${e.target.id}`);
+        document.getElementById("cuadro2").classList.toggle("revelado");
+    }
+</script>

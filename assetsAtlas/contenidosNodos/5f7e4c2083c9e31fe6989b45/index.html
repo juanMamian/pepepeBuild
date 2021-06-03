@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Cancelación de operaciones</title>
+</head>
+<body>
+    <p>Al ejecutar una serie de operaciones matemáticas puede suceder que se encuentren
+        una despues de otra dos operaciones que aplican un efecto contrario.
+    </p>
+
+    <p>Por ejemplo en la siguiente expresión:</p>
+
+    
+    <span class="cuadroExpresion expresion1">\(7+12-12\)</span>
+
+    <p>La primera operación suma un 7 con un 12. Pero la siguiente operación toma ese resultado
+        y resta 12. El resultado es 7. La suma 12 y la resta 12 aplicaron efectos contrarios.
+    </p>
+
+    <p>Cuando eso sucede, se puede ignorar esas dos operaciones contrarias pues no causan
+        ningún efecto en el resultado final.
+    </p>
+
+    <p>En la expresión</p>
+
+    <span class="cuadroExpresion expresion2">\({7 \times 2 \over 2} + 20\)</span>
+
+    <p>El 7 es multiplicado por dos y a continuación dividido entre dos. El resultado de esas operaciones
+        es otra vez 7. Así que no causan ningún efecto. Se puede ignorarlas y escribir:        
+    </p>
+
+    <span class="cuadroExpresion expresion2">\(7 + 20\)</span>
+
+    <p>Obteniendo el mismo resultado.</p>
+
+    <p>Ignorar dos operaciones por este motivo es frecuentemente llamado "Cancelar" pues una operacion
+        cancela el efecto de la otra.
+    </p>
+
+    <p>Se debe tener cuidado con casos como el siguiente:</p>
+
+    <span class="cuadroExpresion expresion3">\((4+5) \times 2 - 5 \)</span>
+
+    <p>Donde hay una suma 5 y una resta 5 que son operaciones contrarias pero no se ejecutan una
+        despues de otra.
+    </p>
+
+    <p>En este caso, si se ignora la suma 5, y la resta 5, tendríamos:</p>
+
+    <span class="cuadroExpresion expresion3">\(4 \times 2 \)</span>
+
+    <p>Cuyo resultado es distinto a la expresión original.</p>
+</body>
+</html>
+
+<style>
+    .cuadroExpresion{
+        border:2px solid black;
+        border-radius: 15px;
+        background-color: aquamarine;
+        padding: 8px 12px;
+    }
+
+    .expresion1{
+        background-color: aquamarine;
+    }
+
+    .expresion2{
+        background-color: rgb(142, 255, 127);
+    }
+    .expresion3{
+        background-color: rgb(219, 127, 255);
+    }
+</style>
