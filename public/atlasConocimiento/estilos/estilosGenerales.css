@@ -1,0 +1,243 @@
+
+@font-face{
+    font-family: 'Salsa';
+    src: url("https://pe-pe-pe.herokuapp.com/public/resources/fonts/Salsa/Salsa-Regular.ttf");
+    font-style:normal ;
+}
+
+:root{
+    --paletaMain: #E2C044;
+    --paletaPrevio: #F06449;
+    --paletaActual: #26547C;
+}
+
+body{
+    font-family: "Salsa", Arial;
+    padding: 3vh 2vw;
+    font-size: 19px;
+}
+.fondoGris{
+	position:fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.233);
+	z-index: 100;
+}
+.fondoGris .recuadro{
+	position: absolute;
+		top: 50%;
+		left:50%;
+		transform: translate(-50%, -50%);
+}
+.selector.seleccionado{
+background-color: #66c644;
+}
+.resaltado{
+    background-color: var(--paletaActual);
+    padding: 0px 5px;
+    border-radius: 5px;
+    color: whitesmoke;
+}
+
+.boton{
+    cursor: pointer;
+    background-color: var(--paletaMain);
+    padding: 10px;
+    text-align: center;
+    max-width: 300px;
+    margin: 10px auto;
+    font-size: 15px;
+}
+
+.deshabilitado{
+    opacity: 0.4;
+    pointer-events: none;
+}
+.listaEjemplos{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+.itemEjemplo {
+    border: 3px dotted gray;
+    border-spacing: 10px;
+    padding: 5%;
+    margin: 15px 10px;
+}
+
+.zonaInteraccion{
+border: 2px dashed gray;
+padding: 5px;
+}
+
+.contenedorFlex {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+.operacionReto {
+        margin: 10px 10px;
+        background-color: #449ae6;
+        border-radius: 20px;
+        padding: 10px 30px;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    .bloqueInfoResultado {
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .mensajeInfoResultado {
+        padding: 20px;
+        text-align: center;
+        align-self: center;
+        border-radius: 20px;
+
+    }
+    .bolitaNumero{
+        width: 20px;
+        height: 20px;
+	border-radius: 50%;
+	margin: 5px;
+	background-color: red;
+	flex-shrink: 0;
+    }
+.fadeIn-enter-active{
+	animation: fadeIn 0.8s;
+	animation-iteration-count: 1;
+}
+.fadeIn-leave-active{
+	animation: fadeIn 0.8s;
+	animation-iteration-count: 1;
+	animation-direction:reverse;
+}
+
+.inputRespuestaEvaluacion{
+font-size: 19px;
+display: block;
+margin: 10px auto;
+padding: 5px 3px;
+border-radius: 5px;
+}
+
+@keyframes fadeIn{
+	0%{opacity: 0}	
+	100%{opacity :1}
+}
+
+.travelRight-enter-active{
+animation: travelRight;
+animation-duration: 1s;
+animation-iteration-count: 1;
+pointer-events:none;
+}
+
+.travelRight-leave-active{
+animation: travelRight;
+animation-duration: 1s;
+animation-iteration-count: 1;
+animation-direction: reverse;
+pointer-events:none;
+}
+
+@keyframes travelRight{
+	0%{left:100%; opacity: 0}	
+	100%{left :0%; opacity: 1}
+}
+
+.travelLeft-enter-active{
+animation: travelLeft;
+animation-duration: 1s;
+animation-iteration-count: 1;
+pointer-events:none;
+}
+
+.travelLeft-leave-active{
+animation: travelLeft;
+animation-duration: 1s;
+animation-iteration-count: 1;
+animation-direction: reverse;
+pointer-events:none;
+}
+
+
+@keyframes travelLeft{
+	0%{left:-100%; opacity: 0}	
+	100%{left :0%; opacity: 1}
+}
+
+.travelTop-enter-active{
+animation: travelTop;
+animation-duration: 1s;
+animation-iteration-count: 1;
+pointer-events:none;
+}
+
+.travelTop-leave-active{
+animation: travelTop;
+animation-duration: 1s;
+animation-iteration-count: 1;
+animation-direction: reverse;
+pointer-events:none;
+}
+
+.travelBottom-enter-active{
+animation: travelBottom;
+animation-duration: 1s;
+animation-iteration-count: 1;
+pointer-events:none;
+}
+
+.travelBottom-leave-active{
+animation: travelLeft;
+animation-duration: 1s;
+animation-iteration-count: 1;
+animation-direction: reverse;
+pointer-events:none;
+}
+@keyframes travelBottom{
+	0%{transform: translateY(-100%); opacity: 0}	
+	100%{transform: translateY(0%); opacity: 1}
+}
+
+.popIn-enter-active{
+animation:popIn;
+animation-duration: 0.3s;
+animation-iteration-count:1;
+animation-direction: reverse;
+}
+.popInOut-enter-active{
+animation:popIn;
+animation-direction: reverse;
+animation-duration: 0.3s;
+animation-iteration-count:1;
+animation-direction: reverse;
+}
+
+@keyframes popIn{
+0%{transform: scale(1)}		
+50%{transform: scale(1.1)}
+100%{transform: scale(1)}
+}
+
+.unfoldHorizontal-enter-active{
+animation: unfoldHorizontal 1s;
+}
+
+@keyframes unfoldHorizontal{
+0%{transform: scaleX(0.1)}
+100%{transform: scaleX(1.05)}
+}
+
+
+@keyframes travelTop{
+	0%{transform:translateY(-100%); opacity: 0;}	
+	100%{transform: translateY(0%); opacity: 1;}
+}
+

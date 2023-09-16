@@ -1,0 +1,36 @@
+.anuncio-full-screen-component{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+}
+.zonaOscura{
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background-color: rgba(128, 128, 128, 0.274);
+}
+.anuncio{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    background-color: #A2A2A2;
+    border-radius: 20px;
+    padding: 20px 20px;
+    text-align: center;
+}
+.iconoAnuncio{
+    height: 30px;
+    display: block;
+    margin: 20px auto;        
+}
+
+.botonTexto{
+    margin: 20px auto;
+}

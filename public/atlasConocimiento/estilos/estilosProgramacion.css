@@ -1,0 +1,44 @@
+:root{
+--programacionColorObjeto:darkred;
+--programacionColorCodigoActual:#071875;
+}
+
+.programacionNombreObjeto{
+	font-weight: bold;
+	color: var(--programacionColorObjeto);
+	
+}
+
+.programacionZonaCodigoEjemplo{
+	display:flex;
+	flex-direction: column;
+	gap: 5px;
+	align-items: center;
+	margin: 10px 0px;
+	background-color: var(--paletaPrevio);
+	padding: 10px 10px;
+	border-radius: 10px;
+	margin-bottom: 40px;
+}
+.programacionZonaCodigoEjemplo .programacionCodigo{
+max-width: 100%;
+}
+.programacionCodigo{
+	padding: 5px 5px;
+	background-color: whitesmoke;
+	font-size: 14px;
+	font-family: arial;
+}
+.programacionCodigoActual{
+	font-weight: bold;
+	color: var(--programacionColorCodigoActual);
+}
+.programacionCodigoPrevio{
+opacity: 0.6;
+}
+
+.programacionDescripcionCodigo{
+	
+	font-size: 14px;
+font-style: italic;
+}

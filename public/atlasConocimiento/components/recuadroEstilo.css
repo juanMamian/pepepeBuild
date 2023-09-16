@@ -1,0 +1,39 @@
+.recuadro{
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+    margin: 35px auto;
+    padding: 25px;
+}
+.recuadro.datoPrevio{
+    background-color: var(--paletaPrevio);
+}
+.recuadro.datoNuevo{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.descubrimiento{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccion{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccionPointer{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccionTeclado{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+
+.iconoRecuadro{
+    height: 30px;
+    margin-right: 20px;
+}
+.textoRecuadro{
+    
+}
