@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloForo = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const Conversacion_1 = require("./Conversacion");
-const esquemaForo = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+import { esquemaConversacion } from "./Conversacion";
+const esquemaForo = new mongoose.Schema({
     acceso: {
         type: String,
         required: true,
@@ -19,9 +13,9 @@ const esquemaForo = new mongoose_1.default.Schema({
         default: []
     },
     conversaciones: {
-        type: [Conversacion_1.esquemaConversacion],
+        type: [esquemaConversacion],
         required: true,
         default: []
     }
 });
-exports.ModeloForo = mongoose_1.default.model("Foro", esquemaForo);
+export const ModeloForo = mongoose.model("Foro", esquemaForo);

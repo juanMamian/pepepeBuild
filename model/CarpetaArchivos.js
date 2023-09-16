@@ -1,11 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloCarpetaArchivos = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const esquemaArchivo = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+const esquemaArchivo = new mongoose.Schema({
     nombre: {
         type: String,
         required: true,
@@ -26,7 +20,8 @@ const esquemaArchivo = new mongoose_1.default.Schema({
         required: true
     }
 });
-const esquemaCarpetaArchivos = new mongoose_1.default.Schema({
-    archivos: [esquemaArchivo]
+const esquemaCarpetaArchivos = new mongoose.Schema({
+    archivos: [esquemaArchivo],
+    default: [],
 });
-exports.ModeloCarpetaArchivos = mongoose_1.default.model("carpetasArchivosContenidosNodos", esquemaCarpetaArchivos, "carpetasArchivosContenidosNodos");
+export const ModeloCarpetaArchivos = mongoose.model("carpetasArchivosContenidosNodos", esquemaCarpetaArchivos, "carpetasArchivosContenidosNodos");

@@ -1,11 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloGrupoEstudiantil = exports.esquemaActividad = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const esquemaParticipacion = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+const esquemaParticipacion = new mongoose.Schema({
     fechaUpload: {
         type: Date,
         default: Date.now,
@@ -38,7 +32,7 @@ esquemaParticipacion.pre('validate', function () {
         this.archivos = [];
     }
 });
-const esquemaDesarrollo = new mongoose_1.default.Schema({
+const esquemaDesarrollo = new mongoose.Schema({
     idEstudiante: {
         type: String,
         required: true
@@ -66,7 +60,7 @@ const esquemaDesarrollo = new mongoose_1.default.Schema({
         username: String,
     }
 });
-exports.esquemaActividad = new mongoose_1.default.Schema({
+export const esquemaActividad = new mongoose.Schema({
     nombre: {
         type: String,
         min: 3,
@@ -102,12 +96,12 @@ exports.esquemaActividad = new mongoose_1.default.Schema({
         username: String
     }
 });
-exports.esquemaActividad.pre('save', function () {
+esquemaActividad.pre('save', function () {
     if ((this.isNew || this.isModified) && !this.desarrollo) {
         this.desarrollo = [];
     }
 });
-const esquemaGrupoEstudiantil = new mongoose_1.default.Schema({
+const esquemaGrupoEstudiantil = new mongoose.Schema({
     nombre: {
         type: String,
         min: 3,
@@ -119,7 +113,7 @@ const esquemaGrupoEstudiantil = new mongoose_1.default.Schema({
         default: []
     },
     actividades: {
-        type: [exports.esquemaActividad],
+        type: [esquemaActividad],
         default: []
     }
 });
@@ -138,4 +132,4 @@ esquemaGrupoEstudiantil.methods.calcularIdleStudents = function () {
     });
     this.estudiantesIdle = idles;
 };
-exports.ModeloGrupoEstudiantil = mongoose_1.default.model("GrupoEstudiantil", esquemaGrupoEstudiantil);
+export const ModeloGrupoEstudiantil = mongoose.model("GrupoEstudiantil", esquemaGrupoEstudiantil);

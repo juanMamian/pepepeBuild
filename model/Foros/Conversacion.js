@@ -1,11 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloConversacion = exports.charProhibidosMensajeRespuesta = exports.esquemaConversacion = exports.esquemaRespuestaConversacion = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-var esquemaInterpolacion = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+var esquemaInterpolacion = new mongoose.Schema({
     tipo: {
         type: String,
         required: true,
@@ -33,7 +27,7 @@ esquemaInterpolacion.add({
         },
     },
 });
-exports.esquemaRespuestaConversacion = new mongoose_1.default.Schema({
+export const esquemaRespuestaConversacion = new mongoose.Schema({
     fecha: {
         type: Date,
         required: true,
@@ -64,7 +58,7 @@ exports.esquemaRespuestaConversacion = new mongoose_1.default.Schema({
     },
     interpolaciones: [esquemaInterpolacion]
 });
-exports.esquemaConversacion = new mongoose_1.default.Schema({
+export const esquemaConversacion = new mongoose.Schema({
     titulo: {
         type: String,
         default: "Nueva conversación",
@@ -99,12 +93,12 @@ exports.esquemaConversacion = new mongoose_1.default.Schema({
         }
     }
 });
-exports.esquemaConversacion.pre('save', function (next) {
+esquemaConversacion.pre('save', function (next) {
     if (!this.cantidadRespuestas) {
         console.log(`Llenando con cantidadRespuestas 0`);
         this.cantidadRespuestas = 0;
     }
     next();
 });
-exports.charProhibidosMensajeRespuesta = /[^\n\r a-zA-ZÀ-ž0-9_()":;.,+¡!¿?@=-]/;
-exports.ModeloConversacion = mongoose_1.default.model("Conversacion", exports.esquemaConversacion);
+export const charProhibidosMensajeRespuesta = /[^\n\r a-zA-ZÀ-ž0-9_()":;.,+¡!¿?@=-]/;
+export const ModeloConversacion = mongoose.model("Conversacion", esquemaConversacion);

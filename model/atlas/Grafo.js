@@ -1,11 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloGrafo = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-let esquemaGrafo = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+let esquemaGrafo = new mongoose.Schema({
     version: Number,
     bordes: {
         left: {
@@ -32,4 +26,4 @@ esquemaGrafo.methods.updateBordes = function (posicion) {
     this.bordes.top = Math.max(this.bordes.top, posicion.y);
     this.bordes.bottom = Math.min(this.bordes.bottom, posicion.y);
 };
-exports.ModeloGrafo = mongoose_1.default.model("Grafo", esquemaGrafo);
+export const ModeloGrafo = mongoose.model("Grafo", esquemaGrafo);

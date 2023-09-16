@@ -1,23 +1,16 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.aServer = exports.pubsub = exports.esquema = void 0;
-const { ApolloServer, gql, PubSub } = require("apollo-server-express");
-const NodosConocimiento_1 = require("./NodosConocimiento");
-const Usuarios_1 = require("./Usuarios");
-const Proyectos_1 = require("./Proyectos");
-const Trabajos_1 = require("./Trabajos");
-const GruposEstudiantiles_1 = require("./GruposEstudiantiles");
-const Foros_1 = require("./Foros");
-const Libro_1 = require("./cuentos/Libro");
-const merge_1 = __importDefault(require("lodash/merge"));
-const apollo_server_express_1 = require("apollo-server-express");
-const jwt = require("jsonwebtoken");
-const globalTypeDefs = gql `
+import { typeDefs as tdNodos, resolvers as rNodos } from "./NodosConocimiento";
+import { typeDefs as tdUsuarios, resolvers as rUsuarios } from "./Usuarios";
+import { typeDefs as tdAtlases, resolvers as rAtlases } from "./Atlases";
+import { typeDefs as tdEspacios, resolvers as rEspacios } from "./Espacios";
+import { typeDefs as tdRutagrado, resolvers as rRutagrado } from "./RutaGrado";
+// import { typeDefs as tdObjetivos, resolvers as rObjetivos } from "./Objetivos"
+import { typeDefs as tdCuentos, resolvers as rCuentos } from "./cuentos/Libro";
+import merge from "lodash/merge";
+import jwt from "jsonwebtoken";
+export const permisosEspecialesDefault = ["superadministrador"];
+const globalTypeDefs = `#graphql
     type Query{
-        fakeQuery:String
+        fakeQuery:String,
     }
     type Mutation{
         fakeMutation:String
@@ -29,74 +22,41 @@ const globalTypeDefs = gql `
         x: Int,
         y: Int
     }
+    type FuerzaPolar{
+        fuerza: Int,
+        direccion: Float,
+    }
     input CoordsInput{
         x:Int,
         y:Int
     }
+
+
 `;
-const typeDefs = [globalTypeDefs, NodosConocimiento_1.typeDefs, Usuarios_1.typeDefs, Proyectos_1.typeDefs, Trabajos_1.typeDefs, GruposEstudiantiles_1.typeDefs, Foros_1.typeDefs, Libro_1.typeDefs];
-const resolvers = merge_1.default({}, NodosConocimiento_1.resolvers, Usuarios_1.resolvers, Proyectos_1.resolvers, Trabajos_1.resolvers, GruposEstudiantiles_1.resolvers, Foros_1.resolvers, Libro_1.resolvers);
-exports.esquema = apollo_server_express_1.makeExecutableSchema({
-    typeDefs,
-    resolvers
-});
-exports.pubsub = new PubSub();
-const context = ({ req, res, connection }) => {
-    // console.log(`creando contexto`);
-    var usuario = {
-        id: "",
-        permisos: []
-    };
+export const typeDefs = [globalTypeDefs, tdNodos, tdUsuarios, tdCuentos, tdAtlases, tdEspacios, tdRutagrado];
+export const resolvers = merge({}, rNodos, rUsuarios, rCuentos, rAtlases, rEspacios, rRutagrado);
+export const context = ({ req, res, connection }) => {
+    var usuario = null;
     if (connection) {
         return connection.context;
     }
     else {
-        //console.log(`Conexion normal`);
         let headers = req.headers;
-        //console.log(`headers: ${JSON.stringify(headers)}`);
-        if (!headers.authorization)
-            return { usuario };
-        const token = headers.authorization;
+        if (!headers.authorization) {
+            return usuario;
+        }
+        ;
+        const token = headers.authorization.substr(7);
         try {
-            usuario = jwt.verify(token, process.env.JWT_SECRET);
+            usuario = jwt.verify(token, process.env.JWT_SECRET || "");
         }
         catch (error) {
+            console.log(`error: ${error}`);
             usuario = {
                 id: "",
                 permisos: []
             };
         }
     }
-    return { usuario: usuario, pubsub: exports.pubsub };
+    return { usuario: usuario };
 };
-const onConnect = function (connectionParams, webSocket) {
-    var usuario = {
-        id: "",
-        permisos: []
-    };
-    if (connectionParams.headers && connectionParams.headers.Authorization) {
-        let token = connectionParams.headers.Authorization.substr(7);
-        try {
-            usuario = jwt.verify(token, process.env.JWT_SECRET);
-        }
-        catch (error) {
-            usuario = {
-                id: "",
-                permisos: []
-            };
-        }
-    }
-    else {
-        console.log(`Sin token`);
-    }
-    return { usuario: usuario, pubsub: exports.pubsub };
-};
-exports.aServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context,
-    subscriptions: {
-        path: "/subscripciones",
-        onConnect,
-    }
-});

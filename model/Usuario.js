@@ -1,20 +1,94 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloUsuario = exports.validarDatosUsuario = exports.ModeloNotificacion = exports.permisosDeUsuario = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-exports.permisosDeUsuario = [
+import mongoose from "mongoose";
+export const permisosDeUsuario = [
     "usuario",
+    "subscripcion-ilimitada",
     "administrador",
     "atlasAdministrador",
     "superadministrador",
     "actividadesEstudiantiles-profe",
     "actividadesEstudiantiles-administrador",
-    "actividadesEstudiantiles-guia"
+    "actividadesEstudiantiles-guia",
+    "visitante",
+    "maestraVida",
+    "maestraVida-estudiante",
+    "maestraVida-profesor",
+    "maestraVida-acompañante",
+    "maestraVida-graduado",
+    "comunere"
 ];
-const esquemaNotificacion = new mongoose_1.default.Schema({
+const esquemaSnapshotProgreso = new mongoose.Schema({
+    dateRegistro: {
+        type: Date,
+        default: Date.now
+    },
+    progreso: {
+        type: Number,
+        required: true,
+    },
+});
+const esquemaBloqueSubscripcion = new mongoose.Schema({
+    dateInicio: {
+        type: Date,
+        required: true,
+    },
+    duracion: {
+        type: Number,
+        required: true,
+    },
+    valorPagado: {
+        type: Number,
+        required: true,
+    }
+});
+const esquemaIteracionRepaso = new mongoose.Schema({
+    intervalo: {
+        type: Number,
+        default: 86400000
+    }
+});
+const EsquemaInformeUsuario = new mongoose.Schema({
+    year: {
+        type: Number,
+        required: true,
+    },
+    periodo: {
+        type: String,
+        required: true,
+        enum: ["primero", "segundo", "tercero", "total"],
+    },
+    idProfe: {
+        type: String,
+        required: true,
+    },
+    categoria: {
+        type: String,
+        required: true,
+        enum: ["objetivos", "comentario", "espacios", "proyectos"],
+    },
+    texto: {
+        type: String,
+    }
+});
+const esquemaColeccionNodosAtlasConocimiento = new mongoose.Schema({
+    nombre: {
+        type: String,
+        default: "Nueva colección",
+        min: 3,
+        max: 30,
+    },
+    idsNodos: {
+        type: [String],
+        default: []
+    },
+    snapshotsProgreso: {
+        type: [esquemaSnapshotProgreso],
+        default: [],
+    }
+}, { strict: true });
+esquemaColeccionNodosAtlasConocimiento.virtual("idUsuario").get(function () {
+    return this.ownerDocument()._id;
+});
+const esquemaNotificacion = new mongoose.Schema({
     texto: {
         type: String,
         default: "Nueva notificacion",
@@ -26,7 +100,7 @@ const esquemaNotificacion = new mongoose_1.default.Schema({
     elementoTarget: {
         tipo: {
             type: String,
-            enum: ["actividadEstudiantil"]
+            enum: ["actividadEstudiantil", "nodoAtlasSolidaridad"]
         },
         id: String
     },
@@ -36,7 +110,25 @@ const esquemaNotificacion = new mongoose_1.default.Schema({
         default: Date.now
     }
 });
-const esquemaNotificacionActividadForo = new mongoose_1.default.Schema({
+const esquemaNotificacionEventoAtlasSolidaridad = new mongoose.Schema({
+    texto: {
+        type: String,
+        default: "Nueva notificacion",
+    },
+    causante: {
+        tipo: String,
+        id: String
+    },
+    nodoTarget: {
+        id: String
+    },
+    fecha: {
+        type: Date,
+        required: true,
+        default: Date.now
+    }
+});
+const esquemaNotificacionActividadForo = new mongoose.Schema({
     idParent: {
         type: String,
         required: true
@@ -56,8 +148,75 @@ const esquemaNotificacionActividadForo = new mongoose_1.default.Schema({
         default: 1
     }
 });
-exports.ModeloNotificacion = mongoose_1.default.model("Notificacion", esquemaNotificacion);
-const esquemaUsuario = new mongoose_1.default.Schema({
+const esquemaDatoNodo = new mongoose.Schema({
+    idNodo: {
+        type: String, required: true
+    },
+    aprendido: {
+        type: Boolean,
+        default: false
+    },
+    estudiado: {
+        type: Date
+    },
+    periodoRepaso: {
+        type: Number,
+        min: 86400000,
+        default: 86400000 * 2,
+    },
+    diasRepaso: {
+        type: Number,
+        min: 1,
+        default: 2,
+        max: 1000,
+    },
+    iteracionesRepaso: {
+        type: [esquemaIteracionRepaso],
+        default: []
+    },
+});
+esquemaDatoNodo.pre("save", function (next) {
+    if (!this.diasRepaso && this.periodoRepaso) {
+        //Periodo repaso in milliseconds to diasRepaso in days
+        this.diasRepaso = this.periodoRepaso / 86400000;
+    }
+    if (this.estudiado && !this.diasRepaso) {
+        this.diasRepaso = 2;
+    }
+    next();
+});
+const esquemaEstadoAtlas = new mongoose.Schema({
+    centroVista: {
+        x: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        y: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
+    datosNodos: {
+        type: [esquemaDatoNodo],
+        default: []
+    },
+    configuracion: {
+        modo: {
+            type: String,
+            default: 'estudiante',
+            enum: ['estudiante', 'experto']
+        }
+    },
+    colecciones: {
+        type: [esquemaColeccionNodosAtlasConocimiento],
+        default: []
+    },
+    idNodoTarget: String,
+});
+export const ModeloNotificacion = mongoose.model("Notificacion", esquemaNotificacion);
+const esquemaUsuario = new mongoose.Schema({
     username: {
         type: String,
         min: 3,
@@ -76,11 +235,23 @@ const esquemaUsuario = new mongoose_1.default.Schema({
         min: 2,
         required: true
     },
+    titulo: {
+        type: String,
+        maxLength: 300,
+    },
     fechaNacimiento: {
         type: Date,
         max: Date.now,
         min: new Date('1890-01-01'),
         default: Date.now
+    },
+    objetivos: {
+        type: [String],
+        default: [],
+    },
+    informesMaestraVida: {
+        type: [EsquemaInformeUsuario],
+        default: [],
     },
     fotografia: {
         type: Buffer,
@@ -99,13 +270,17 @@ const esquemaUsuario = new mongoose_1.default.Schema({
                 type: String,
                 required: true,
                 max: 20,
-                default: "APRENDIENDO",
+                default: "aprendiendo",
                 enum: ["aprendiendo", "aprendido", "objetivo"]
             },
             nodoConocimiento: {
                 type: String,
             }
         }],
+    nodosCompletadosRutaGrado: {
+        type: [String],
+        default: []
+    },
     password: {
         type: String,
         required: true,
@@ -118,32 +293,34 @@ const esquemaUsuario = new mongoose_1.default.Schema({
         max: 100,
         min: 2,
         default: ["usuario"],
-        enum: exports.permisosDeUsuario
+        enum: permisosDeUsuario
+    },
+    bloquesSubscripcion: {
+        type: [esquemaBloqueSubscripcion],
+        default: [],
     },
     atlas: {
-        centroVista: {
+        type: esquemaEstadoAtlas,
+        default: {
+            datosNodos: [],
+            colecciones: [],
+        },
+    },
+    atlasSolidaridad: {
+        coordsVista: {
             x: {
                 type: Number,
-                required: true,
                 default: 0
             },
             y: {
                 type: Number,
-                required: true,
                 default: 0
             }
         },
-        datosNodos: {
-            type: [
-                {
-                    idNodo: String,
-                    objetivo: Boolean,
-                    aprendido: Boolean,
-                }
-            ],
+        idsNodosDesplegados: {
+            type: [String],
             default: []
-        },
-        idNodoTarget: String,
+        }
     },
     notificaciones: {
         type: [esquemaNotificacion],
@@ -154,6 +331,10 @@ const esquemaUsuario = new mongoose_1.default.Schema({
         type: [esquemaNotificacionActividadForo],
         default: [],
         required: true,
+    },
+    notificacionesAtlasSolidaridad: {
+        type: [esquemaNotificacionEventoAtlasSolidaridad],
+        default: []
     },
     misTrabajos: {
         type: [String],
@@ -180,7 +361,90 @@ const esquemaUsuario = new mongoose_1.default.Schema({
                     default: []
                 }
             }]
+    },
+    coords: {
+        x: {
+            type: Number,
+            required: true,
+            default: 0,
+            validate: {
+                validator: Number.isInteger,
+                message: '{VALUE} is not an integer value'
+            }
+        },
+        y: {
+            type: Number,
+            required: true,
+            default: 0,
+            validate: {
+                validator: Number.isInteger,
+                message: '{VALUE} is not an integer value'
+            }
+        }
+    },
+    autoCoords: {
+        x: {
+            type: Number,
+            default: 0,
+            validate: {
+                validator: Number.isInteger,
+                message: '{VALUE} is not an integer value'
+            }
+        },
+        y: {
+            type: Number,
+            default: 0,
+            validate: {
+                validator: Number.isInteger,
+                message: '{VALUE} is not an integer value'
+            }
+        }
+    },
+    fuerzaCentroMasa: {
+        fuerza: {
+            type: Number,
+            default: 0
+        },
+        direccion: {
+            type: Number,
+            default: 0
+        }
+    },
+    fuerzaColision: {
+        fuerza: {
+            type: Number,
+            default: 0
+        },
+        direccion: {
+            type: Number,
+            default: 0
+        }
     }
+});
+esquemaUsuario.pre("save", function (next) {
+    var nuevoDatosNodos = [];
+    if (!this.atlas) {
+        this.atlas = {};
+    }
+    if (!this.atlas.datosNodos) {
+        this.atlas.datosNodos = [];
+    }
+    if (!this.atlas.colecciones) {
+        this.atlas.colecciones = [];
+    }
+    if (!this.atlas.datosNodos) {
+        next();
+    }
+    for (const dato of this.atlas.datosNodos) {
+        if (!nuevoDatosNodos.map(dn => dn.idNodo).includes(dato.idNodo)) {
+            nuevoDatosNodos.push(dato);
+        }
+        else {
+            console.log("Habia un dato nodo repetido");
+        }
+    }
+    this.atlas.datosNodos = nuevoDatosNodos;
+    next();
 });
 esquemaUsuario.methods.getEdad = function () {
     console.log(`convirtiendo ${this.fechaNacimiento} a edad`);
@@ -194,8 +458,7 @@ var charProhibidosNombre = /[^ a-zA-ZÀ-žñÑ]/g;
 var charProhibidosNumeroTel = /[^0-9+-]/g;
 var emailChars = /\S+@\S+\.\S+/;
 var dateChars = /[12][90][0-9][0-9]-[01][0-9]-[0-3][0-9]/;
-var charProhibidosPassword = /[^a-zA-Z0-9ñÑ*@_-]/g;
-const validarDatosUsuario = function (datosUsuario) {
+export const validarDatosUsuario = function (datosUsuario) {
     var errores = [];
     for (let dato in datosUsuario) {
         if (!datosUsuario[dato]) {
@@ -264,5 +527,15 @@ const validarDatosUsuario = function (datosUsuario) {
     }
     return errores;
 };
-exports.validarDatosUsuario = validarDatosUsuario;
-exports.ModeloUsuario = mongoose_1.default.model("Usuario", esquemaUsuario);
+export const charProhibidosNombresUsuario = /[^ a-zA-ZÀ-ž]/;
+export const charProhibidosUsername = /[^ a-zA-ZÀ-ž0-9_-]/;
+export const charProhibidosPassword = /\s\s+/;
+export const emailValidator = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+export const minLengthNombresUsuario = 2;
+export const minLengthApellidosUsuario = 2;
+export const minLengthPassword = 6;
+export const maxLengthPassword = 40;
+export const minLengthEmail = 7;
+export const minLengthUsername = 7;
+esquemaUsuario.index({ nombres: "text", apellidos: "text" }, { name: "indexBusqueda" });
+export const ModeloUsuario = mongoose.model("Usuario", esquemaUsuario);

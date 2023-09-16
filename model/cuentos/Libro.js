@@ -1,11 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeloLibro = exports.esquemaLibro = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const esquemaAudioEmbeded = new mongoose_1.default.Schema({
+import mongoose from "mongoose";
+const esquemaAudioEmbeded = new mongoose.Schema({
     archivo: Buffer,
     tipoReproduccion: {
         type: String,
@@ -13,7 +7,7 @@ const esquemaAudioEmbeded = new mongoose_1.default.Schema({
         default: "click",
     }
 });
-const esquemaCuadrosImagen = new mongoose_1.default.Schema({
+const esquemaCuadrosImagen = new mongoose.Schema({
     sinArchivo: {
         type: Boolean,
         default: true,
@@ -50,7 +44,7 @@ const esquemaCuadrosImagen = new mongoose_1.default.Schema({
         type: esquemaAudioEmbeded
     }
 });
-const esquemaCuadroTexto = new mongoose_1.default.Schema({
+const esquemaCuadroTexto = new mongoose.Schema({
     texto: {
         type: String,
         max: 3000,
@@ -91,7 +85,7 @@ const esquemaCuadroTexto = new mongoose_1.default.Schema({
         type: esquemaAudioEmbeded,
     }
 });
-const esquemaPagina = new mongoose_1.default.Schema({
+const esquemaPagina = new mongoose.Schema({
     cuadrosTexto: {
         type: [esquemaCuadroTexto],
         default: [],
@@ -108,7 +102,7 @@ const esquemaPagina = new mongoose_1.default.Schema({
         type: Number,
     }
 });
-exports.esquemaLibro = new mongoose_1.default.Schema({
+export const esquemaLibro = new mongoose.Schema({
     paginas: {
         type: [esquemaPagina],
         default: [],
@@ -129,4 +123,4 @@ exports.esquemaLibro = new mongoose_1.default.Schema({
         default: false,
     }
 });
-exports.ModeloLibro = mongoose_1.default.model("Libro", exports.esquemaLibro);
+export const ModeloLibro = mongoose.model("Libro", esquemaLibro);
