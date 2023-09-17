@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Conmutatividad - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de conmutatividad si: </p>
+
+        <bloque-component tipo="evaluacion" textoCabecera="Puedo explicar qué es una operación conmutativa.">
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion" textoCabecera="Conozco una lista de operaciones aritméticas conmutativas.">
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier expresión numérica, puedo decidir si está hecha con una operación conmutativa y, en caso afirmativo, puedo escribir una expresión alterna idéntica de acuerdo con la conmutatividad.">
+
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='flexVertical'>
+                    <p>
+                        Selecciona la dificultad
+                    </p>
+                    <input type="range" min="1" max="3" id='inputDificultadReto3' ref="inputDificultadReto3"
+                        v-model="dificultadReto3">
+
+                    <p>
+                        {{dificultadReto3}}
+                    </p>
+                </div>
+
+            </recuadro-component>
+
+            <div class='flexVertical'>
+
+                <div class='boton' @click="generarReto3">
+                    Generar expresión
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto3' class='matsExpresion' v-if="reto3" :key="versionReto3" style="font-size: 30px">
+                        \({{reto3.toMathJax()}}\)
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <div id='contenedorBotonesPresenciaConmutatividadReto3' v-if="reto3">
+                        <div class='boton' @click="setRespuestaPresenciaConmutatividadReto3(true)">
+                            Hay conmutatividad
+                        </div>
+                        <div class='boton' @click="setRespuestaPresenciaConmutatividadReto3(false)">
+                            No hay conmutatividad
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado'
+                        v-if="respuestaPresenciaConmutatividadReto3 != null && presenciaConmutatividadReto3 != null"
+                        :key="'infoResultadoPresenciaConmutatividad' + versionRespuestaPresenciaConmutatividadReto3"
+                        :modo="respuestaPresenciaConmutatividadReto3===presenciaConmutatividadReto3?'correcto':'incorrecto'">
+                    </recuadro-component>
+                </transition>
+
+
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                dificultadReto3: 1,
+                reto3: null,
+                versionReto3: 0,
+                presenciaConmutatividadReto3: null,
+                respuestaPresenciaConmutatividadReto3: null,
+                versionRespuestaPresenciaConmutatividadReto3: 0,
+            }
+        },
+        methods: {
+            reiniciarReto3() {
+                this.reto3 = null;
+                this.presenciaConmutatividadReto3 = null;
+                this.respuestaPresenciaConmutatividadReto3 = null;
+            },
+            generarReto3() {
+                this.reiniciarReto3();
+                let laExpresion = new ExpresionNumerica();
+
+                const forceConmutativa = Math.random() < 0.5;
+                if (forceConmutativa) {
+                    let operacion = Math.random() < 0.5 ? 'suma' : 'multiplicacion'
+                    laExpresion.operacion = operacion;
+                }
+
+                laExpresion.fillExpresion({keepInteger: true});
+
+                laExpresion.reexpresionar(this.dificultadReto3 - 1, {keepInteger: true});
+                this.presenciaConmutatividadReto3 = laExpresion.operacion === "suma" || laExpresion.operacion === "multiplicacion";
+                this.reto3 = laExpresion;
+                this.versionReto3++;
+            },
+            setRespuestaPresenciaConmutatividadReto3(res) {
+                this.respuestaPresenciaConmutatividadReto3 = res;
+                this.versionRespuestaPresenciaConmutatividadReto3++;
+            },
+
+
+        },
+        watch: {
+            versionReto3() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+            },
+
+        }
+
+    }).mount("#doc");
+</script>

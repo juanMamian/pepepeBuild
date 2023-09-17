@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Tipos de carga eléctrica</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Al cargar un trozo de vidrio y ponerlo en contacto con un objeto de metal, éste también queda cargado. Al acercar los dos objetos
+            se puede observar que quieren alejarse el uno del otro.
+        </p>
+    
+        <p>
+            Al hacer el mismo ejercicio con un objeto de goma se obtiene el mismo resultado.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Los objetos cargados intentan alejarse entre sí: se <span class="resaltado">repelen</span>.
+        </recuadro-component>
+
+        <p>
+            Pero si se realiza el experimento de la siguiente forma:
+
+            <ul>
+                <li>
+                    Cargar un objeto de vidrio frotándolo con el pelaje de un animal.
+                </li>
+                <li>
+                    Usar el objeto de vidrio para cargar un objeto de metal (Tocándolo).
+                </li>
+                <li>
+                    Cargar un objeto de goma frotándolo con el pelaje de un animal.
+                </li>
+            </ul>
+
+            Se obtienen tres objetos cargados.
+
+            <p>
+                Al acercar el objeto de metal al objeto de goma, se puede observar que los dos objetos
+                quieren <span class="resaltado">acercarse</span> el uno al otro. Es decir que la carga 
+                del vidrio se quiere acercar a la carga de la goma.
+            </p>            
+        </p>
+
+        <p>
+            Por lo tanto la carga eléctrica que se obtiene frotando un objeto
+            de vidrio no es del mismo tipo que la obtenida frotando un objeto de goma.
+        </p>
+
+        <p>
+            Las personas que estudiaron este fenómeno propusieron la hipótesis de que 
+            los objetos pueden tener <span class="resaltado">exceso de carga eléctrica</span> o
+            <span class="resaltado">deficiencia de carga eléctrica</span>.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+
+            <ul>
+                <li>
+                    El exceso de carga eléctrica recibe el nombre de <span class="resaltado">Carga eléctrica positiva</span>
+                    y se representa con el símbolo <span class="resaltado">+</span>
+                </li>
+                <li>
+                    La deficiencia de carga eléctrica recibe el nombre de <span class="resaltado">Carga eléctrica negativa</span>
+                    y se representa con el símbolo <spas class="resaltado">-</spas>
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Los experimentos muestran que:
+
+            <ul>
+                <li>
+                    Los objetos con el mismo tipo de carga eléctrica se repelen.
+                </li>
+                <li>
+                    Los objetos con distinto tipo de carga eléctrica se atraen.
+                </li>
+            </ul>
+        </recuadro-component>                
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+
+ul li{
+    margin: 20px 0px;
+}
+</style>

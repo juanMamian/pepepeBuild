@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Sumas y restas en la recta numérica</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>Al imaginar los números en la recta numérica, las operaciones aritméticas
+            se interpretan de un modo especial.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Las sumas son imaginadas como desplazamientos hacia adelante (Derecha) en la recta numérica.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Las restas son imaginadas como desplazamientos hacia atras (Izquierda) en la recta numérica.
+        </recuadro-component>
+
+
+        <bloque-component tipo="herramientaInteractiva"
+        @plegado="reiniciarRecta"
+            textoCabecera="En este cuadro se muestra una representación de sumas sobre la recta numérica.">
+            <div id="cuadroEjemplo">
+                <recuadro-component tipo="instruccionPointer" v-show="!numeroBase">
+                    Selecciona un número de la recta.
+                </recuadro-component>
+                <div id="expresion" style="font-size: 22px;" :key="versionExpresion" v-show="numeroBase">
+                    {{expresion}}
+                </div>
+                <br>
+                <div ref="contenedorRectaNumerica" id="contenedorRectaNumerica" v-on:mouseenter="hoveringRecta=true"
+                    v-on:mouseleave="hoveringRecta=false">
+                    <img class="pannerRecta" src="flecha.png" style="left: 0px; transform: rotate(180deg);"
+                        @click="panRectaNumerica+=2">
+                    <img class="pannerRecta" src="flecha.png" style="right: 0px;" @click.stop="panRectaNumerica-=2">
+
+                    <div id="rectaNumerica"></div>
+                    <div id="contenedorBolitas">
+                        <div class="bolitaNumero" :key="numero" v-for="numero of 200"
+                            @click="numeroBase=(parseInt(numero)+numeroVisibleInicial); reloadExpresion(); numeroSumado=0;numeroRestado=0;"
+                            :class="{numeroBase:numeroBase==(parseInt(numero)+numeroVisibleInicial), bolitaOrigen: (numero+numeroVisibleInicial)==0, bolitaResultado:resultado==(numero+numeroVisibleInicial) }"
+                            :style="{left:  40*(parseInt(numero)+numeroVisibleInicial+panRectaNumerica)+'px'}">
+                            <div class="nombreNumero">
+                                {{numero+numeroVisibleInicial}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="contenedorSegmentosSumados" class="contenedorSegmentos" v-show="numeroSumado!=0"
+                        :style="[posicionSegmentosSuma]">
+                        <transition-group name="crecer" style="display: flex;">
+                            <div class="segmentoUnidad" :key="numero" v-for="numero of parseInt(numeroSumado)"></div>
+                        </transition-group>
+                    </div>
+
+                    <div id="contenedorSegmentosRestados" class="contenedorSegmentos" v-show="numeroRestado!=0"
+                        :style="[posicionSegmentosResta]">
+                        <transition-group name="crecer" style="display: flex;">
+                            <div class="segmentoUnidad" :key="numero" v-for="numero of parseInt(numeroRestado)"></div>
+                        </transition-group>
+                    </div>
+
+                </div>
+
+                <transition name="travelTop">
+                    <recuadro-component tipo="instruccionPointer" v-show="numeroBase">
+                        Ahora súmale o réstale unidades.
+                    </recuadro-component>
+                </transition>
+
+
+                <div id="contenedorOperaciones" v-show="numeroBase">
+                    <div class="selectorOperacion"
+                        v-on:click="operacionSeleccionada='resta';numeroRestado=numeroRestado+1; numeroSumado=0"
+                        class="{operacionSeleccionada:operacionSeleccionada=='resta'}"
+                        v-on:click="numeroRestado++; numeroSumado=0;">
+                        <span class="simboloOperacion">
+                            \(-\)
+                        </span>
+                    </div>
+                    <div class="selectorOperacion"
+                        v-on:click="operacionSeleccionada='suma';numeroSumado=numeroSumado+1; numeroRestado=0"
+                        class="{operacionSeleccionada:operacionSeleccionada=='suma'}">
+                        <span class="simboloOperacion">
+                            \(+\)
+                        </span>
+                    </div>
+
+                    <div id="unidadReferencia" class="transversal">
+                        <div id="segmentoReferencia"></div>
+                        <div id="nombreUnidad">Unidad</div>
+                    </div>
+                </div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroBase: null,
+                versionExpresion: 0,
+                operacionSeleccionada: null,
+                numeroVisibleInicial: -100,
+                numeroSumado: 0,
+                numeroRestado: 0,
+
+                panRectaNumerica: 5,
+                hoveringRecta: false,
+
+                scrollPosition: {
+                    x: 0,
+                    y: 0,
+                }
+            }
+        },
+        computed: {
+            posicionSegmentosSuma() {
+                return {
+                    left: 5 + (40 * (parseInt(this.numeroBase) + this.panRectaNumerica)) + 'px'
+                }
+            },
+            posicionSegmentosResta() {
+                return {
+                    left: 5 + (40 * (parseInt(this.numeroBase) + this.panRectaNumerica)) + 'px'
+                }
+            },
+            expresion() {
+                if (!this.operacionSeleccionada || (this.numeroSumado + this.numeroRestado) == 0) {
+                    return this.numeroBase;
+                }
+                var operando = this.operacionSeleccionada == 'suma' ? this.numeroSumado : this.numeroRestado;
+
+                var stringOperacion = "+";
+                if (this.operacionSeleccionada == 'resta') stringOperacion = "-";
+
+                var expresion = this.numeroBase + stringOperacion + operando;
+
+                return "\\( " + expresion + "\\)";
+            },
+            resultado() {
+                console.log(`Numero base: ${this.numeroBase}`);
+                if (!this.operacionSeleccionada) {
+                    return null
+                }
+                const resta = this.numeroBase - this.numeroRestado;
+                console.log(`Resultado resta: ${resta}`);
+                return this.operacionSeleccionada == 'suma' ? this.numeroBase + this.numeroSumado : (parseInt(this.numeroBase) - parseInt(this.numeroRestado));
+            }
+
+        },
+        methods: {
+            reloadExpresion() {
+                this.versionExpresion++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            reiniciarRecta(){
+                this.numeroBase=null;
+                this.operacionSeleccionada=null;
+                this.numeroSumado=0;
+                this.numeroRestado=0;
+                this.panRectaNumerica=5;
+            }
+
+        },
+        watch: {
+            panRectaNumerica(nuevo) {
+                if (-nuevo - this.numeroVisibleInicial < 10) {
+                    this.numeroVisibleInicial = this.numeroVisibleInicial - 100;
+                }
+
+                if (((this.numeroVisibleInicial + 200) + nuevo) < 50) {
+                    this.numeroVisibleInicial = this.numeroVisibleInicial + 100
+                }
+            },
+            expresion() {
+                this.reloadExpresion();
+            }
+        },
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    #cuadroEjemplo {
+        position: relative;
+        width: 90%;
+        border: 2px solid cadetblue;
+        border-radius: 15px;
+        padding: 10px;
+        padding-bottom: 40px;
+    }
+
+    #contenedorRectaNumerica {
+
+        overflow: hidden;
+        height: 100px;
+        width: 100%;
+        position: relative;
+    }
+
+    #rectaNumerica {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        position: absolute;
+        top: 52px;
+    }
+
+    #contenedorBolitas {
+        display: flex;
+        position: relative;
+        transition: left 0.3s;
+        position: absolute;
+        top: 50px;
+    }
+
+    .bolitaNumero {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: gray;
+        position: absolute;
+        cursor: pointer;
+        transition: left 0.3s;
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+        width: 16px;
+        height: 16px;
+        transform: translate(-3px, -3px);
+    }
+
+    .nombreNumero {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 13px;
+    }
+
+    .numeroBase {
+        background-color: red;
+    }
+
+    #contenedorOperaciones {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        margin: 0px auto;
+        width: 150px;
+    }
+
+    .selectorOperacion {
+        border: 1px solid cadetblue;
+        border-radius: 7px;
+        padding: 5px;
+        cursor: pointer;
+        margin: 10px;
+        width: 50px;
+        height: 50px;
+        position: relative;
+    }
+
+    .selectorOperacion:hover {
+        background-color: cadetblue;
+    }
+
+    .simboloOperacion {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .anotacion {
+        width: min(600px, 90%);
+        margin: 15px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 25px;
+    }
+
+    .bombillito {
+        width: 25px;
+    }
+
+    #unidadReferencia {
+        position: relative;
+    }
+
+    #segmentoReferencia {
+        width: 29px;
+        height: 4px;
+        background-color: rgb(208, 192, 62);
+
+        margin: 0px auto;
+    }
+
+    #nombreUnidad {
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .transversal {
+        grid-column: 1/3;
+    }
+
+    .segmentoUnidad {
+        width: 39px;
+        height: 3px;
+        background-color: rgb(208, 192, 62);
+        margin-left: 1px;
+        border-radius: 2px;
+    }
+
+    .contenedorSegmentos {
+        display: flex;
+        position: absolute;
+        top: 53px;
+        pointer-events: none;
+        transition: left 0.3s;
+    }
+
+    #contenedorSegmentosRestados {
+        transform-origin: left center;
+        transform: rotate(180deg);
+    }
+
+    .bolitaResultado {
+        scale: 1.3;
+        transform: translate(-6%, -6%);
+        background-color: rgb(19, 54, 5);
+    }
+
+    #expresion {
+        text-align: center;
+        max-width: 200px;
+        padding: 10px 20px;
+        border: 2px solid cadetblue;
+        border-radius: 15px;
+        margin: 0px auto;
+    }
+
+    .pannerRecta {
+        position: absolute;
+        top: 0px;
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 3px;
+        z-index: 10;
+    }
+
+    .pannerRecta:hover {
+        background-color: rgba(128, 128, 128, 0.637);
+
+    }
+
+    .crecer-enter-active {
+        animation: crecer 0.6s;
+    }
+
+    @keyframes crecer {
+        0% {
+            width: 0px;
+        }
+
+        100% {
+            width: 40px;
+        }
+    }
+</style>

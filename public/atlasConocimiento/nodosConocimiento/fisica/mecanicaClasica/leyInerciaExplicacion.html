@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Ley de inercia</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            La ley de inercia tiene que ver con la relación entre la fuerza
+            que experimenta un cuerpo y su estado de movimiento.
+        </p>          
+
+        La ley de inercia dice que:
+        <recuadro-component tipo="datoPrevio">
+            <span class="resaltado">ley de inercia</span><br>
+             si un cuerpo no experimenta fuerzas,
+            mantendrá su estado de movimiento.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    const radToDeg = function (rad) {
+        return Math.round((rad * 180) / Math.PI);
+    }
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                rotacion: 0,
+                creandoFuerza: false,
+                brazoFuerza: 0,
+
+                inicioVectorX: 0,
+                inicioVectorY: 0,
+                finVectorX: 0,
+                finVectorY: 0,
+
+                lapiz: null,
+
+                rotacion2: 0,
+                creandoFuerza2: false,
+                brazoFuerza2: 0,
+
+                inicioVector2X: 0,
+                inicioVector2Y: 0,
+                finVectorX2: 0,
+                finVectorY2: 0,
+
+                lapiz2: null,      
+                
+                offsetLineaAccionFuerza2:{
+                    transform: 'unset',
+
+                }
+            }
+        },
+        methods: {
+            inicioCreacionFuerza(e) {
+                this.creandoFuerza = true;
+                const boundaryCuerpo = e.target.getBoundingClientRect();
+
+                const posX = e.clientX - boundaryCuerpo.left;
+                const posY = e.clientY - boundaryCuerpo.top;
+
+                const boundary = this.$refs.canvasInteraccion.getBoundingClientRect();
+
+                this.inicioVectorX = Math.round(e.clientX - boundary.left);
+                this.inicioVectorY = Math.round(e.clientY - boundary.top);
+
+                const boundaryEje = this.$refs.ejeRotacion.getBoundingClientRect();
+
+                const brazoX = e.clientX - (boundaryEje.left + (this.$refs.ejeRotacion.offsetWidth / 2));
+                const brazoY = e.clientY - (boundaryEje.top + (this.$refs.ejeRotacion.offsetHeight / 2));
+                console.log(`BrazoX: ${brazoX}`);
+                console.log(`BrazoY: ${brazoY}`);
+
+                var direccionBrazo = Math.atan(brazoY / brazoX);
+                if (brazoY < 0 && brazoX < 0) {
+                    direccionBrazo = Math.PI + direccionBrazo;
+                }
+
+                if (brazoX < 0 && brazoY > 0) {
+                    direccionBrazo = Math.PI + direccionBrazo;
+                }
+
+                console.log(`Direccion brazo fuerza: ${radToDeg(direccionBrazo)}`);
+                console.log(`Direccion palanca: ${radToDeg(this.rotacion)}`)
+
+                var brazo = Math.sqrt(Math.pow(brazoX, 2) + Math.pow(brazoY, 2));
+
+                if (Math.abs(direccionBrazo - this.rotacion) > 0.75) {
+                    console.log("Brazo de fuerza invertido")
+                    brazo = -brazo;
+                }
+
+                this.brazoFuerza = brazo;
+
+
+
+            },
+            finCreacionFuerza(e) {
+                if (!this.creandoFuerza) return;
+
+                this.creandoFuerza = false;
+                const boundary = this.$refs.canvasInteraccion.getBoundingClientRect();
+
+                const posX = e.clientX - boundary.left;
+                const posY = e.clientY - boundary.top;
+
+                const fuerzaY = posY - this.inicioVectorY;
+                const fuerzaX = posX - this.inicioVectorX;
+                const moduloFuerza = Math.sqrt((Math.pow(fuerzaX, 2) + Math.pow(fuerzaY, 2)));
+                var direccionFuerza = Math.atan(fuerzaY / fuerzaX);
+                if (fuerzaY < 0 && fuerzaX < 0) {
+                    direccionFuerza = Math.PI + direccionFuerza;
+                }
+
+                if (fuerzaX < 0 && fuerzaY > 0) {
+                    direccionFuerza = Math.PI + direccionFuerza;
+                }
+
+                const direccionRespectoCuerpo = direccionFuerza - this.rotacion;
+
+                const componenteTangencial = moduloFuerza * Math.sin(direccionRespectoCuerpo);
+                const torque = componenteTangencial * this.brazoFuerza;
+
+                this.lapiz.clearRect(0, 0, this.lapiz.canvas.width, this.lapiz.canvas.height);
+                this.rotarCuerpo(torque);
+            },
+            rotarCuerpo(torque) {
+                console.log(`Rotando con un torque de ${torque}`);
+                const nuevaRotacion = this.rotacion + torque / 9000;
+                this.rotacion = nuevaRotacion
+            },
+            retrazarVector(e) {
+                if (!this.creandoFuerza) return;
+                const canvas = this.$refs.canvasInteraccion;
+
+                const boundary = this.$refs.canvasInteraccion.getBoundingClientRect();
+
+                this.lapiz.clearRect(0, 0, canvas.width, canvas.height);
+
+                const posX = Math.round(e.clientX - boundary.left);
+                const posY = Math.round(e.clientY - boundary.top);
+
+
+                this.lapiz.beginPath();
+                this.lapiz.moveTo(this.inicioVectorX, this.inicioVectorY);
+                this.lapiz.lineTo(posX, posY);
+
+                const vectorX = posX - this.inicioVectorX;
+                const vectorY = posY - this.inicioVectorY;
+
+                var direccionVector = Math.atan(vectorY / vectorX);
+                if (vectorY < 0 && vectorX < 0) {
+                    direccionVector = Math.PI + direccionVector;
+                }
+
+                if (vectorX < 0 && vectorY > 0) {
+                    direccionVector = Math.PI + direccionVector;
+                }
+
+                // this.$set(this.offsetFlechaVector, "top", posY+'px');
+                // this.$set(this.offsetFlechaVector, "left", posX+'px');
+                // this.$set(this.offsetFlechaVector, "transform", 'rotate('+direccionVector+'rad) translate(10px, -8px)');
+
+                const punta1X = posX + (4 * Math.cos(direccionVector - (Math.PI / 2)));
+                const punta1Y = posY + (4 * Math.sin(direccionVector - (Math.PI / 2)));
+
+                const punta2X = posX + (4 * Math.cos(direccionVector));
+                const punta2Y = posY + (4 * Math.sin(direccionVector));
+
+                const punta3X = posX + (4 * Math.cos(direccionVector + (Math.PI / 2)));
+                const punta3Y = posY + (4 * Math.sin(direccionVector + (Math.PI / 2)));
+
+                this.lapiz.lineTo(punta1X, punta1Y);
+                this.lapiz.lineTo(punta2X, punta2Y);
+                this.lapiz.lineTo(punta3X, punta3Y);
+                this.lapiz.lineTo(posX, posY);
+
+                this.lapiz.stroke();
+
+            },
+            configurarCanvas() {
+                this.$nextTick(() => {
+                    this.lapiz = this.$refs.canvasInteraccion.getContext("2d");
+
+                    this.$refs.canvasInteraccion.width = this.$refs.zonaInteraccion.offsetWidth;
+                    this.$refs.canvasInteraccion.height = this.$refs.zonaInteraccion.offsetHeight;
+
+                    this.lapiz.lineWidth = 3;
+                    this.lapiz.strokeStyle = "#FF0000";
+                });
+
+            },
+            inicioCreacionFuerza2(e) {
+                this.creandoFuerza2= true;
+                const boundaryCuerpo = e.target.getBoundingClientRect();
+
+                const posX = e.clientX - boundaryCuerpo.left;
+                const posY = e.clientY - boundaryCuerpo.top;
+
+                const boundary = this.$refs.canvasInteraccion2.getBoundingClientRect();
+
+                this.inicioVector2X = Math.round(e.clientX - boundary.left);
+                this.inicioVector2Y = Math.round(e.clientY - boundary.top);
+
+                const boundaryEje = this.$refs.ejeRotacion2.getBoundingClientRect();
+
+                const brazoX = e.clientX - (boundaryEje.left + (this.$refs.ejeRotacion2.offsetWidth / 2));
+                const brazoY = e.clientY - (boundaryEje.top + (this.$refs.ejeRotacion2.offsetHeight / 2));
+                console.log(`BrazoX: ${brazoX}`);
+                console.log(`BrazoY: ${brazoY}`);
+
+                var direccionBrazo = Math.atan(brazoY / brazoX);
+                if (brazoY < 0 && brazoX < 0) {
+                    direccionBrazo = Math.PI + direccionBrazo;
+                }
+
+                if (brazoX < 0 && brazoY > 0) {
+                    direccionBrazo = Math.PI + direccionBrazo;
+                }
+
+                console.log(`Direccion brazo fuerza: ${radToDeg(direccionBrazo)}`);
+                console.log(`Direccion palanca: ${radToDeg(this.rotacion2)}`)
+
+                var brazo = Math.sqrt(Math.pow(brazoX, 2) + Math.pow(brazoY, 2));
+
+                if (Math.abs((direccionBrazo%(Math.PI*2)) - (this.rotacion2%(Math.PI*2))) > 0.75) {
+                    console.log("Brazo de fuerza invertido")
+                    brazo = -brazo;
+                }
+
+                this.brazoFuerza2 = brazo;
+
+
+
+            },
+            finCreacionFuerza2(e) {
+                if (!this.creandoFuerza2) return;
+
+                this.creandoFuerza2 = false;
+                const boundary = this.$refs.canvasInteraccion2.getBoundingClientRect();
+
+                const posX = e.clientX - boundary.left;
+                const posY = e.clientY - boundary.top;
+
+                const fuerzaY = posY - this.inicioVector2Y;
+                const fuerzaX = posX - this.inicioVector2X;
+                const moduloFuerza = Math.sqrt((Math.pow(fuerzaX, 2) + Math.pow(fuerzaY, 2)));
+                var direccionFuerza = Math.atan(fuerzaY / fuerzaX);
+                if (fuerzaY < 0 && fuerzaX < 0) {
+                    direccionFuerza = Math.PI + direccionFuerza;
+                }
+
+                if (fuerzaX < 0 && fuerzaY > 0) {
+                    direccionFuerza = Math.PI + direccionFuerza;
+                }
+
+                const direccionRespectoCuerpo = direccionFuerza - this.rotacion2;
+
+                const componenteTangencial = moduloFuerza * Math.sin(direccionRespectoCuerpo);
+                const torque = componenteTangencial * this.brazoFuerza2;
+
+                this.lapiz2.clearRect(0, 0, this.lapiz2.canvas.width, this.lapiz2.canvas.height);
+                this.rotarCuerpo2(torque);
+            },
+            rotarCuerpo2(torque) {
+                console.log(`Rotando2 con un torque de ${torque}`);
+                const nuevaRotacion = this.rotacion2 + torque / 9000;
+                this.rotacion2 = nuevaRotacion
+            },
+            retrazarVector2(e) {
+                if (!this.creandoFuerza2) return;
+                const canvas = this.$refs.canvasInteraccion2;
+
+                const boundary = this.$refs.canvasInteraccion2.getBoundingClientRect();
+
+                this.lapiz2.clearRect(0, 0, canvas.width, canvas.height);
+                this.lapiz2.strokeStyle="#FF0000"
+
+                const posX = Math.round(e.clientX - boundary.left);
+                const posY = Math.round(e.clientY - boundary.top);
+
+
+                this.lapiz2.beginPath();
+                this.lapiz2.moveTo(this.inicioVector2X, this.inicioVector2Y);
+                this.lapiz2.lineTo(posX, posY);
+
+                const vectorX = posX - this.inicioVector2X;
+                const vectorY = posY - this.inicioVector2Y;
+                const magnitudVector=Math.sqrt(Math.pow(vectorX, 2)+ Math.pow(vectorY, 2));
+                var direccionVector = Math.atan(vectorY / vectorX);
+                if (vectorY < 0 && vectorX < 0) {
+                    direccionVector = Math.PI + direccionVector;
+                }
+
+                if (vectorX < 0 && vectorY > 0) {
+                    direccionVector = Math.PI + direccionVector;
+                }
+
+                if(direccionVector>Math.PI){
+                    direccionVector=-(Math.PI*2)+direccionVector;
+                }
+
+                if(direccionVector<-Math.PI){
+                    direccionVector=(Math.PI*2)+direccionVector;
+                }
+
+                // this.$set(this.offsetFlechaVector, "top", posY+'px');
+                // this.$set(this.offsetFlechaVector, "left", posX+'px');
+                // this.$set(this.offsetFlechaVector, "transform", 'rotate('+direccionVector+'rad) translate(10px, -8px)');
+
+                const punta1X = posX + (4 * Math.cos(direccionVector - (Math.PI / 2)));
+                const punta1Y = posY + (4 * Math.sin(direccionVector - (Math.PI / 2)));
+
+                const punta2X = posX + (4 * Math.cos(direccionVector));
+                const punta2Y = posY + (4 * Math.sin(direccionVector));
+
+                const punta3X = posX + (4 * Math.cos(direccionVector + (Math.PI / 2)));
+                const punta3Y = posY + (4 * Math.sin(direccionVector + (Math.PI / 2)));
+
+                this.lapiz2.lineTo(punta1X, punta1Y);
+                this.lapiz2.lineTo(punta2X, punta2Y);
+                this.lapiz2.lineTo(punta3X, punta3Y);
+                this.lapiz2.lineTo(posX, posY);                
+
+                this.lapiz2.stroke();
+
+                //Componente tangencial
+                var rotacionPalanca=this.rotacion2%(Math.PI*2);
+                if(rotacionPalanca>Math.PI){
+                    rotacionPalanca=-(Math.PI*2)+rotacionPalanca;
+                }
+
+                if(rotacionPalanca<-Math.PI){
+                    rotacionPalanca=(Math.PI*2)+rotacionPalanca;
+                }
+
+
+                var direccionVectorRespectoPalanca=(direccionVector-rotacionPalanca);
+                console.log(`Dirección vector: ${direccionVector}`)
+                console.log("Dirección del vector respecto de la palanca: ");
+                console.log(`Original: ${direccionVectorRespectoPalanca}`);
+                direccionVectorRespectoPalanca=direccionVectorRespectoPalanca%(Math.PI*2);
+                console.log(`Sin giros completos: ${direccionVectorRespectoPalanca}`);
+                if(Math.abs(direccionVectorRespectoPalanca>Math.PI)){
+                    direccionVectorRespectoPalanca=Math.PI - direccionVectorRespectoPalanca;
+                }
+                console.log(`Final: ${direccionVectorRespectoPalanca}`);
+
+                this.lapiz2.strokeStyle="#00FFFF"
+            
+                const componenteTangencial=Math.abs(magnitudVector*Math.sin(direccionVectorRespectoPalanca));
+                 
+                var direccionComponenteTangencial=rotacionPalanca+(Math.PI/2);
+                if(direccionVectorRespectoPalanca<0){
+                    direccionComponenteTangencial=rotacionPalanca-(Math.PI/2);
+                }
+                
+                const tangencialX=componenteTangencial*Math.cos(direccionComponenteTangencial);
+                const tangencialY=componenteTangencial*Math.sin(direccionComponenteTangencial);
+
+                puntaTangencialX=this.inicioVector2X+tangencialX;
+                puntaTangencialY=this.inicioVector2Y+tangencialY;
+
+                this.lapiz2.beginPath();
+                this.lapiz2.moveTo(this.inicioVector2X, this.inicioVector2Y);
+                this.lapiz2.lineTo(puntaTangencialX, puntaTangencialY);
+
+                const puntaT1X = puntaTangencialX + (4 * Math.cos(direccionComponenteTangencial - (Math.PI / 2)));
+                const puntaT1Y = puntaTangencialY + (4 * Math.sin(direccionComponenteTangencial - (Math.PI / 2)));
+
+                const puntaT2X = puntaTangencialX + (4 * Math.cos(direccionComponenteTangencial));
+                const puntaT2Y = puntaTangencialY + (4 * Math.sin(direccionComponenteTangencial));
+
+                const puntaT3X = puntaTangencialX + (4 * Math.cos(direccionComponenteTangencial + (Math.PI / 2)));
+                const puntaT3Y = puntaTangencialY + (4 * Math.sin(direccionComponenteTangencial + (Math.PI / 2)));
+
+                this.lapiz2.lineTo(puntaT1X, puntaT1Y);
+                this.lapiz2.lineTo(puntaT2X, puntaT2Y);
+                this.lapiz2.lineTo(puntaT3X, puntaT3Y);
+                this.lapiz2.lineTo(puntaTangencialX, puntaTangencialY); 
+                
+                this.lapiz2.stroke();
+
+            },
+            configurarCanvas2() {
+                this.$nextTick(() => {
+                    this.lapiz2 = this.$refs.canvasInteraccion2.getContext("2d");
+
+                    this.$refs.canvasInteraccion2.width = this.$refs.zonaInteraccion2.offsetWidth;
+                    this.$refs.canvasInteraccion2.height = this.$refs.zonaInteraccion2.offsetHeight;
+
+                    this.lapiz2.lineWidth = 3;
+                    this.lapiz2.strokeStyle = "#FF0000";
+                });
+
+            },
+            mounted() {
+            }
+
+        }
+    })
+</script>
+
+<style>
+    .zonaInteraccion {
+        padding: 210px 10px;
+        border: 2px dashed gray;
+        position: relative;
+    }
+
+    .canvasInteraccion{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-color: rgba(0, 0, 255, 0.103);
+    }
+
+
+    .cuerpoRotatorio {
+        height: 15px;
+        width: 180px;
+        background-color: rgb(50, 58, 54);
+        transition: transform 2s;
+        position: relative;
+        left: 40%;
+        transform-origin: 20px center;
+    }
+
+    .ejeRotacion {
+        border-radius: 50%;
+        background-color: aqua;
+        border: 2px solid blueviolet;
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        width: 5px;
+        height: 5px;
+        transform: translate(-50%, -50%);
+    }
+
+   
+</style>

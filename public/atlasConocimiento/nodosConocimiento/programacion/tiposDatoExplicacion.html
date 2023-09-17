@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Tipos de datos - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            En un programa informático las variables pueden almacenar distintos <span class='programacionTipoDato'>tipos
+                de datos</span>.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Un número sin valores decimales, como el 1, 3, 5, etc., es un dato de tipo <span class='resaltado'>número
+                entero</span>. Frecuentemente se identifica
+            como <span class='programacionTipoDato'>int</span>
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Un número con valores decimales como el 1.5, 3.4, o 20.3432 es un dato de tipo <span
+                class='resaltado'>número de punto flotante</span>. Frecuentemente
+            se identifica como <span class='programacionTipoDato'>float</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Una letra o un símbolo, como <span class='resaltado'> a, r, %, (</span>, etc. es un dato de tipo <span
+                class='resaltado'>caracter</span>. Frecuentemente se identifica como
+            <span class='programacionTipoDato'>char</span>
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Una palabra o texto como <span class='resaltado'>casa, carro, la casa, etc.</span>, es un dato de tipo <span
+                class='resaltado'>Cadena de caracteres</span>
+            Frecuentemente se identifica como <span class='programacionTipoDato'>string</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Un valor de verdad, como <span class='resaltado'>true</span> o <span class='resaltado'>false</span> es un
+            tipo de dato <span class='resaltado'>Booleano</span>. Frecuentemente
+            se identifica como <span class='programacionTipoDato'>Bool</span> o <span
+                class='programacionTipoDato'>Boolean</span>.
+        </recuadro-component>
+
+        <p>
+            En algunos lenguajes de programación, al crear una variable se debe especificar el tipo de dato que se
+            almacenará en ella.
+        </p>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra cómo se crea una variable especificando el tipo de dato que se almacenará en
+                algunos lenguajes de programación.
+            </template>
+
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        int num;
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción crea una variable llamada <span class='programacionNombreObjeto'>num</span> que
+                        almacenara datos de tipo
+                        <span class='programacionTipoDato'>int</span>.
+                    </recuadro-component>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        float fracc;
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción crea una variable llamada <span class='programacionNombreObjeto'>fracc</span>
+                        que almacenara datos de tipo <span class='programacionTipoDato'>float</span>.
+                    </recuadro-component>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        string palabras;
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción crea una variable llamada <span class='programacionNombreObjeto'>palabras</span>
+                        que almacenara datos de tipo <span class='programacionTipoDato'>string</span>.
+                    </recuadro-component>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        char letra;
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción crea una variable llamada <span class='programacionNombreObjeto'>letra</span>
+                        que almacenara datos de tipo <span class='programacionTipoDato'>char</span>.
+                    </recuadro-component>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        bool presente;
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción crea una variable llamada <span class='programacionNombreObjeto'>presente</span>
+                        que almacenara datos de tipo <span class='programacionTipoDato'>boolean</span>.
+                    </recuadro-component>
+
+                </div>
+
+            </div>
+
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+
+            }
+        },
+        computed: {
+        },
+    }).mount("#doc");
+</script>
+<style>
+</style>

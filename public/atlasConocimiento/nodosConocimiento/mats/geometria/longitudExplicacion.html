@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+   
+
+    <title>Comparación de lineas</title>
+</head>
+
+<body>
+    <div id="doc">
+        Las lineas imaginarias se pueden comparar con la linea unitaria para expresar su tamaño.
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se comparan líneas imaginarias con la linea unitaria"
+            @plegado="cantidadUnitarias1=0; cantidadUnitarias2=0">
+
+            <div class="itemEjemplo">
+                <div id="zonaLinea1" class="zonaLinea zonaLineaEjemplo1">
+                    <transition name="despliegueHorizontal" appear>
+                        <div class="linea" id="linea1"></div>
+                    </transition>
+                </div>
+                <div class="zonaLinea zonaLineaEjemplo1">
+                    <transition-group name="floatup" tag="div" style="display: flex;">
+                        <div class="linea lineaUnitaria" v-for="numero of cantidadUnitarias1"
+                            :key="'lineaUnitaria'+numero">
+                        </div>
+                    </transition-group>
+                </div>
+
+                <div class="botonComparacion boton" id="botonComparacion1" @click="increaseCantidadUnitarias1"
+                    v-show="cantidadUnitarias1<3">
+                    Comparar con {{cantidadUnitarias1+1}} {{cantidadUnitarias1!=0?'lineas unitarias':'linea unitaria'}}
+                </div>
+
+                <recuadro-component tipo="descubrimiento" v-show="cantidadUnitarias1===3">
+                    ¡La linea es igual de larga que 3 lineas unitarias!
+                </recuadro-component>
+            </div>
+
+            <div class="itemEjemplo">
+                <div id="zonaLinea2" class="zonaLinea zonaLineaEjemplo2">
+                    <transition name="despliegueHorizontal" appear>
+                        <div class="linea" id="linea2"></div>
+                    </transition>
+                </div>
+                <div class="zonaLinea zonaLineaEjemplo2">
+                    <transition-group name="floatup" tag="div" style="display: flex;">
+                        <div class="linea lineaUnitaria" v-for="numero of cantidadUnitarias2"
+                            :key="'lineaUnitaria'+numero">
+                        </div>
+                    </transition-group>
+                </div>
+
+                <div class="botonComparacion boton" id="botonComparacion1" @click="increaseCantidadUnitarias2"
+                    v-show="cantidadUnitarias2<4">
+                    Comparar con {{cantidadUnitarias2+1}} {{cantidadUnitarias2!=0?'lineas unitarias':'linea unitaria'}}
+                </div>
+
+                <recuadro-component tipo="descubrimiento" v-show="cantidadUnitarias2===4">
+                    ¡La linea es igual de larga que 4 lineas unitarias!
+                </recuadro-component>
+            </div>
+
+        </bloque-component>
+
+
+
+        Para expresar la comparación de una linea con la linea unitaria se usa el concepto de longitud.
+
+        <recuadro-component tipo="datoPrevio">
+            Longitud de una linea significa: cantidad de lineas unitarias que son iguales a ella.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se expresan comparaciones de lineas con la linea unitaria">
+            <div class="itemEjemplo">
+                <div class="linea lineaEjemploLongitud" id="lineaLongitud1" style="width: 150px;"></div>
+                <transition name="slideLeft" mode="out-in">
+                    <recuadro-component class="expresionLongitud" tipo="datoPrevio" v-show="!comparacion1Longitud">
+                        Esta linea es igual de larga que 3 lineas unitarias.
+                    </recuadro-component>
+                </transition>
+                <transition name="slideLeft" mode="out-in">
+                    <recuadro-component class="expresionLongitud" tipo="datoNuevo" v-show="comparacion1Longitud">
+                        La longitud de esta línea es 3.
+                    </recuadro-component>
+                </transition>
+                <div class="boton" @click="comparacion1Longitud=!comparacion1Longitud">
+                    Expresar la comparación {{comparacion1Longitud?'normalmente':'en terminos de longitud'}}
+                </div>
+            </div>
+
+            <div class="itemEjemplo">
+                <div class="linea lineaEjemploLongitud" id="lineaLongitud2" style="width: 200px;"></div>
+                <transition name="slideLeft" mode="out-in">
+                    <recuadro-component class="expresionLongitud" tipo="datoPrevio" v-show="!comparacion2Longitud">
+                        Esta linea es igual de larga que 4 lineas unitarias.
+                    </recuadro-component>
+                </transition>
+                <transition name="slideLeft" mode="out-in">
+                    <recuadro-component class="expresionLongitud" tipo="datoNuevo" v-show="comparacion2Longitud">
+                        La longitud de esta línea es 4.
+                    </recuadro-component>
+                </transition>
+                <div class="boton" @click="comparacion2Longitud=!comparacion2Longitud">
+                    Expresar la comparación {{comparacion2Longitud?'normalmente':'en terminos de longitud'}}
+                </div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Para medir la longitud de lineas reales, no imaginarias, no se usa la linea unitaria. En su lugar, se usan otras lineas de referencia como:
+
+            <ul>
+                <li>Centímetro.</li>
+                <li>Metro.</li>
+                <li>Pulgada.</li>
+                <li>Kilometro.</li>
+                
+            </ul>
+        </recuadro-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoLinea1: false,
+                cantidadUnitarias1: 0,
+                cantidadUnitarias2: 0,
+                comparacion1Longitud: false,
+                comparacion2Longitud: false,
+            }
+        },
+        methods: {
+            increaseCantidadUnitarias1() {
+                if (this.cantidadUnitarias1 >= 3) {
+                    this.cantidadUnitarias1 = 3;
+                }
+                else {
+                    this.cantidadUnitarias1++;
+                }
+
+
+            },
+            increaseCantidadUnitarias2() {
+                if (this.cantidadUnitarias2 >= 4) {
+                    this.cantidadUnitarias2 = 4;
+                }
+                else {
+                    this.cantidadUnitarias2++;
+                }
+
+
+            }
+        }
+    })
+</script>
+
+<style>
+    #lineaUnitaria {
+        margin: 10px auto;
+        width: 50px;
+        height: 5px;
+        background-color: black;
+    }
+
+    .recursoImagen {
+        max-width: 100%;
+    }
+
+
+
+    .linea {
+        height: 5px;
+        background-color: black;
+
+    }
+
+    .lineaUnitaria {
+        width: 50px;
+        background-color: red;
+        position: relative;
+    }
+
+    .zonaLinea {
+        margin: 10px auto;
+        display: flex;
+    }
+
+    #linea1 {
+        width: 150px;
+        margin-top: 20px;
+    }
+
+    .zonaLineaEjemplo1 {
+        width: 150px;
+    }
+
+
+    #linea2 {
+        width: 200px;
+        margin-top: 20px;
+    }
+
+    .zonaLineaEjemplo2 {
+        width: 200px;
+    }
+
+    .expresionLongitud {
+        position: relative;
+    }
+
+    #botonComparacion1 {
+        margin: 50px auto;
+    }
+
+    .ejemploLongitud {
+        border: 3px dotted gray;
+        border-spacing: 10px;
+        padding: 5%;
+    }
+
+    .itemEjemplo {
+        border: 3px dotted gray;
+        border-spacing: 10px;
+        padding: 5%;
+        margin: 10px 0px;
+    }
+
+    .lineaEjemploLongitud {
+        margin: 15px auto;
+    }
+
+    
+
+    .despliegueHorizontal-enter-active,
+    .despliegueHorizontal-leave-active {
+        transition: opacity 1s ease;
+    }
+
+    .despliegueHorizontal-enter-from,
+    .despliegueHorizontal-leave-to {
+        opacity: 0;
+    }
+
+    .despliegueHorizontal-enter-to,
+    .despliegueHorizontal-leave-from {
+        opacity: 1;
+    }
+
+    .floatup-enter-active {
+        animation: subir 0.3s linear;
+    }
+
+    .slideLeft-enter-active {
+        animation: slideInLeft 0.3s;
+    }
+
+    /* .slideLeft-leave-active {
+        animation: slideOutLeft 0.3s;
+    } */
+
+    @keyframes slideInLeft {
+        0% {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0px);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutLeft {
+        0% {
+            left: 0px;
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes subir {
+        0% {
+            top: 20px;
+        }
+
+        100% {
+            top: 0px;
+        }
+    }
+</style>

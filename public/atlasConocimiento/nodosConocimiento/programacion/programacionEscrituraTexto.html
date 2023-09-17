@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+	<title>Programación - instrucción de escritura</title>
+</head>
+
+<body>
+	<div id="doc">
+		<p>
+			Una instrucción básica de programación es la que indica <span class='resaltado'>escritura</span>
+			de un texto.
+		</p>
+
+		<bloque-component tipo='ejemplo'>
+			<template #cabecera>
+				En este cuadro se muestra la instrucción de escritura de texto en algunos lenguajes de
+				programación populares.
+			</template>
+
+			<div class='listaEjemplos'>
+				<div class='itemEjemplo'>
+					<div class='indicadorLenguaje'>
+						Python
+					</div>
+					<div class='programacionCodigo'>
+						print("hola mundo");
+					</div>
+					<recuadro-component tipo='datoNuevo'>
+						Esta instrucción indica que se debe escribir el texto "Hola
+						mundo".
+					</recuadro-component>
+
+				</div>
+				<div class='itemEjemplo'>
+					<div class='indicadorLenguaje'>
+						Javascript
+					</div>
+
+					<div class='programacionCodigo'>
+						console.log("¡Hola mundo!");
+					</div>
+					<recuadro-component tipo='datoNuevo'>
+						Esta instrucción indica que se debe escribir el texto "Hola mundo".
+					</recuadro-component>
+				</div>
+
+				<div class='itemEjemplo'>
+					<div class='indicadorLenguaje'>
+						Bash
+					</div>
+
+					<div class='programacionCodigo'>
+						echo "¡Hola mundo!"
+					</div>
+					<recuadro-component tipo='datoNuevo'>
+						Esta instrucción indica que se debe escribir el texto "Hola mundo".
+					</recuadro-component>
+				</div>
+			</div>
+
+		</bloque-component>
+	</div>
+</body>
+
+</html>
+
+<script>
+	const app = new Vue({
+		el: "#doc",
+		components: {
+			recuadroComponent,
+			bloqueComponent,
+		},
+		data() {
+			return {
+
+			}
+		},
+		computed: {
+		},
+	});
+</script>
+<style>
+</style>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosFisica.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Principio de superposición de fuerzas - Evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el principio de superposición de fuerzas si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo explicar en qué consiste el principio de superposición de fuerzas.
+            </template>
+        </bloque-component>
+
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada cualquier descripción de un cuerpo que experimenta fuerzas, puedo representar el fenómeno usando
+                una sola fuerza.
+            </template>
+
+            <div class='contenedorFlex'>
+                <label for="inputCantidadFuerzasReto2">
+                    Dificultad
+                </label>
+                <input type="range" ref="inputCantidadFuerzasReto2" v-model="cantidadFuerzasReto2" min="1" max="2">
+                <div class='infoDificultad'>
+                    {{cantidadFuerzasReto2}}
+                </div>
+                
+                <button class='boton' @click="generarReto2">
+                    Generar reto
+                </button>
+
+
+                <div class='zonaReto' v-show="fuerzasReto2.length>0" :key="versionReto2">
+                    <div id='cuerpo' class="cuerpoDefault">
+                        <div class='vectorFuerza' v-for="(fuerza, index) of fuerzasReto2" :key="'fuerza' + index"
+                            :style="[fuerza.offset]">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </bloque-component>
+        <bloque-component tipo="evaluacion">
+
+
+            <template #cabecera>
+                Dada cualquier descripción de un cuerpo que experimenta fuerzas no alineadas con los ejes cartesianos,
+                puedo representar el fenómeno usando fuerzas alineadas con los ejes cartesianos.
+            </template>
+            <div class='contenedorFlex'>
+                <label for="inputCantidadFuerzasReto3">
+                    Dificultad
+                </label>
+                <input type="range" ref="inputCantidadFuerzasReto3" v-model="cantidadFuerzasReto3" min="1" max="3">
+                <div class='infoDificultad'>
+                    {{cantidadFuerzasReto3}}
+                </div>
+                
+                <button class='boton' @click="generarReto3">
+                    Generar reto
+                </button>
+
+
+                <div class='zonaReto' v-show="fuerzasReto3.length>0" :key="versionReto3">
+                    <div id='cuerpo' class="cuerpoDefault">
+                        <div class='vectorFuerza' v-for="(fuerza, index) of fuerzasReto3" :key="'fuerza' + index"
+                            :style="[fuerza.offset]">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                factorMultiplicadorVectores: 8,
+
+                versionReto2: 0,
+                fuerzasReto2: [],
+                cantidadFuerzasReto2:1,
+
+                versionReto3: 0,
+                fuerzasReto3: [],
+                cantidadFuerzasReto3:1,
+            }
+        },
+        methods: {
+            reiniciarReto2() {
+                this.fuerzasReto2 = [];
+
+            },
+            generarReto2() {
+                console.log("Generando reto2");
+                this.reiniciarReto2();
+
+                console.log("Serán " + this.cantidadFuerzasReto2 + 1 );
+
+                while (this.fuerzasReto2.length < this.cantidadFuerzasReto2 + 1) {
+                    console.log("pushing fuerza");
+                    let magnitud = Math.ceil(Math.random() * 14) + 10;
+                    let direccion = Math.random() * Math.PI * 2;
+                    let offset = {
+                        width: magnitud * this.factorMultiplicadorVectores + 'px',
+                        transform: "rotate(" + direccion + "rad)",
+                    }
+
+                    this.fuerzasReto2.push({magnitud, direccion, offset});
+                }
+
+                this.versionReto2++;
+            },
+
+            reiniciarReto3() {
+                this.fuerzasReto3 = [];
+
+            },
+            generarReto3() {
+                console.log("Generando reto3");
+                this.reiniciarReto3();
+
+                console.log("Serán " + this.cantidadFuerzasReto3);
+
+                while (this.fuerzasReto3.length < this.cantidadFuerzasReto3) {
+                    console.log("pushing fuerza");
+                    let magnitud = Math.ceil(Math.random() * 14) + 10;
+                    let direccion = Math.random() * Math.PI * 2;
+                    let offset = {
+                        width: magnitud * this.factorMultiplicadorVectores + 'px',
+                        transform: "rotate(" + direccion + "rad)",
+                    }
+
+                    this.fuerzasReto3.push({magnitud, direccion, offset});
+                }
+
+                this.versionReto3++;
+            },
+        }
+    })
+</script>
+
+<style>
+.zonaReto{
+    position: relative;
+    height: 300px;
+    width: 90%;
+    margin: 20px auto;
+}
+    #cuerpo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 20px;
+        background-color: var(--paletaActual);
+    }
+</style>

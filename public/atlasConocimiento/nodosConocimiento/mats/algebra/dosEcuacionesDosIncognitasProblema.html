@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dos ecuaciones con dos incógnitas</title>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+        <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+        <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+        <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+        <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+    
+        <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+        <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+        <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+        <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>Si se tiene dos ecuaciones como las siguientes:</p>
+
+        <ul style="line-height: 40px; font-size: 30px;">
+            <li>\( {{a \times 3} + 5} = {b \over 3} \)</li>
+            <li>\({a+b}=10\)</li>
+        </ul>
+
+        <recuadro-component tipo="descubrimiento">
+            No es posible resolver ninguna de las ecuaciones.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Es posible combinar las dos ecuaciones para formar una sola que sí se pueda resolver.
+        </recuadro-component>
+                
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },       
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 2px;
+    }
+
+    #ejemploAnimado1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 10px;
+    }
+
+    #primeraEcuacionEjemplo1 {
+        padding-left: 0px;
+    }
+
+    .segundaEcuacion {
+        grid-row: 2/3;
+    }
+
+    .ecuacionEjemplo {
+        grid-column: 1/2;
+    }
+
+    .botonStepEjemplo1 {
+        grid-column: 2/3;
+    }
+
+    .deshabilitado {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    .fadeout-leave {
+        background-color: brown;
+        opacity: 1;
+    }
+
+    .fadeout-leave-to {
+        background-color: brown;
+        opacity: 0;
+    }
+
+    .fadeout-leave-active {
+        transition: background-color 1s, opacity 1s;
+    }
+
+    .bajar-enter {
+        transform: translateY(-80%);
+    }
+
+    .bajar-enter-active {
+        transition: transform 1s;
+    }
+
+    #ejemploAnimado2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #botonIntercambiarEjemplo2 {
+        grid-column: 2/3;
+    }
+
+
+    .intercambiar-leave-active,
+    .intercambiar-enter-active {
+        transition: all 1.5s;
+    }
+
+    .intercambiar-leave-to,
+    .intercambiar-enter {
+        opacity: 0;
+        background-color: cadetblue;
+    }
+
+    .cuadroEjemplo {
+        border: 2px solid blueviolet;
+        border-radius: 15px;
+        padding: 5% 2%;
+        margin: 10px 0px;
+    }
+</style>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        data() {
+            return {
+                stepEjemplo1: 0,
+                intercambiarEjemplo2: false,
+            }
+        }
+    })
+
+</script>

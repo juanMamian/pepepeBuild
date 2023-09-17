@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+   
+
+    <title>Principios generales de bioquímica - evaluación</title>
+</head>
+<body>    
+    <div id="doc">      
+        <p>Conozco y comprendo los principios generales de la bioquímica si:</p>
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Conozco los biocompuestos indispensables para los organismos vivos.
+            </template>                    
+        </bloque-component>
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Conozco la función de los biocompuestos en los organismos vivos.
+            </template>                    
+        </bloque-component>
+           
+    </div>
+</body>
+</html>
+
+<script>
+    const doc=new Vue({
+        el:"#doc",
+        components:{
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data(){
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+ 
+</style>

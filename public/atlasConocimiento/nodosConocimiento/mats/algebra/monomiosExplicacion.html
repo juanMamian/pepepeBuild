@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Monomios</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Hay expresiones algebraicas formadas solamente por numeros e incógnitas multiplicados. Las incógnitas pueden estar elevadas a algún nivel de potencia.
+            Estas expresiones se llaman <span class="resaltado">monomios</span>.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se pueden ver ejemplos de monomios donde la incógnita está en potencia 1.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    \(4 a\)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    \( 6 c\)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    \( 12 h \)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>        
+    
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se pueden ver ejemplos de monomios donde la incógnita está elevada a alguna potencia.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    \(5 a^2\)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    \(4 c^4\)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    \(8 {p^5}\)
+                    <transition name="fade">
+                        <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                            v-show="mostrandoMonomios">
+                            monomio
+                        </span>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>       
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se pueden ver ejemplos de monomios con varias incógnitas elevadas a alguna potencia.">
+            <li>
+                \(8 p^5 \cdot g \)
+                <transition name="fade">
+                    <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                        v-show="mostrandoMonomios">
+                        monomio
+                    </span>
+                </transition>
+            </li>
+            <li>
+                \(20 c^3 \cdot g^2 \)
+                <transition name="fade">
+                    <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                        v-show="mostrandoMonomios">
+                        monomio
+                    </span>
+                </transition>
+            </li>
+            <li>
+                \(2 a^2 \cdot k^2 \cdot f \)
+                <transition name="fade">
+                    <span class="resaltadoHorizontal etiquetaMonomio" style="background-color: rgb(226, 61, 61);"
+                        v-show="mostrandoMonomios">
+                        monomio
+                    </span>
+                </transition>
+            </li>
+        </bloque-component>
+        
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoMonomios: false,
+                resaltandoMonomios: false,
+                mostrandoBinomios: false,
+                mostrandoTrinomios: false,
+                mostrandoPolinomios: false,
+            }
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 0px;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        background-color: transparent;
+        opacity: 0;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all 0.8s;
+    }
+
+    .etiquetaMonomio {
+        float: right;
+    }
+
+    .listaMonomios {
+        border: 2px solid gray;
+        max-width: 400px;
+        border-radius: 20px;
+        padding-right: 20px;
+
+    }
+
+    .etiquetaMonomio {
+        border-radius: 5px;
+        margin-right: 100px;
+
+    }
+
+    .activador {
+        cursor: pointer;
+    }
+
+    .monomioActivable {
+        padding: 3px;
+    }
+
+    .monomioActivado {
+        border: 1px solid brown;
+        border-radius: 3px;
+    }
+
+    ul {
+        font-size: 35px;
+    }
+
+    .itemEjemplo {
+        display: flex;
+    }
+</style>

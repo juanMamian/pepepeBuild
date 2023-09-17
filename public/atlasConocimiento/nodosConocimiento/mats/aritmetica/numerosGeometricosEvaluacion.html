@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Números geométricos - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de números geométricos si: </p>
+
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier número puedo determinar si es cuadrado o triangular.">
+
+            <div class='contenedorFlex'>
+                <button class="boton" @click="generarReto1">
+                    Generar número
+                </button>
+
+                <transition name="enterTop" v-show="numeroReto1" :key="versionReto1">
+                    <div id='numeroReto'>
+                        {{numeroReto1}}
+                    </div>
+                </transition>
+
+                <recuadro-component tipo='instruccionPointer' v-show="numeroReto1">
+                    Selecciona tu respuesta
+                    <div class='contenedorBotonesRespuesta'>
+                        <button class='botonRespuesta boton' :class="{activo: opcion===respuestaUsuarioReto1}"
+                            v-for="opcion of respuestasPosibles" @click="evaluarRespuestaUsuarioReto1(opcion)">
+                            {{opcion.charAt(0).toUpperCase() + opcion.slice(1)}}
+                        </button>
+                    </div>
+                </recuadro-component>
+
+                <transition name="popIn"
+                    @before-enter="$nextTick(()=>{$refs.infoResultadoReto1.$el.scrollIntoView({behavior: 'smooth', block:'center'})})">
+                    <recuadro-component tipo='infoResultado' v-show="respuestaUsuarioReto1!=null && numeroReto1 !=null"
+                        :modo="respuestaUsuarioReto1Correcta===true?'correcto':'incorrecto'"
+                        :key="versionRespuestaUsuarioReto1" ref="infoResultadoReto1">
+
+                    </recuadro-component>
+                </transition>
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier número, puedo elevarlo hasta construir una figura dada.">
+
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto2">
+                    Generar número
+                </button>
+
+                <transition name="travelTop">
+                    <div class='reto' :key="versionReto2">
+                        {{numeroReto2}}
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <recuadro-component tipo='instruccion' v-show="figuraReto2">
+                        Elévalo al {{figuraReto2}}
+                    </recuadro-component>
+                </transition>
+
+                <recuadro-component tipo='instruccionTeclado' v-show="numeroReto2">
+                    <div class='contenedorFlex'>
+                        <div>
+                            Escribe aquí el número formado
+                        </div>
+
+                        <input type="number" min="1" ref="inputRespuestaUsuarioReto2" @keypress.enter="inputRespuestaUsuarioReto2" />
+                        <button class='boton' @click="inputRespuestaUsuarioReto2">Aceptar</button>
+                    </div>
+                </recuadro-component>
+
+                <transition name="popIn"
+                    @before-enter="$nextTick(()=>{$refs.infoResultadoReto2.$el.scrollIntoView({behavior: 'smooth', block:'center'})})">
+                    <recuadro-component tipo='infoResultado'
+                        :modo="respuestaUsuarioReto2===respuestaReto2?'correcto':'incorrecto'"
+                        v-show="respuestaUsuarioReto2 && respuestaReto2" :key="versionRespuestaUsuarioReto2"
+                        ref="infoResultadoReto2">
+                    </recuadro-component>
+                </transition>
+
+
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion" textoCabecera="Dado cualquier número geométrico puedo determinar su raiz.">
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto3">
+                    Generar número
+                </button>
+
+                <transition name="enterTop">
+                    <div class='reto contenedorFlex' :key="versionReto3" v-show="numeroReto3!=null">
+                        <div>
+                            {{numeroReto3}}
+                        </div>
+                        <recuadro-component tipo='instruccion' v-show="tipoRaizReto3">
+                            Encuentra su raiz {{tipoRaizReto3}}
+                        </recuadro-component>
+                    </div>
+                </transition>
+
+                <recuadro-component tipo='instruccionTeclado' v-show="numeroReto3">
+                    <div class='contenedorFlex'>
+                        <div>
+                            Escribe tu respuesta
+                        </div>
+                        <input type="number" ref="inputRespuestaUsuarioReto3" @click="inputRespuestaUsuarioReto3" 
+                            @keypress.enter="inputRespuestaUsuarioReto3" />
+                        <button class='boton' @click="inputRespuestaUsuarioReto3">
+                            Aceptar
+                        </button>
+                    </div>
+
+                </recuadro-component>
+
+                <transition name="popIn"
+                    @before-enter="$nextTick(()=>{$refs.infoResultadoReto3.$el.scrollIntoView({behavior: 'smooth', block:'center'})})">
+                    <recuadro-component tipo='infoResultado'
+                        ref="infoResultadoReto3"
+                        v-show="respuestaReto3!=null && respuestaUsuarioReto3!=null"
+                        :modo="respuestaUsuarioReto3===respuestaReto3?'correcto':'incorrecto'"
+                        :key="versionRespuestaUsuarioReto3">
+
+                    </recuadro-component>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroReto1: null,
+                versionReto1: 0,
+                respuestaReto1: null,
+                versionRespuestaUsuarioReto1: 0,
+                respuestaUsuarioReto1: null,
+                respuestaUsuarioReto1Correcta: null,
+                respuestasPosibles: ["cuadrado", "triangular", "ninguno"],
+
+                numeroReto2: null,
+                versionReto2: 0,
+                figuraReto2: null,
+                respuestaReto2: null,
+                respuestaUsuarioReto2: null,
+                versionRespuestaUsuarioReto2: 0,
+                figurasPosibles: ["cuadrado", "triangulo"],
+
+                numeroReto3: null,
+                versionReto3: null,
+                tipoRaizReto3: null,
+                respuestaReto3: null,
+                respuestaUsuarioReto3: null,
+                versionRespuestaUsuarioReto3: null,
+                raicesPosiblesReto3: ["cuadrada", "triangular"],
+            }
+        },
+        methods: {
+            reiniciarReto3() {
+                this.numeroReto3 = null;
+                this.tipoRaizReto3 = null;
+                this.respuestaReto3 = null;
+                this.respuestaUsuarioReto3 = null;
+                this.$refs.inputRespuestaUsuarioReto3.value;
+            },
+            generarReto3(){
+                this.reiniciarReto3();
+                let numeroBase=Math.ceil(Math.random()*20);
+                this.tipoRaizReto3=this.raicesPosiblesReto3[Math.floor(Math.random()*this.raicesPosiblesReto3.length)];
+                if(this.tipoRaizReto3==="cuadrada"){
+                    this.numeroReto3=numeroBase*numeroBase;
+                }
+                else if(this.tipoRaizReto3 ==="triangular"){
+                    this.numeroReto3=numeroBase * (numeroBase + 1)/2
+                }
+                else{
+                    console.log("Error: tipo de raiz no implementada");
+                }
+
+                this.respuestaReto3=numeroBase;
+                this.versionReto3++;
+            },
+            inputRespuestaUsuarioReto3(){
+                this.respuestaUsuarioReto3=Number(this.$refs.inputRespuestaUsuarioReto3.value);
+                this.versionRespuestaUsuarioReto3++;
+            },
+            reiniciarReto2() {
+                this.numeroReto2 = null;
+                this.figuraReto2 = null;
+                this.respuestaReto2 = null;
+                this.respuestaUsuarioReto2 = null;
+            },
+            generarReto2() {
+                this.reiniciarReto2();
+                this.numeroReto2 = Math.ceil(Math.random() * 20);
+                this.figuraReto2 = this.figurasPosibles[Math.floor(Math.random() * this.figurasPosibles.length)];
+                this.respuestaReto2 = this.figuraReto2 === 'cuadrado' ? this.numeroReto2 * this.numeroReto2 : this.figuraReto2 === 'triangulo' ? this.numeroReto2 * (this.numeroReto2 + 1) / 2 : 0;
+                this.versionReto2++;
+            },
+            inputRespuestaUsuarioReto2() {
+                this.respuestaUsuarioReto2 = Number(this.$refs.inputRespuestaUsuarioReto2.value);
+                this.versionRespuestaUsuarioReto2++;
+
+            },
+            reiniciarReto1() {
+                this.numeroReto1 = null;
+                this.respuestaUsuarioReto1 = null;
+                this.respuestaUsuarioReto1Correcta = null;
+            },
+            generarReto1() {
+                this.reiniciarReto1();
+                var numeroGenerado = Math.ceil(Math.random() * 10);
+                if (Math.random() < 0.3) {//Hacer cuadrado
+                    numeroGenerado = numeroGenerado * numeroGenerado;
+                }
+                else if (Math.random() < 0.3) {
+                    numeroGenerado = numeroGenerado * (numeroGenerado + 1) / 2;
+                }
+                else {
+                    let multiplicador = Math.ceil(Math.random() * 10);
+                    numeroGenerado = numeroGenerado * multiplicador;
+                }
+                this.numeroReto1 = numeroGenerado;
+                this.versionReto1++;
+            },
+            evaluarRespuestaUsuarioReto1(respuestaUsuario) {
+                this.respuestaUsuarioReto1 = respuestaUsuario;
+                this.versionRespuestaUsuarioReto1++;
+                let raizCuadrada = Math.sqrt(this.numeroReto1);
+
+                //Para raizTriangular.
+                let parteRaiz = Math.sqrt(1 + 8 * this.numeroReto1);
+                let raizTriangular = -1 / 2 + parteRaiz / 2;
+
+                if (respuestaUsuario === 'cuadrado' && raizCuadrada % 1 === 0) {
+                    this.respuestaUsuarioReto1Correcta = true;
+                }
+                else if (respuestaUsuario === 'triangular' && raizTriangular % 1 === 0) {
+                    this.respuestaUsuarioReto1Correcta = true;
+                }
+                else if (respuestaUsuario === 'ninguno' && raizCuadrada % 1 != 0 && raizTriangular % 1 != 0) {
+                    this.respuestaUsuarioReto1Correcta = true;
+                }
+                else {
+                    this.respuestaUsuarioReto1Correcta = false;
+                }
+            },
+        },
+        watch: {
+        }
+    })
+</script>

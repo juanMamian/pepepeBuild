@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Fracciones - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de fracciones si: </p>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier dibujo de una unidad puedo imaginarla y representarla formada por cualquier cantidad de fracciones dada.">
+
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto1">
+                    Generar dibujo
+                </button>
+                <canvas id="canvasReto1" ref="canvasReto1" width="200" height="200">
+
+                </canvas>
+
+                <transition name="enterTop">
+                    <recuadro-component tipo='instruccion' v-show="cantidadFraccionesReto1" :key="versionReto1">
+                        Imagínala y represéntala formada por {{cantidadFraccionesReto1}} fracciones.
+                    </recuadro-component>
+                </transition>
+
+            </div>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier dibujo de una unidad dividida en fracciones, puedo decir el nombre de esas fracciones y cuántas hay.">
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier dibujo de una unidad y cualquier dibujo de una fracción de ella, conozco el nombre de esa fracción.">
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier descripción de cierta cantidad de fracciones, puedo imaginarlas y representarlas.">
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto4">
+                    Generar descripción
+                </button>
+
+                <transition name="enterTop">
+                    <div class='reto' v-show="descripcionReto4" :key="versionReto4">
+                        {{descripcionReto4}}
+                    </div>
+                </transition>
+
+            </div>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dadas dos cantidades cualquiera de fracciones, puedo compararlas y determinar cuál es mayor y cuál es menor.">
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto5">
+                    Generar descripción
+                </button>
+
+                <transition name="enterTop">
+                    <div class='reto' v-show="descripcionReto5_1 && descripcionReto5_2" :key="versionReto5">
+                        {{descripcionReto5_1}}
+                        <br>
+                        {{descripcionReto5_2}}
+                    </div>
+                </transition>
+
+            </div>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier descripción de cierta cantidad de fracciones, puedo comparar su tamaño con los números enteros.">
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto6">
+                    Generar descripción
+                </button>
+
+                <transition name="enterTop">
+                    <div class='reto' v-show="descripcionReto6" :key="versionReto6">
+                        {{descripcionReto6}}
+                    </div>
+                </transition>
+
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    fracciones = [undefined, "unidad", "medio", "tercio", "cuarto", "quinto", "sexto", "séptimo", "octavo", "noveno", "décimo", "onceavo", "doceavo", "treceavo"];
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                cantidadFraccionesReto1: null,
+                versionReto1: 0,
+
+                descripcionReto4: null,
+                versionReto4: 0,
+                descripcionReto5_1: null,
+                descripcionReto5_2: null,
+                versionReto5: 0,
+                descripcionReto6: null,
+                versionReto6: 0,
+
+            }
+        },
+        methods: {
+            reiniciarReto1() {
+                let lapiz = this.$refs.canvasReto1.getContext("2d");
+                let sizeClear = this.$refs.canvasReto1.width;
+                lapiz.clearRect(0, 0, sizeClear, sizeClear);
+                this.cantidadFraccionesReto1 = null;
+            },
+            generarReto1() {
+                this.reiniciarReto1();
+                let lapiz = this.$refs.canvasReto1.getContext("2d");
+                let cantidadOpciones = 4;
+                let opcion = Math.floor(Math.random() * cantidadOpciones);
+                if (opcion === 0) {
+                    lapiz.strokeRect(75, 75, 50, 50);
+                }
+                else if (opcion === 1) {
+                    lapiz.beginPath();
+                    lapiz.moveTo(100, 70);
+                    lapiz.lineTo(60, 130);
+                    lapiz.lineTo(140, 130);
+                    lapiz.lineTo(100, 70);
+                    lapiz.stroke();
+                }
+                else if (opcion === 2) {
+                    lapiz.strokeRect(75, 50, 50, 100);
+                }
+                else if (opcion === 3) {
+                    console.log("círculo");
+                    lapiz.beginPath();
+                    lapiz.arc(100, 100, 70, 0, Math.PI * 2, true);
+                    lapiz.stroke();
+                }
+
+                this.cantidadFraccionesReto1 = Math.ceil(Math.random() * 9 + 1);
+                this.versionReto1++;
+
+            },
+            generarFraccion() {
+                let numeroFracciones = Math.ceil(Math.random() * 20);
+                let fraccionador = Math.ceil(Math.random() * 9 + 1);
+                return [numeroFracciones, fraccionador];
+            },
+            reiniciarReto4() {
+                this.descripcionReto4 = null;
+            },
+            generarReto4() {
+                let fraccion = this.generarFraccion();
+                this.descripcionReto4 = fraccion[0] + " " + fracciones[fraccion[1]];
+                if (fraccion[0] != 1) {
+                    this.descripcionReto4 += "s";
+                }
+                this.versionReto4++;
+            },
+            reiniciarReto5() {
+                this.descripcionReto5_1 = null;
+                this.descripcionReto5_2 = null;
+            },
+            generarReto5() {
+                let fraccion = this.generarFraccion();
+                this.descripcionReto5_1 = fraccion[0] + " " + fracciones[fraccion[1]];
+                let fraccion2 = this.generarFraccion();
+                this.descripcionReto5_2 = fraccion2[0] + " " + fracciones[fraccion2[1]];
+                if (fraccion[0] != 1) {
+                    this.descripcionReto5_1 += "s";
+                }
+                if (fraccion2[0] != 1) {
+                    this.descripcionReto5_2 += "s";
+                }
+                this.versionReto5++;
+            },
+            reiniciarReto6() {
+                this.descripcionReto6 = null;
+            },
+            generarReto6() {
+                let fraccion = this.generarFraccion();
+                this.descripcionReto6 = fraccion[0] + " " + fracciones[fraccion[1]];
+                if (fraccion[0] != 1) {
+                    this.descripcionReto6 += "s";
+                }
+                this.versionReto6++;
+            },
+
+        }
+    });
+</script>
+
+<style>
+    #canvasReto1 {
+        width: 200px;
+        height: 200px;
+        display: block;
+    }
+</style>

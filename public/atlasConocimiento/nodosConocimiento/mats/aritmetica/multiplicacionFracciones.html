@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Multiplicación fracciones</title>
+</head>
+
+<body>
+    <p>Una multiplicación entre dos números donde uno de ellos es un numero
+        fraccionario, se puede interpretar según el siguiente ejemplo.
+    </p>
+
+    <h3>Multiplicación <span class="rojo resaltado">tres</span> por <span class="verde resaltado">dos y
+            medio</span> :</h3>
+<br>
+    <div class="cuadrito" id="cuadrito1">
+        <p>El número <span class="rojo resaltado">tres</span> en bolitas:</p>
+        <div id="numero3" class="diagramaNumero">
+            <div class="bolita"></div>
+            <div class="bolita"></div>
+            <div class="bolita"></div>
+        </div>
+    </div>
+    <br>
+    <div class="cuadrito" id="cuadrito1">
+        <p>El numero <span class="verde resaltado">dos y medio</span> en rectángulos</p>
+
+        <div class="multiplicador diagramaNumero">
+            <div class="rectangulo"></div>
+            <div class="rectangulo"></div>
+            <div class="rectangulo medio">
+                <div class="cubridorMitad"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="cuadrito" id="cuadrito1">
+
+        <p>Ahora el número <span class="rojo resaltado">tres</span> repetido en cada rectángulo:</p>
+
+        <div class="multiplicador diagramaNumero">
+            <div class="rectangulo">
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+            </div>
+            <div class="rectangulo">
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+            </div>
+            <div class="rectangulo">
+                <div class="cubridorMitad"></div>
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+                <div class="bolita"></div>
+            </div>
+        </div>
+    </div>
+
+    <p>Las bolitas que se repitieron son <span class="span rojo resaltado">siete y medio</span></p>
+
+    <p><span class="span rojo resaltado">Tres</span> por <span class="span verde resaltado">dos y medio</span>
+        es igual a <span class="span rojo resaltado">Siete y medio</span></p>
+
+</body>
+
+</html>
+
+<style>
+    body {
+        padding: 5% 5%;
+    }
+
+    #numero3 {
+        padding: 5px 10px;
+    }
+
+    .bolita {
+        border-radius: 50%;
+        background-color: red;
+        margin: 5px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .rojo {
+        background-color: red;
+    }
+
+    .verde {
+        background-color: green;
+    }
+
+    .azul {
+        background-color: blue;
+    }
+
+    .resaltado {
+        padding: 3px 5px;
+        border-radius: 3px;
+    }
+
+    .diagramaNumero {
+        display: flex;
+    }
+
+    .rectangulo {
+        width: 90px;
+        height: 25px;
+        border: 2px solid green;
+        border-radius: 4px;
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .cubridorMitad {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        top: 0%;
+        left: 50%;
+        background-color: black;
+        opacity: 0.85;
+    }
+
+    .cuadrito {
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 2px solid #174444;
+        display: inline-block;
+        padding: 10px 20px;
+    }
+</style>

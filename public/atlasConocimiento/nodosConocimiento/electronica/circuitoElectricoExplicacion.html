@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Circuito eléctrico</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Para controlar el modo en que fluye la corriente eléctrica se construyen caminos interconectados. El sistema
+            de caminos
+            por los que fluye la corriente eléctrica se llama <span class="resaltado">circuito eléctrico</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Un circuito eléctrico incluye varios componentes interconectados.
+        </recuadro-component>
+
+        <bloque-component tipo="datoPrevio">
+            <template #cabecera>
+                En este cuadro se muestra un circuito eléctrico
+            </template>
+
+            <img style="width: 100%;" src="circuitoReal.png" alt="Circuito">
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Los circuitos eléctricos se representan mediante un diagrama.
+        </recuadro-component>
+
+        <bloque-component tipo="datoPrevio">
+            <template #cabecera>
+                En este cuadro se muestra un diagrama de un circuito eléctrico
+            </template>
+
+            <img style="width: 100%;" src="circuitoDiagrama.svg" alt="Circuito">
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

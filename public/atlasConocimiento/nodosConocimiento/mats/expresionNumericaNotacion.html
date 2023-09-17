@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Expresión numérica</title>
+</head>
+
+<body>
+
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Una expresión numérica puede ser difícil de leer debido a que los paréntesis se confunden entre sí.
+
+            <div id="expresionEnredada" class="matsExpresion" style="font-size: 40px;">
+                \( ( (3 + 18) ^ {({2 \times 4})} ) + {({ {20} \over {({ 2+(3 \times 4 ) })} })} \)
+            </div>
+        </recuadro-component>
+
+        <p>
+            Afortunadamente, algunas operaciones señalan sus operandos de manera
+            clara y, gracias a eso, se hacen innecesarios algunos paréntesis.
+        </p>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestran expresiones numéricas en las que se puede <span class="resaltado"
+                    style="display: inline-block;">quitar</span> los paréntesis pues
+                la operación señala de forma suficiente sus operandos.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 2 \over {(4+6)} \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo1=true" :class="{deshabilitado: revelarItemEjemplo1}">
+                        Quitar los paréntesis de la expresión \( 4+6 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo1">
+                            \( 2 \over {4+6} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo1">
+                            Se entiende que <span class="resaltado"> \(4+6\)</span> es un operando de la división y, por
+                            lo
+                            tanto, es una expresión numérica.
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( {({12 \times 18})} \over 10 \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo2=true" :class="{deshabilitado: revelarItemEjemplo2}">
+                        Quitar los paréntesis de la expresión \( 12 \times 18 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo2">
+                            \( {12 \times 18} \over 10 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2">
+                            Se entiende que <span class="resaltado"> \(12 \times 18 \)</span> es un operando de la
+                            división y, por
+                            lo
+                            tanto, es una expresión numérica.
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( \sqrt[3]{ (6 + 10) } \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo3=true" :class="{deshabilitado: revelarItemEjemplo3}">
+                        Quitar los paréntesis de la expresión \( 6+10 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo3">
+                            \( \sqrt[3]{ 6 + 10 } \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo3">
+                            Se entiende que <span class="resaltado"> \(6 + 10 \)</span> es un operando de la raiz y, por
+                            lo
+                            tanto, es una expresión numérica.
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 1 + {({ 6 \over 2})} \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo4=true" :class="{deshabilitado: revelarItemEjemplo4}">
+                        Quitar los paréntesis de la expresión \( 6 \over 2 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo4">
+                            \( 1 + {6 \over 2} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo4">
+                            Por la posición del símbolo <span class="resaltado">\(+\)</span> Se entiende que <span
+                                class="resaltado"> \(6 \over 2 \)</span> es un operando de la suma y, por
+                            lo
+                            tanto, es una expresión numérica.
+                        </recuadro-component>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se pueden ver casos en los que los parentesis <span class="resaltado">no se deben
+                    quitar</span>
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( {({2 \times 5})} ^ 3 \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo2_1=true"
+                        :class="{deshabilitado: revelarItemEjemplo2_1}">
+                        Quitar los paréntesis de la expresión \( 2 \times 5 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo2_1">
+                            \( 2 \times 5 ^ 3 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_1">
+                            Ahora parece que el primer operando de la <span class="resaltado">operación potencia</span>
+                            es el número 5.
+                        </recuadro-component>
+                    </transition>
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_1">
+                            ¡Ya no se entiende que \( 2 \times 5\) es una expresión numérica!
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( {({12 -3})} \times 2 \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo2_2=true"
+                        :class="{deshabilitado: revelarItemEjemplo2_2}">
+                        Quitar los paréntesis de la expresión \( 12 -3 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo2_2">
+                            \( 12 - 3 \times 2 \)
+
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_2">
+                            Ahora parece que el primer operando de la <span class="resaltado">operación
+                                multiplicación</span>
+                            es el número 3.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_2">
+                            ¡Ya no se entiende que \( 12 - 3 \) es una expresión numérica!
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 40 - {({2 + 13})} \)
+                    </div>
+
+                    <div class="boton" @click="revelarItemEjemplo2_3=true"
+                        :class="{deshabilitado: revelarItemEjemplo2_3}">
+                        Quitar los paréntesis de la expresión \( 2 + 13 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarItemEjemplo2_3">
+                            \( 40 - 2 + 13 \)
+
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_3">
+                            Ahora parece que el segundo operando de la <span class="resaltado">operación resta</span> es
+                            el 2.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" modo="incorrecto" style="max-width: 250px"
+                            v-show="revelarComentarioEjemplo2_3">
+                            ¡Ya no se entiende que \(2 + 13\) es una expresión numérica!
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+            </div>
+        </bloque-component>
+
+        <p>
+            Si un número o expresión numérica parece estar conectado con dos operaciones, el órden para decidir a cuál
+            pertenece es:
+        <ul>
+            <li>
+                Potencia
+            </li>
+            <li>
+                Multiplicación
+            </li>
+            <li>
+                Suma y resta
+            </li>
+        </ul>
+        </p>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se puede ver ejemplos de expresiones numéricas donde un número aparece conectado a varias
+                operaciones
+                y se puede ver la expresión con paréntesis.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 5 + 6 \times 8 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 6 parece ser operando de la suma o de la multiplicación.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo3_1=true"
+                        :class="{deshabilitado: revelarItemEjemplo3_1}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo3_1">
+                            Ya que la multiplicación está por encima de la suma en la lista, se debe entender que el 6
+                            está
+                            conectado con la multiplicación.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo3_1">
+                            \( 5 + (6 \times 8) \)
+                        </div>
+                    </transition>
+
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 19 - 4 ^ 3 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 4 parece ser operando de la resta o de la potencia.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo3_2=true"
+                        :class="{deshabilitado: revelarItemEjemplo3_2}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo3_2">
+                            Ya que la potencia está por encima de la resta en la lista, se debe entender que el 4 está
+                            conectado con la potencia.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo3_2">
+                            \( 19 - (4 ^ 3) \)
+                        </div>
+                    </transition>
+
+
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 1 \times 14 ^ 2 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 14 parece ser operando de la multiplicación o de la potencia.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo3_3=true"
+                        :class="{deshabilitado: revelarItemEjemplo3_3}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo3_3">
+                            Ya que la potencia está por encima de la multiplicación en la lista, se debe entender que el
+                            14 está
+                            conectado con la potencia.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo3_3">
+                            \( 1 \times (14 ^ 2) \)
+
+                        </div>
+                    </transition>
+
+
+
+                </div>
+            </div>
+        </bloque-component>
+
+        <p>
+            Si un número o expresión parece estar conectado con dos operaciones de igual posición en la lista, se
+            debe entender que está conectada con la operación de la izquierda.
+        </p>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se puede ver ejemplos de números y expresiones que parecen estar conectados con dos
+                operaciones del mismo nivel
+                y se puede ver la expresión con todos sus paréntesis para entenderla.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 12 + 16 - 8 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 16 parece ser operando de la suma o de la resta.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo4_1=true"
+                        :class="{deshabilitado: revelarItemEjemplo4_1}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo4_1">
+                            Se debe entender que está conectado con la suma porque está a la izquierda.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo4_1">
+                            \( (12 + 16) - 8 \)
+                        </div>
+                    </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 25 - 1 - 3 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 1 parece ser operando de las dos restas.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo4_2=true"
+                        :class="{deshabilitado: revelarItemEjemplo4_2}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo4_2">
+                            Se debe entender que está conectado con la resta de la izquierda.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo4_2">
+                            \( (25 - 1) - 3 \)
+                        </div>
+                    </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 20 \times 11 \times 2 \)
+                    </div>
+
+                    <recuadro-component tipo="datoPrevio" style="max-width: 250px;">
+                        El 11 parece ser operando de las dos multiplicaciones.
+                    </recuadro-component>
+
+                    <div class="boton" @click="revelarItemEjemplo4_3=true"
+                        :class="{deshabilitado: revelarItemEjemplo4_3}">
+                        Escribir la expresión numérica con todos sus paréntesis
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" style="max-width: 250px" v-show="revelarItemEjemplo4_3">
+                            Se debe entender que está conectado con la multiplicación de la izquierda.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="revelarComentarioEjemplo4_3">
+                            \( (20 \times 11) \times 2 \)
+                        </div>
+                    </transition>
+
+                </div>
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                revelarItemEjemplo1: false,
+                revelarItemEjemplo2: false,
+                revelarItemEjemplo3: false,
+                revelarItemEjemplo4: false,
+
+                revelarComentarioEjemplo1: false,
+                revelarComentarioEjemplo2: false,
+                revelarComentarioEjemplo3: false,
+                revelarComentarioEjemplo4: false,
+
+                revelarItemEjemplo2_1: false,
+                revelarItemEjemplo2_2: false,
+                revelarItemEjemplo2_3: false,
+                revelarItemEjemplo2_4: false,
+
+                revelarComentarioEjemplo2_1: false,
+                revelarComentarioEjemplo2_2: false,
+                revelarComentarioEjemplo2_3: false,
+                revelarComentarioEjemplo2_4: false,
+
+                revelarItemEjemplo3_1: false,
+                revelarItemEjemplo3_2: false,
+                revelarItemEjemplo3_3: false,
+                revelarItemEjemplo3_4: false,
+
+                revelarComentarioEjemplo3_1: false,
+                revelarComentarioEjemplo3_2: false,
+                revelarComentarioEjemplo3_3: false,
+                revelarComentarioEjemplo3_4: false,
+
+                revelarItemEjemplo4_1: false,
+                revelarItemEjemplo4_2: false,
+                revelarItemEjemplo4_3: false,
+                revelarItemEjemplo4_4: false,
+
+                revelarComentarioEjemplo4_1: false,
+                revelarComentarioEjemplo4_2: false,
+                revelarComentarioEjemplo4_3: false,
+                revelarComentarioEjemplo4_4: false,
+
+            }
+        },
+        computed: {
+
+        },
+        methods: {
+            revelar(e) {
+                e.target.classList.toggle("revelando");
+            }
+
+        },
+        watch: {
+            revelarItemEjemplo1(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo1 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo2(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo2 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo3(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo3 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo4(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo4 = true;
+                    }, 2000);
+                }
+            },
+
+            revelarItemEjemplo2_1(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo2_1 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo2_2(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo2_2 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo2_3(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo2_3 = true;
+                    }, 2000);
+                }
+            },
+
+            revelarItemEjemplo3_1(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo3_1 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo3_2(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo3_2 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo3_3(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo3_3 = true;
+                    }, 2000);
+                }
+            },
+
+            revelarItemEjemplo4_1(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo4_1 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo4_2(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo4_2 = true;
+                    }, 2000);
+                }
+            },
+            revelarItemEjemplo4_3(revelar) {
+                if (revelar) {
+                    setTimeout(() => {
+                        this.revelarComentarioEjemplo4_3 = true;
+                    }, 2000);
+                }
+            },
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+</style>

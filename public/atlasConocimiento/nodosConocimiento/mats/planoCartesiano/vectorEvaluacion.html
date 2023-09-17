@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Vector - Evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el concepto de vector si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo nombrar las propiedades de los vectores.
+            </template>
+        </bloque-component>   
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada cualquier descripción de las propiedades de un vector, puedo representarlo mediante un dibujo.
+            </template>
+        </bloque-component>   
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada cualquier representación de un vector, puedo determinar sus propiedades.
+            </template>
+        </bloque-component>   
+                
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+    })
+</script>

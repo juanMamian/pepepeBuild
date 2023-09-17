@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+	<title>Programación - creación de un programa</title>
+</head>
+
+<body>
+	<div id="doc">
+		<p>
+			Para crear un programa informático se debe escribir un documento con instrucciones dirigidas al
+			procesador usando algún lenguaje de programación.
+		</p>
+
+		<p>
+			Para ejecutar el programa escrito se puede escoger una de las siguientes opciones.
+		</p>
+
+		<ul>
+			<li>
+				Ejecutar el programa usando un intérprete.
+			</li>
+			<li>
+				Compilar el programa para generar un nuevo documento escrito en lenguaje de máquina y, a
+				continuación, ejecutarlo usando la interfaz ofrecida por el sistema operativo.
+			</li>
+		</ul>
+
+
+
+	</div>
+
+</body>
+
+</html>
+
+<script>
+	const app = new Vue({
+		el: "#doc",
+		components: {
+			recuadroComponent,
+			bloqueComponent
+		},
+		data() {
+			return {
+
+			}
+		},
+		computed: {
+		},
+	});
+</script>
+<style>
+</style>

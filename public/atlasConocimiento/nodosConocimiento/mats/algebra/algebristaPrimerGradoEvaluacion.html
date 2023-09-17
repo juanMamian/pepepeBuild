@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/mixins/mixinMensajesUsuario.js"></script>
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Algebrista de primer grado - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Soy un algebrista de primer grado si:
+        </p>
+        <bloque-component tipo="evaluación"
+            textoCabecera="Puedo solucionar cualquier ecuación de primer grado">
+            <recuadro-component tipo="instruccionPointer">
+
+                <div class="contenedor"
+                    style="flex-direction: column; justify-content: center; align-items: center; gap: 30px">
+                    <div>
+                        Selecciona la dificultad
+                    </div>
+
+                    <input type="range" min="1" max="5" ref="inputDificultad" id="inputDificultad" v-model="dificultad">
+
+                    <div class="indicadorDificultad">
+                        {{dificultad}}
+                    </div>
+                </div>
+
+            </recuadro-component>
+
+            <div class="boton" @click="generarEcuacionReto">
+                Generar una ecuación reto
+            </div>
+
+            <transition name="enterTop">
+                <div id="ecuacionReto" v-if="ecuacionRetoString" :key="'ecuacion'+versionEcuacionReto"
+                    style="margin: 10px auto; font-size: 30px;" class="matsExpresion">
+                    {{ecuacionRetoString}}
+                </div>
+            </transition>
+
+            <div class="bloqueRespuestaUsuario" v-show="ecuacionReto">
+                <div class="instruccionPeque">
+                    Escribe aquí tu solución
+                </div>
+                <input type="number" ref="inputRespuestaReto" id="inputRespuestaReto" @focus="$event.target.select()"
+                    @keypress.enter="$refs.botonAceptarRespuestaReto.click()">
+                <div class="boton" ref="botonAceptarRespuestaReto" @click="aceptarRespuestaReto">
+                    Aceptar
+                </div>
+            </div>
+
+            <div class="bloqueInfoResultado" v-if="respuestaReto">
+                <transition name="popIn" appear>
+                    <recuadro-component tipo="infoResultado" modo="correcto" v-show="respuestaCorrecta">
+                        ¡Correcto!
+                    </recuadro-component>
+                </transition>
+
+                <transition name="popIn" appear>
+                    <recuadro-component tipo="infoResultado" modo="incorrecto" v-show="!respuestaCorrecta">
+                        Incorrecto, sigue intentando
+                    </recuadro-component>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        mixins: [
+            mixinMensajesUsuario,
+        ],
+        data() {
+            return {
+
+                dificultad: 1,
+                ecuacionReto: null,
+                versionEcuacionReto: 0,
+                respuestaReto: null,
+                respuestaCorrecta: false,
+                solucionReto: null,
+
+                ecuacionOriginal: null,
+                ecuacionPorTerminos: null,
+                incognitaIntroducida: false,
+                incognitasIntroducidas: 0,
+                versionEcuacionOriginal: 0,
+                versionEcuacionTerminos: 0,
+
+                ecuacionGenerada: false,
+
+                probIncognita: 0.5,
+                letraIncognita: null,
+
+                letrasParaIncognita: "abcdefghjkmnpqrtuvwxyz",
+            }
+        },
+        computed: {
+            ecuacionRetoString() {
+                if (!this.ecuacionReto) {
+                    return '';
+                }
+                let lado1 = this.ecuacionReto[0].toMathJax();
+                let lado2 = this.ecuacionReto[1].toMathJax();
+
+                let texto = "\\( {" + lado1 + "} = {" + lado2 + "} \\)";
+
+                return texto;
+            }
+        },
+        methods: {
+            aceptarRespuestaReto() {
+                this.respuestaReto = this.$refs.inputRespuestaReto.value;
+            },
+            generarEcuacion1() {
+                //Se genera una expresión en la cual después se ocultará un número.
+                let valorExpresionTarget = Math.round(Math.random() * 50 - 25);
+                let expresionTarget = new ExpresionNumerica();
+                expresionTarget.fillExpresion({keepInteger: true, maxGradoRadicacion: 3});
+
+                //Seleccionar uno de los números y ocultarlo tras una letra.
+                this.solucionReto = expresionTarget.incognitarRandomNumero().valor;
+
+                return [expresionTarget, new ExpresionNumerica({valor: expresionTarget.valor})];
+
+            },
+            generarEcuacion2() {
+                //Las ecuaciones de nivel 2 tienen:
+                // -2 términos sumados (o restados) que son a su vez expresiones. Una de ellas contiene a la incógnita.
+                //- Una expresión que contiene a la incógnita y que experimenta una operación.
+
+                let expresionConIncognita = new ExpresionNumerica();
+                expresionConIncognita.fillExpresion({keepInteger: true, maxGradoRadicacion: 3});
+                this.solucionReto = expresionConIncognita.incognitarRandomNumero().valor;
+
+                expresionFinal = new ExpresionNumerica();
+                if (Math.random() > 0.5) {
+                    expresionFinal.numero1 = expresionConIncognita;
+                }
+                else {
+                    expresionFinal.numero2 = expresionConIncognita;
+                }
+                expresionFinal.fillExpresion({operaciones: ["suma", "resta", "multiplicacion", "division"], keepInteger: true, maxGradoRadicacion: 2});
+
+                return [expresionFinal, new ExpresionNumerica({valor: expresionFinal.valor})];
+
+
+            },
+            generarEcuacion3() {
+                //Ecuación con dos términos de la forma ax y por el otro lado una constante
+                const minSolucion = -50;
+                const maxSolucion = 50;
+                const rangoSolucion = maxSolucion - minSolucion;
+
+                const solucion = Math.round(Math.random() * rangoSolucion + minSolucion);
+                this.solucionReto = solucion;
+                const letraIncognita = ExpresionNumerica.generarRandomLetra();
+
+                const minFactorIncognita = -50;
+                const maxFactorIncognita = 50;
+                const rangoFactorIncognita = maxFactorIncognita - minFactorIncognita;
+
+                factor1 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+                factor2 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+
+
+                let terminoIncognita1 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita1.numero1 = factor1;
+                    terminoIncognita1.numero2 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                }
+                else {
+                    terminoIncognita1.numero2 = factor1;
+                    terminoIncognita1.numero1 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                }
+
+                let terminoIncognita2 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita2.numero1 = factor2;
+                    terminoIncognita2.numero2 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                }
+                else {
+                    terminoIncognita2.numero2 = factor2;
+                    terminoIncognita2.numero1 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                }
+                //Listos los dos términos con incógnita.
+
+                //Unirlos en una sola expresión.
+                let operacionIzquierda = Math.random() > 0.5 ? 'suma' : 'resta';
+                let expresionIzquierda = new ExpresionNumerica({
+                    operacion: operacionIzquierda,
+                    numero1: terminoIncognita1,
+                    numero2: terminoIncognita2,
+                });
+
+                return [expresionIzquierda, new ExpresionNumerica({valor: expresionIzquierda.valor})];
+
+
+            },
+            generarEcuacion4() {
+                //Ecuación con dos términos de la forma ax^p mezclados con una constante y por el otro lado una constante
+                const exponente = Math.ceil(Math.random() * 3);
+                console.log("Con exponente " + exponente);
+                const minSolucion = -50;
+                const maxSolucion = 50;
+                const rangoSolucion = maxSolucion - minSolucion;
+
+                const solucion = Math.round(Math.random() * rangoSolucion + minSolucion);
+                this.solucionReto = solucion;
+                const letraIncognita = ExpresionNumerica.generarRandomLetra();
+
+                const minFactorIncognita = -50;
+                const maxFactorIncognita = 50;
+                const rangoFactorIncognita = maxFactorIncognita - minFactorIncognita;
+
+                factor1 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+                factor2 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+
+
+                let incognitaConExponente1 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                let incognitaConExponente2 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+
+                if (exponente != 1) {
+                    console.log("Elevando las incógnitas");
+                    incognitaConExponente1 = new ExpresionNumerica({
+                        operacion: "potenciacion",
+                        numero1: incognitaConExponente1,
+                        numero2: new ExpresionNumerica({valor: exponente}),
+                    });
+
+                    incognitaConExponente2 = new ExpresionNumerica({
+                        operacion: "potenciacion",
+                        numero1: incognitaConExponente2,
+                        numero2: new ExpresionNumerica({valor: exponente}),
+                    });
+                }
+
+
+                let terminoIncognita1 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita1.numero1 = factor1;
+                    terminoIncognita1.numero2 = incognitaConExponente1
+                }
+                else {
+                    terminoIncognita1.numero2 = factor1;
+                    terminoIncognita1.numero1 = incognitaConExponente1
+                }
+
+                let terminoIncognita2 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita2.numero1 = factor2;
+                    terminoIncognita2.numero2 = incognitaConExponente2;
+                }
+                else {
+                    terminoIncognita2.numero2 = factor2;
+                    terminoIncognita2.numero1 = incognitaConExponente2;
+                }
+                //Listos los dos términos con incógnita.
+
+                const minConstante = -200;
+                const maxConstante = 200;
+                const rangoConstante = maxConstante - minConstante;
+
+                let terminoConstante = new ExpresionNumerica({
+                    valor: Math.round(Math.random() * rangoConstante + minConstante)
+                });
+
+                let listaTerminos = [terminoIncognita1, terminoIncognita2, terminoConstante];
+                listaTerminos.sort((a, b) => {
+                    return Math.random() * 2 - 1;
+                });
+
+                console.log("Agregando 0");
+                let expresionIzquierda = listaTerminos[0];
+                let agregaciones = 0;
+                while (listaTerminos.length > ++agregaciones) {
+                    console.log("Agregando " + agregaciones);
+                    expresionIzquierda = new ExpresionNumerica({
+                        operacion: Math.random() > 0.5 ? "suma" : "resta",
+                        numero1: expresionIzquierda,
+                        numero2: listaTerminos[agregaciones]
+                    })
+                }
+
+
+                return [expresionIzquierda, new ExpresionNumerica({valor: expresionIzquierda.valor})];
+
+
+            },
+            generarEcuacion5() {
+                //Ecuación con 2 términos de la forma ax^p y tres constantes distribuidas aleatoriamente por la ecuación.
+                const exponente = Math.ceil(Math.random() * 3);
+                const minSolucion = -50;
+                const maxSolucion = 50;
+                const rangoSolucion = maxSolucion - minSolucion;
+
+                const minFactorIncognita = -50;
+                const maxFactorIncognita = 50;
+                const rangoFactorIncognita = maxFactorIncognita - minFactorIncognita;
+
+                const solucion = Math.round(Math.random() * rangoSolucion + minSolucion);
+                this.solucionReto = solucion;
+                const letraIncognita = ExpresionNumerica.generarRandomLetra();
+
+                let expresionIncognitaPotencia1 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                if (exponente > 1) {
+                    expresionIncognitaPotencia1 = new ExpresionNumerica({
+                        numero1: expresionIncognitaPotencia1,
+                        operacion: "potenciacion",
+                        numero2: new ExpresionNumerica({valor: exponente}),
+                    });
+                }
+
+                let expresionIncognitaPotencia2 = new ExpresionNumerica({valor: solucion, letra: letraIncognita});
+                if (exponente != 1) {
+                    expresionIncognitaPotencia2 = new ExpresionNumerica({
+                        numero1: expresionIncognitaPotencia2,
+                        operacion: "potenciacion",
+                        numero2: new ExpresionNumerica({valor: exponente}),
+                    });
+                }
+
+
+                factorIncognita1 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+                terminoIncognita1 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita1.numero1 = factorIncognita1;
+                    terminoIncognita1.numero2 = expresionIncognitaPotencia1;
+                }
+                else {
+                    terminoIncognita1.numero1 = expresionIncognitaPotencia1;
+                    terminoIncognita1.numero2 = factorIncognita1;
+                }
+
+
+                factorIncognita2 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoFactorIncognita + minFactorIncognita)});
+                terminoIncognita2 = new ExpresionNumerica({
+                    operacion: "multiplicacion",
+                });
+                if (Math.random() > 0.5) {
+                    terminoIncognita2.numero1 = factorIncognita2;
+                    terminoIncognita2.numero2 = expresionIncognitaPotencia2;
+                }
+                else {
+                    terminoIncognita2.numero1 = expresionIncognitaPotencia2;
+                    terminoIncognita2.numero2 = factorIncognita2;
+                }
+
+                //Listos los términos que tienen potencia.
+                const minConstante = -200;
+                const maxConstante = 200;
+                const rangoConstante = maxConstante - minConstante;
+
+                const constante1 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoConstante + minConstante)});
+                const constante2 = new ExpresionNumerica({valor: Math.round(Math.random() * rangoConstante + minConstante)});
+
+                //Listos todos los términos.
+
+                let listaTerminos = [terminoIncognita1, terminoIncognita2, constante1, constante2];
+                listaTerminos.sort((a, b) => {
+                    return Math.random() * 2 - 1;
+                });
+
+                let cantidadTerminosIzquierda = Math.ceil(Math.random() * 3);
+
+
+                let expresionIzquierda = listaTerminos[0];
+                let agregaciones = 0;
+                while (cantidadTerminosIzquierda > ++agregaciones) {
+                    let tempHolder = expresionIzquierda;
+                    expresionIzquierda = new ExpresionNumerica({
+                        operacion: Math.random() > 0.5 ? "suma" : "resta",
+                        numero1: tempHolder,
+                        numero2: listaTerminos[agregaciones]
+                    })
+
+                }
+
+                let expresionDerecha = listaTerminos[agregaciones];
+                while (listaTerminos.length > ++agregaciones) {
+                    expresionDerecha = new ExpresionNumerica({
+                        operacion: Math.random() > 0.5 ? "suma" : "resta",
+                        numero1: expresionDerecha,
+                        numero2: listaTerminos[agregaciones]
+                    })
+                }
+
+                //El lado derecho y el lado izquierdo fueron armados arbitrariamente y tienen valores distintos. Ahora se necesita una suma que los iguale.
+                console.log("La expresión de la izquierda vale " + expresionIzquierda.valor);
+                console.log("La expresión de la derecha vale " + expresionDerecha.valor);
+
+                let dif = expresionDerecha.valor - expresionIzquierda.valor;
+                console.log("dif: " + dif);
+                let operacionCompensadora = dif > 0 ? 'resta' : 'suma';
+
+                if (dif != 0) {
+                    expresionDerecha = new ExpresionNumerica({
+                        operacion: operacionCompensadora,
+                        numero1: expresionDerecha,
+                        numero2: new ExpresionNumerica({valor: Math.abs(dif)}),
+                    })
+                }
+                console.log("La expresión de la izquierda vale " + expresionIzquierda.valor);
+                console.log("La expresión de la derecha vale " + expresionDerecha.valor);
+
+                return [expresionIzquierda, expresionDerecha];
+
+
+            },
+            generarEcuacionReto() {
+                this.respuestaReto = null;
+                this.solucionReto = null;
+                this.$refs.inputRespuestaReto.value = 0;
+
+                let minSolucion = -25;
+                let maxSolucion = 25;
+                let rangoSolucion = maxSolucion - minSolucion;
+
+                console.log("Generando reto ecuación con dificultad " + this.dificultad);
+                let ecuacion = null;
+
+                switch (Number(this.dificultad)) {
+                    case 1:
+                        ecuacion = this.generarEcuacion1();
+                        break;
+                    case 2:
+                        ecuacion = this.generarEcuacion2();
+                        break;
+                    case 3:
+                        ecuacion = this.generarEcuacion3();
+                        break;
+                    case 4:
+                        ecuacion = this.generarEcuacion4();
+                        break;
+                    case 5:
+                        ecuacion = this.generarEcuacion5();
+                        break;
+                    default:
+                        console.log("Dificultad " + this.dificultad + " no diseñada");
+                }
+
+                if (!ecuacion) {
+                    this.mensajesUsuario.push("Fallo en la generación del reto. Por favor intenta de nuevo");
+                    return;
+                }
+
+                this.ecuacionReto = ecuacion;
+                this.versionEcuacionReto++;
+            },
+            generarEcuacionPorTerminos() {
+                this.generarLetraIncognita();
+                console.log("Generando ecuación con dificultad " + this.dificultad + ". Con incógnita: " + this.letraIncognita);
+
+
+                var cantidadTerminos = parseInt(this.dificultad) + 2;
+                var posicionIgual = Math.floor(Math.random() * (cantidadTerminos - 1));
+                var cantidadTerminosConIncognita = this.dificultad;
+                var cantidadIncognitasIntroducidas = 0;
+                var igualIntroducido = false;
+                console.log("Tendrá " + cantidadTerminos + " términos. Y " + cantidadTerminosConIncognita + " términos con incógnita");
+                var terminos = [];
+                var incognitaPresente = false;
+                for (var i = 0; i < cantidadTerminos; i++) {
+                    let incognitasFaltantes = cantidadTerminosConIncognita - cantidadIncognitasIntroducidas;
+                    console.log("Generando");
+
+                    let terminosFaltantes = cantidadTerminos - i;
+                    // console.log("Faltan "+terminosFaltantes+" términos por crear");
+
+                    // console.log("Faltan "+incognitasFaltantes+" incógnitas por introducir");
+                    if ((i > 0 && Math.random() > 0.3 && cantidadIncognitasIntroducidas < cantidadTerminosConIncognita) || (terminosFaltantes <= incognitasFaltantes)) {
+                        terminos.push(this.generarTerminoIncognitaArriba(true));
+                        cantidadIncognitasIntroducidas++;
+                    }
+                    else {
+                        terminos.push(Math.round(Math.random() * 50));
+                    }
+                }
+                console.log("Generando ecuación por términos con: ");
+                for (const termino of terminos) {
+                    console.log(termino);
+                }
+                var ecuacionFinal = "";
+                for (var i = 0; i < cantidadTerminos; i++) {
+                    var signo = " - ";
+                    if (Math.random() > 0.5) {
+                        signo = " + ";
+                        if (i === 0 || i === (posicionIgual + 1)) {
+                            signo = "";
+                        }
+                    }
+                    ecuacionFinal += signo + terminos[i];
+                    if (i === posicionIgual) {
+                        ecuacionFinal += " = ";
+                    }
+                }
+
+                this.versionEcuacionTerminos++;
+                this.ecuacionPorTerminos = "\\(" + ecuacionFinal + " \\)";
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            generarNumeroTerminos(dif, incognitable) {
+                const compuesto = (dif > 1);
+                // if(!confirm("continuar"))return;
+                if (compuesto) {
+                    console.log(`Compuesto`);
+                    var {opPrimaria, opOpuesta} = this.generarOperaciones();
+
+                    dif--;
+
+                    var num1Incognitable = false;
+                    var num2Incognitable = false;
+
+                    if (opPrimaria == " \\over ") {
+                        num1Incognitable = true;
+                        num2Incognitable = false;
+                    }
+                    else {
+                        if (Math.random() < 0.5) {
+                            num1Incognitable = true;
+                            num2Incognitable = false;
+                        }
+                        else {
+                            num1Incognitable = false;
+                            num2Incognitable = true;
+                        }
+                    }
+                    if (!incognitable) {
+                        num1Incognitable = false;
+                        num2Incognitable = false;
+                    }
+
+                    var numero1 = this.generarNumeroTerminos(dif, num1Incognitable);
+                    var numero2 = this.generarNumeroTerminos(dif, num2Incognitable);
+
+                    var expresion = numero1 + opPrimaria + numero2;
+
+                    expresion = "{" + expresion + "}"
+                    if (opPrimaria == " + " || opPrimaria == " - ") {
+                        expresion = "{(" + expresion + ")}";
+                    }
+
+                    return expresion;
+
+                }
+                else {
+                    if (incognitable && this.incognitasIntroducidas < parseInt(this.dificultad)) {
+                        this.incognitasIntroducidas++;
+                        return this.letraIncognita;
+                    }
+                    return Math.round(Math.random() * 20);
+                }
+            },
+            generarLetraIncognita() {
+                this.letraIncognita = this.letrasParaIncognita[Math.floor(Math.random() * this.letrasParaIncognita.length)];
+            },
+            generarTerminoIncognitaArriba(incognitaPresente) { //Un término en el cual la incógnita esté arriba
+                console.log("Generando termino con incognitaPresente: " + incognitaPresente);
+                var incognitaAtrapada = false;
+                if (this.dificultad > 2) {
+                    if (Math.random() > (2 / this.dificultad)) {
+                        incognitaAtrapada = true;
+                    }
+                }
+
+                var operando = Math.round(Math.random() * 50);
+                if (incognitaPresente) {
+                    var operando = this.letraIncognita;
+                    if (incognitaAtrapada) {
+                        var operacionAtrapadora = " + ";
+                        if (Math.random() > 0.5) {
+                            operacionAtrapadora = " - ";
+                        }
+                        var numeroAtrapador = Math.round(Math.random() * 50);
+
+                        operando = (numeroAtrapador + operacionAtrapadora + this.letraIncognita);
+                        if (Math.random() > 0.5) {
+                            operando = (this.letraIncognita + operacionAtrapadora + numeroAtrapador);
+                        }
+                    }
+                }
+
+                var operador = Math.ceil(Math.random() * 50);
+                var operacion = " \\over ";
+
+                if (Math.random() > 0.5) {
+                    operacion = " \\cdot ";
+                    if (incognitaAtrapada) {
+                        operando = "(" + operando + ")";
+                    }
+                    if (Math.random() > 0.5) {//La incógnita o el paréntesis queda después de la multiplicacion
+                        var provisional = operando;
+                        operacion = "";
+                        operando = operador;
+                        operador = provisional;
+                    }
+                }
+
+                var termino = "{" + operando + operacion + operador + "}";
+                console.log("Termino incógnita arriba generado: " + termino);
+
+                return termino;
+            },
+            generarOperaciones() {
+                const rand = Math.floor(Math.random() * 4);
+                console.log(`Generando operacion ${rand}`);
+                if (rand < 1) {
+                    return {opPrimaria: " + ", opOpuesta: " - "};
+                }
+                if (rand < 2) {
+                    return {opPrimaria: " - ", opOpuesta: " + "}
+                }
+                if (rand < 3) {
+                    return {opPrimaria: " \\cdot ", opOpuesta: " \\over "}
+                }
+                if (rand < 4) {
+                    return {opPrimaria: " \\over ", opOpuesta: " \\cdot "}
+                }
+                return {opPrimaria: " + ", opOpuesta: " - "};
+            }
+        },
+        watch: {
+            ecuacionRetoString() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+            },
+            respuestaReto(respuesta) {
+                if (Math.abs(this.solucionReto - this.respuestaReto) < 0.1) {
+                    this.respuestaCorrecta = true;
+                }
+                else {
+                    this.respuestaCorrecta = false;
+                }
+
+            },
+            solucionReto() {
+                console.log("Solución reto: " + this.solucionReto);
+            }
+        }
+
+
+    }).mount("#doc");
+
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .nota {
+        width: 60%;
+    }
+
+    button {
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .recuadro {
+        width: min(600px, 90%);
+        margin: 10px auto;
+    }
+
+    #ecuacionTerminos {
+        font-size: 34px;
+    }
+</style>

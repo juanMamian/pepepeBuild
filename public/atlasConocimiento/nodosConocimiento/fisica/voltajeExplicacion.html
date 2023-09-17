@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Voltaje</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La energía con la que la carga eléctrica que está en un lugar se siente atraida hacia otro lugar se llama
+            <span class="resaltado">voltaje</span>
+        </p>
+
+        <bloque-component tipo="datoPrevio">
+            <template #cabecera>
+                En este cuadro se muestra una representación de voltaje.
+            </template>
+
+            <div class="tierras"></div>
+
+            <div class="fuenteCargada">
+
+            </div>
+
+
+        </bloque-component>
+
+
+        <bloque-component tipo="ejemplo">
+            <div class="matriz" id="matriz1">
+                <div class="fila" v-for="fila of m" :key="'fila'+fila">
+                    <div class="celda" v-for="celda of n" :class="{agrisado: i===fila}" :key="'celda'+celda">
+                        <input type="number" :value="Math.round(Math.random()*10)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="matriz" id="matriz2">
+                <div class="fila" v-for="fila of o" :key="'fila'+fila">
+                    <div class="celda" v-for="celda of p" :class="{agrisado: j===celda}" :key="'celda'+celda">
+                        <input type="number" :value="Math.round(Math.random()*10)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="boton" @click="step">
+                Sig
+            </div>
+
+            <div class="matriz" id="matriz3">
+                <div class="fila" v-for="fila of m" :key="'fila'+fila">
+                    <div class="celda" :class="{mirado:i===fila && j===celda}" v-for="celda of p" :key="'celda'+celda">
+                        <input type="number">
+                    </div>
+                </div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        methods: {
+            step() {
+                if (i > m) return;
+                k++;
+                if (k > n) {
+                    k = 1;
+                    j++;
+
+                    if (j > p) {
+                        j = 1
+                        i++;
+                    }
+                }
+
+
+            }
+        },
+        data() {
+            return {
+                m: 3,
+                n: 4,
+                o: 4,
+                p: 6,
+
+                i: 1,
+                j: 1,
+                k: 1,
+            }
+        }
+    })
+</script>
+
+<style>
+    .matriz {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        margin: 10px 10px;
+        border: 2px solid black;
+    }
+
+    .fila {
+        display: flex;
+        gap: 3px;
+    }
+
+    .celda {
+        width: 60px;
+        height: 60px;
+        background-color: azure;
+    }
+
+    .celda input {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    .mirado {
+        background-color: turquoise;
+    }
+
+    .agrisado {
+        background-color: gray;
+    }
+</style>

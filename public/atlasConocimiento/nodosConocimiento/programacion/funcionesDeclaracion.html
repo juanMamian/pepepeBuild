@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Funciones - declaración</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Las funciones deben ser <span class="resaltado">declaradas</span>. Es decir: hay que escribir
+            cual será el nombre de la función, las instrucciones que son empaquetadas por ella y sus parámetros.
+        </p>
+
+        <p>
+            La declaración de una función es una instrucción que contiene los siguientes componentes:
+        </p>
+        <ul>
+            <li>
+                La palabra clave <span class="resaltado">function</span>.
+            </li>
+            <li>
+                El nombre de la función.
+            </li>
+            <li>
+                Los parámetros de la función.
+            </li>
+            <li>
+                El paquete de instrucciones empaquetado por la función.
+            </li>
+        </ul>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de declaración de funciones.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+
+                    <recuadro-component tipo="datoPrevio">
+                        Se quiere empaquetar en una función las siguientes instrucciones:
+                        <div class="programacionCodigo">
+                            print "hola"
+                        </div>
+                        <div class="programacionCodigo">
+                            print "bienvenido"
+                        </div>
+                        <div class="programacionCodigo">
+                            print "o"
+                        </div>
+                        <div class="programacionCodigo">
+                            print "bienvenida"
+                        </div>
+
+                    </recuadro-component>
+                    <transition name="travelTop">
+                        <div class="programacionCodigo" v-show="ejemplo1Step>=1">
+                            <transition name="fadeIn">
+                                <span
+                                    :class="ejemplo1Step>4?'':ejemplo1Step>1?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                    v-show="ejemplo1Step>=1">function</span>
+                            </transition>
+                            <transition name="fadeIn">
+                                <span
+                                    :class="ejemplo1Step>4?'':ejemplo1Step>2?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                    v-show="ejemplo1Step>=2">saludarUsuario</span>
+                            </transition>
+                            <transition name="fadeIn">
+                                <span
+                                    :class="ejemplo1Step>4?'':ejemplo1Step>3?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                    v-show="ejemplo1Step>=3">()</span>
+                            </transition>
+                            <transition name="fadeIn">
+                                <span
+                                    :class="ejemplo1Step>4?'':ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                    v-show="ejemplo1Step>=4">{</span>
+                            </transition>
+                            <br>
+                            <div class="zonaPadded" style="padding-left: 20px;">
+                                <transition name="fadeIn">
+                                    <span
+                                        :class="ejemplo1Step>4?'':ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                        v-show="ejemplo1Step>=4">print
+                                        "hola"<span>
+                                </transition>
+                                <br>
+                                <transition name="fadeIn">
+                                    <span
+                                        :class="ejemplo1Step>4?'':ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                        v-show="ejemplo1Step>=4">print
+                                        "bienvenido"</span>
+                                </transition>
+                                <br>
+                                <transition name="fadeIn">
+                                    <span
+                                        :class="ejemplo1Step>4?'':ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                        v-show="ejemplo1Step>=4">print
+                                        "o"</span>
+                                </transition>
+                                <br>
+                                <transition name="fadeIn">
+                                    <span
+                                        :class="ejemplo1Step>4?'':ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                        v-show="ejemplo1Step>=4">print
+                                        "bienvenida"</span>
+                                </transition>
+                                <br>
+                            </div>
+                            <transition name="fadeIn">
+                                <span
+                                    :class="ejemplo1Step>4?'':ejemplo1Step<4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                    v-show="ejemplo1Step>=4">}</span>
+                        </div>
+                    </transition>
+
+                    <div class="boton" @click="ejemplo1Step=1" v-show="ejemplo1Step==0"
+                        :class="{deshabilitado: ejemplo1Step!=0 }">
+                        Escribir la palabra clave <span class="resaltado">function</span>
+                    </div>
+
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=2" v-show="ejemplo1Step==1"
+                            :class="{deshabilitado: ejemplo1Step!=1 }">
+                            Escribir el nombre que tendrá la función.
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=3" v-show="ejemplo1Step==2"
+                            :class="{deshabilitado: ejemplo1Step!=2 }">
+                            Escribir entre paréntesis los parámetros de la función.
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="programacionDescripcionCodigo" v-show="ejemplo1Step==3 ">
+                            No se necesitan parámetros para esta función. Los paréntesis se
+                            dejaron vaciós.
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=4" v-show="ejemplo1Step==3"
+                            :class="{deshabilitado: ejemplo1Step!=3 }">
+                            Escribir entre llaves las instrucciones empaquetadas en la
+                            función.
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step>4">
+                            Ahora está declarado que la función <span class="programacionNombreObjeto"> saludarUsuario
+                            </span>
+                            es un paquete que contiene 4 instrucciones.
+                        </recuadro-component>
+
+                    </transition>
+                </div>
+
+                <div class='itemEjemplo'>
+                    <recuadro-component tipo='datoNuevo'>
+                        Se quiere crear una función que empaquete las instrucciones necesarias para saludar a la persona
+                        que está ejecutando el programa.
+                    </recuadro-component>
+                    <recuadro-component tipo='datoNuevo'>
+                        Para ejecutar correctamente esta función se necesita un dato: El nombre de la persona que está
+                        ejecutando el programa. Es decir que
+                        se necesita un parámetro.
+                    </recuadro-component>
+                    {{ejemplo2Step}}
+                    <div class='programacionCodigo'>
+                        <transition name="fadeIn">
+                            <span
+                                :class="ejemplo2Step > 5?'': ejemplo2Step>1?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                v-show="ejemplo2Step >= 1">function</span>
+                        </transition>
+                        <transition name="fadeIn">
+                            <span
+                                :class="ejemplo2Step > 5?'': ejemplo2Step>2?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                v-show="ejemplo2Step >= 2"> saludarUsuario</span>
+                        </transition>
+                        <transition name="fadeIn">
+                            <span
+                                :class="ejemplo2Step > 5?'': ejemplo2Step>3?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                v-show="ejemplo2Step >= 3"> (nombrePersona)</span>
+                        </transition>
+                        <transition name="fadeIn">
+                            <span
+                                v-show="ejemplo2Step>=4"
+                                :class="ejemplo2Step>5?'':ejemplo2Step>4?'programacionCodigoPrevio':'programacionCodigoActual'">{</span>
+                        </transition>
+                        <transition name="fadeIn">
+                            <div :class="ejemplo2Step > 5?'': ejemplo2Step>4?'programacionCodigoPrevio':'programacionCodigoActual'"
+                                v-show="ejemplo2Step >= 4">
+                                <div>
+                                    console.log("hola");
+                                </div>
+                                <div>
+                                    console.log(nombreUsuario);
+                                </div>
+                                <div>
+                                    console.log("Bienvenidx");
+                                </div>
+                                <div>
+                                    }
+                                </div>
+
+                            </div>
+                        </transition>
+
+                    </div>
+
+                    <transition name="fadeIn">
+                        <div class='boton' @click="ejemplo2Step++" :key="'botonStepEjemplo2v' + ejemplo2Step" v-show="ejemplo2Step<=3">
+                            <span class='textoBoton' v-if="ejemplo2Step===0">Escribir la palabra clave function</span>
+                            <span class='textoBoton' v-if="ejemplo2Step===1">Escribir el nombre de la función</span>
+                            <span class='textoBoton' v-if="ejemplo2Step===2">Escribir los parámetros de la función entre
+                                paréntesis</span>
+                            <span class='textoBoton' v-if="ejemplo2Step===3">Escribir las instrucciones empaquetadas en
+                                la función entre llaves</span>
+                        </div>
+                    </transition>
+
+                </div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La declaración de una función es una instrucción que indica que se debe guardar en la memoria toda la
+            información
+            relacionada con ella.
+        </recuadro-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const app = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo2Step: 0,
+
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.reiniciarEjemplo1();
+                this.reiniciarEjemplo2();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+            reiniciarEjemplo2() {
+                this.ejemplo2Step = 0;
+            },
+        },
+        watch: {
+            ejemplo1Step(step) {
+                if (step === 4) {
+                    setTimeout(() => {
+                        this.ejemplo1Step = 5;
+                    }, 2000);
+                }
+            },
+            ejemplo2Step(step){
+                if(step===4){
+                    setTimeout(()=>{
+                        this.ejemplo2Step = 5
+                    }, 2000);
+                }
+            }
+
+        }
+    });
+</script>
+<style>
+    .programacionCodigo {
+        text-align: left;
+    }
+
+    .itemEjemplo {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+</style>

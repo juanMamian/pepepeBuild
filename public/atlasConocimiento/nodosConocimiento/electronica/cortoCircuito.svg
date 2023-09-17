@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="210mm"
+   viewBox="0 0 210 210"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   sodipodi:docname="cortoCircuito.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.23696689"
+     inkscape:cx="459.97987"
+     inkscape:cy="782.80978"
+     inkscape:window-width="1024"
+     inkscape:window-height="704"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     height="210mm" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect15925"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect7961"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#1a1a1a;stroke:#262626;stroke-width:0.277759"
+       id="rect846"
+       width="51.486706"
+       height="3.5462942"
+       x="13.371925"
+       y="88.9235" />
+    <rect
+       style="fill:#1a1a1a;stroke:#262626;stroke-width:0.210692"
+       id="rect950"
+       width="29.624592"
+       height="3.5462942"
+       x="24.302977"
+       y="105.49918" />
+    <text
+       xml:space="preserve"
+       style="font-size:13.2223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.330558"
+       x="-0.55630612"
+       y="90.674591"
+       id="text3286"><tspan
+         sodipodi:role="line"
+         id="tspan3284"
+         style="stroke-width:0.330558"
+         x="-0.55630612"
+         y="90.674591">+</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.1659px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.554144"
+       x="0.31910589"
+       y="118.89917"
+       id="text5402"><tspan
+         sodipodi:role="line"
+         id="tspan5400"
+         style="stroke-width:0.554144"
+         x="0.31910589"
+         y="118.89917">-</tspan></text>
+    <rect
+       style="fill:#1a1a1a;stroke:#262626;stroke-width:0.163829"
+       id="rect8043"
+       width="26.932407"
+       height="2.35851"
+       x="-89.154915"
+       y="38.760052"
+       transform="rotate(-90)" />
+    <rect
+       style="fill:#1a1a1a;stroke:#262626;stroke-width:0.159443"
+       id="rect8125"
+       width="25.721212"
+       height="2.3391292"
+       x="-134.00308"
+       y="38.799717"
+       transform="rotate(-90)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 39.818386,62.222506 V 26.90596 H 178.57114 V 176.96908 H 40.189525 l -0.331474,-42.966"
+       id="path16120"
+       sodipodi:nodetypes="cccccc" />
+  </g>
+</svg>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Calculista básico</title>
+</head>
+
+<body>
+
+    <div id="doc">
+        <p>Las cuatro operaciones basicas con números son:</p>
+
+        <ul>
+            <li>Suma.</li>
+            <li>Resta.</li>
+            <li>Multiplicación.</li>
+            <li>División.</li>
+        </ul>
+
+        <recuadro-component tipo="datoPrevio">
+            Un calculista básico puede resolver cualquiera de estas operaciones con números simples.
+        </recuadro-component>
+        
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(600px, 90%);
+    }
+
+    .resaltado {
+        padding: 2px 3px;
+        border-radius: 2px;
+    }
+</style>

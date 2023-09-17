@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+     
+    <script id="MathJax-script" async src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <link rel="stylesheet" href="animacionesVue.css">
+
+    <title>Expresar un número relacionado con otro número</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Si se quiere escribir un número expresándolo a través de su relación
+            con algún primer número, como en los siguientes casos:
+        </p>
+
+        <ul>
+            <li>El número que es el triple del 2.</li>
+            <li>El número que es la mitad del 20.</li>
+            <li>El número que es 14 unidades más grande que el 12.</li>
+            <li>El número que es 3 unidades menor que el 23.</li>        
+        </ul>
+
+        <p>Se escribe una expresión numérica usando el primer número. Como en los siguientes ejemplos:</p>
+
+        <div id="ejemploInterpretar">
+            <div class="contenedorExpresion">
+                <transition name="fadeLimpio">
+                    <div class="expresionOriginal expresionContenida" v-show="!construido1">
+                        El número que es el triple del 2.
+                    </div>
+                </transition>
+                <transition name="fadeLimpio">
+                    <div class="expresionConstruida expresionContenida" v-show="construido1">
+                        \(2 \times 3\)
+                    </div>
+                </transition>
+            </div>
+            <button v-on:click="construido1=!construido1">{{construido1==false ? '¡Construir una expresión numérica usando el 2!' :
+                'Volver'}}</button>
+
+            <div class="contenedorExpresion">
+                <transition name="fadeLimpio">
+                    <div class="expresionOriginal expresionContenida" v-show="!construido2">
+                        El número que es la mitad del 20.
+                    </div>
+                </transition>
+                <transition name="fadeLimpio">
+                    <div class="expresionConstruida expresionContenida" v-show="construido2">
+                        \( 20 \over 2\)
+                    </div>
+                </transition>
+            </div>
+            <button v-on:click="construido2=!construido2">{{construido2==false ? '¡Construir una expresión numérica usando el 20!' :
+                'Volver'}}</button>
+
+            <div class="contenedorExpresion">
+                <transition name="fadeLimpio">
+                    <div class="expresionOriginal expresionContenida" v-show="!construido3">
+                        El número que es 14 unidades más grande que el 12.
+                    </div>
+                </transition>
+                <transition name="fadeLimpio">
+                    <div class="expresionConstruida expresionContenida" v-show="construido3">
+                        \( 12 + 14\)
+                    </div>
+                </transition>
+            </div>
+            <button v-on:click="construido3=!construido3">{{construido3==false ? '¡Construir una expresión numérica usando el 12!' :
+                'Volver'}}</button>
+
+            <div class="contenedorExpresion">
+                <transition name="fadeLimpio">
+                    <div class="expresionOriginal expresionContenida" v-show="!construido4">
+                        El número que es 3 unidades menor que el 23.
+                    </div>
+                </transition>
+                <transition name="fadeLimpio">
+                    <div class="expresionConstruida expresionContenida" v-show="construido4">
+                        \( 23 - 3 \)
+                    </div>
+                </transition>
+            </div>
+            <button v-on:click="construido4=!construido4">{{construido4==false ? '¡Construir una expresión numérica usando el 23!' :
+                'Volver'}}</button>
+            
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        data() {
+            return {
+                construido1: false,
+                construido2: false,
+                construido3: false,
+                construido4: false,
+                construido5: false,
+            }
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 0px;
+    }
+
+    button{
+        padding: 10px;
+    }
+
+    #ejemploInterpretar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        border: 2px solid cadetblue;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .contenedorExpresion {
+        min-height: 60px;
+        position: relative;
+    }
+
+    .expresionContenida {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+</style>

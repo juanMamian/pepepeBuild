@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Estructura básica de un programa Arduino</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        Un programa arduino tiene la siguiente estructura fundamental.
+
+        <recuadro-component tipo="instruccionPointer">
+            Presiona en cada zona para leer una explicación.
+        </recuadro-component>
+
+        <div class="estructura">
+            <div class="zona" style="background-color: burlywood" @click="mostrandoInfo='cabecera'">
+                <div class="nombreZona">
+                    Cabecera
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null;" v-show="mostrandoInfo==='cabecera'">
+                    <recuadro-component tipo="datoPrevio">
+                        En esta zona se incluyen las librerias y se crean las variables u objetos que se usarán durante
+                        el programa.
+                    </recuadro-component>
+                </div>
+            </div>
+
+            <div class="zona" style="background-color: coral" @click="mostrandoInfo='setup'">
+                <div class="nombreZona">
+                    Setup
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null;" v-show="mostrandoInfo==='setup'">
+
+                    <recuadro-component tipo="datoPrevio">
+                        Las instrucciones de esta zona son ejecutadas una vez al inicio del programa. Se usa para
+                        inicializar valores o realizar configuraciones.
+                    </recuadro-component>
+                </div>
+            </div>
+
+            <div class="zona" style="background-color: goldenrod" @click="mostrandoInfo='body'">
+                <div class="nombreZona">
+                    Loop
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null;" v-show="mostrandoInfo==='body'">
+                    <recuadro-component tipo="datoPrevio">
+                        Las instrucciones de esta zona son ejecutadas una y otra vez por el sistema. Aquí se escriben
+                        las
+                        instrucciones de operación.
+                    </recuadro-component>
+                </div>
+            </div>
+        </div>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestra un ejemplo de un programa arduino.
+            </template>
+
+            <div class="estructura">
+                <div style="background-color: burlywood;">
+                    #include "Stepper.h"<br>
+                    <br>
+                    Stepper motor(12, 3, 4, 2, 1);<br>
+                    int direccion;
+                    <br><br>
+                </div>
+                void setup(){<br>
+                <div style="background-color: coral;">
+                    &nbsp&nbsp&nbsp&nbsp Serial.begin(9600);<br>
+                    &nbsp&nbsp&nbsp&nbsp Serial.println("Iniciando");<br>
+                </div>
+                }
+                <br><br>
+                void loop(){<br>
+                <div style="background-color: goldenrod;">
+                    &nbsp&nbsp&nbsp&nbsp motor.apuntar(20);<br>
+                    &nbsp&nbsp&nbsp&nbsp delay(1000);<br>
+                    &nbsp&nbsp&nbsp&nbsp motor.apuntar(120);<br>
+                    &nbsp&nbsp&nbsp&nbsp delay(1000);<br>
+                </div>
+                }
+
+
+
+            </div>
+    </div>
+
+    </bloque-component>
+
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoInfo: null,
+            }
+        },
+    })
+</script>
+
+<style>
+    .estructura {
+        margin-top: 20px;
+    }
+
+    .zona {
+        width: min(500px, 80%);
+        min-height: 50px;
+        margin: 5px auto;
+        padding: 10px 5px;
+    }
+
+    .nombreZona {
+
+        text-align: center;
+    }
+
+
+    .zona .recuadro {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .fondoOpaco {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.253);
+    }
+</style>

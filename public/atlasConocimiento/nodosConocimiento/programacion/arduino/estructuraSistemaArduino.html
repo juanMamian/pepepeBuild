@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Estructura de un sistema arduino</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Un sistema Arduino está formado por varios módulos interconectados.
+        </recuadro-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Un sistema de control arduino tiena la siguiente estructura:
+        </recuadro-component>
+
+        <div id="estructuraSistema">
+            <div class="componente" style="background-color: coral" @click="mostrandoInfo='sensores'">
+                <div class="nombreComponente">
+                    Sensores
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null" v-show="mostrandoInfo==='sensores'">
+                    <recuadro-component tipo="datoPrevio">
+                        Modulos que permiten medir datos del sistema externo.
+                    </recuadro-component>
+                </div>
+            </div>
+            <div class="componente" style="background-color: coral" @click="mostrandoInfo='arduino'">
+                <div class="nombreComponente">
+                    Arduino
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null" v-show="mostrandoInfo==='arduino'">
+                    <recuadro-component tipo="datoPrevio">
+                        Componente central que procesa la información de los sensores para controlar los actuadores.
+                    </recuadro-component>
+                </div>
+            </div>
+            <div class="componente" style="background-color: coral" @click="mostrandoInfo='actuadores'">
+                <div class="nombreComponente">
+                    Actuadores
+                </div>
+                <div class="fondoOpaco" @click.stop="mostrandoInfo=null" v-show="mostrandoInfo==='actuadores'">
+                    <recuadro-component tipo="datoPrevio">
+                        Modulos que ejercen una acción sobre el sistema externo. El sistema arduino los usa para controlar el sistema externo.
+                    </recuadro-component>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoInfo: null,
+            }
+        },
+    })
+</script>
+
+<style>
+    .estructuraSistema {
+        margin-top: 20px;
+    }
+
+    .componente {
+        width: min(500px, 80%);
+        min-height: 50px;
+        margin: 5px auto;
+        padding: 10px 5px;
+    }
+
+    .nombreComponente {
+
+        text-align: center;
+    }
+
+
+    .componente .recuadro {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .fondoOpaco {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.253);
+    }
+</style>

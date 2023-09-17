@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Fuerza - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            En nuestro universo se observa con frecuencia que un cuerpo realiza una <span
+                class='resaltado'>acción</span> sobre otro afectándolo de algún modo.
+        </p>
+
+        <recuadro-component tipo='datoPrevio'>
+            Si la acción produce cambios de movimiento, se la llama <span class='resaltado'>fuerza</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Cuando un cuerpo está afectando a otro mediante una fuerza, se dice que <span
+                class='resaltado'>ejerce</span> fuerza.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Cuando un cuerpo está siendo afectado por una fuerza, se dice que <span class='resaltado'>experimenta</span>
+            fuerza.
+        </recuadro-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+    })
+</script>

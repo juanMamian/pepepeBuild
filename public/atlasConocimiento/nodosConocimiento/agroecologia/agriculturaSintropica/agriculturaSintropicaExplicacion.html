@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Agricultura sintrópica - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La agricultura sintrópica es un conjunto de principios y técnicas desarrolladas por el investigador suizo
+            Ernst Gotsch.
+        </p>
+
+        <p>
+            Es un sistema de agricultura que busca replicar artificialmente la dinámica natural de formación de bosques.
+        </p>
+
+        <h1>
+            Técnicas
+        </h1>
+
+        <h2>
+            Foco en la fotosíntesis.
+        </h2>
+        <p>
+            Maximizar la fotosíntesis en el sistema mediante la siembra en alta densidad de plantas y en distintos
+            estratos.
+        </p>
+
+
+        <bloque-component tipo='datoNuevo'>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+
+<script>
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+
+
+<style scoped>
+    body {
+        padding: 2% 5%;
+    }
+
+    .puntico {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: brown;
+        margin: 10px;
+    }
+
+    .contenedorNumero {
+        width: 220px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid grey;
+        margin: 10px auto;
+    }
+
+    .numeroPunticos {
+        display: flex;
+        justify-content: center;
+        padding: 0px 15px;
+    }
+
+    .numeroPunticosAbsolute {
+        height: 150px;
+
+    }
+
+    #cincoEnPentagono {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+    }
+
+    .contenedorNumVertical {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .punticoPentagono {
+        position: absolute;
+    }
+
+    .resaltadoHorizontal {
+        border-radius: 5px;
+        padding: 0px 5px;
+    }
+
+    #segundaFilaTriangulo {
+        width: 66%;
+        margin: 0px auto;
+    }
+</style>

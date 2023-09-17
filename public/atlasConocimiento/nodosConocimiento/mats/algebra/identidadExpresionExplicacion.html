@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Identidad expresiones</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Si dos expresiones numéricas tienen distinta forma pero representan el mismo número se dice que son <span
+                class='resaltado'>idénticas</span>.
+        </p>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de expresiones numéricas idénticas.
+            </template>
+
+            <div class='listaEjemplos' id="ejemplosIdentidades">
+                <div class='itemEjemplo'>
+                    <div class='matsExpresion'>
+                        \( 12 + 4 \)
+                    </div>
+
+                    <div class='matsExpresion'>
+                        \( 8 \times 2\)
+                    </div>
+
+                    <recuadro-component tipo='datoNuevo'>
+                        Estas expresiones numéricas son idénticas
+                    </recuadro-component>
+
+                </div>
+                <div class='itemEjemplo'>
+                    <div class='matsExpresion'>
+                        \( 6 \over 2 \)
+                    </div>
+                    <hr>
+                    <div class='matsExpresion'>
+                        \( 12 \over 4\)
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Estas expresiones numéricas son idénticas
+                    </recuadro-component>
+                </div>
+                <div class='itemEjemplo'>
+                    <div class='matsExpresion'>
+                        \( 4 ^ 2 \)
+                    </div>
+
+                    <div class='matsExpresion'>
+                        \( 2 ^4 \)
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Estas expresiones numéricas son idénticas
+                    </recuadro-component>
+                </div>
+                <div class='itemEjemplo'>
+                    <div class='matsExpresion'>
+                        \( 120 - 20 \)
+                    </div>
+
+                    <div class='matsExpresion'>
+                        \( 50 + 50 \)
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Estas expresiones numéricas son idénticas
+                    </recuadro-component>
+                </div>
+            </div>
+
+        </bloque-component>
+
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        },
+
+    }).mount("#doc");
+</script>
+
+<style>
+    #ejemplosIdentidades .matsExpresion {
+        margin: 20px auto;
+    }
+</style>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Conjuntos</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            Un conjunto es una colección de cosas.
+        </recuadro-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Las cosas de un conjunto son llamadas "Elementos".
+        </recuadro-component>
+
+        <h4>Definición semántica.</h4>
+
+        <p>Un conjunto puede ser definido mediante una descripcion de sus elementos.</p>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se pueden ver algunos ejemplos definidos mediante una descripción de sus elementos.">
+            <ul>
+                <li>El conjunto de los continentes del planeta Tierra.</li>
+                <li>El conjunto de los números naturales del 1 al 9.</li>
+                <li>El conjunto de los colores de la bandera de Colombia.</li>
+            </ul>
+        </bloque-component>
+
+        <h4>Representar un conjunto.</h4>
+
+        <p>Frecuentemente se representa un conjunto a través de un dibujo de un círculo dentro del cual están escritos
+            los
+            elementos del conjunto.</p>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se ve un ejemplo de los conjuntos de arriba representados mediante un dibujo.">
+            <img src="algunosConjuntos.png" alt="Conjuntos" id="imagenConjuntos">
+        </bloque-component>
+        <h4>Notación de un conjunto.</h4>
+
+        <recuadro-component tipo="datoPrevio">
+            Para escribir formalmente un conjunto se usa una notación con llaves así: <br>
+            <span class="resaltado">{ elementos }</span>
+
+        </recuadro-component>
+
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran algunos ejemplos de conjuntos escritos formalmente.">
+            <ul>
+                <li>{América, África, Oceanía, Asia, Europa, Antártida}</li>
+                <li>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}</li>
+                <li>{Rojo, Azul, Amarillo}</li>
+            </ul>
+        </bloque-component>
+
+        <h4>Elipsis en la notación de conjuntos.</h4>
+        <p>
+            Cuando los elementos del conjunto siguen un órden implícito se usa el símbolo elípsis: <span
+                class="resaltado" style="background-color: cadetblue;">...</span>
+            para abreviar.
+        </p>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se pueden ver ejemplos de conjuntos escritos usando una elipsis.">
+            <ul>
+                <li>El conjunto de todos los números del 1 al 100 se escribe: {1, 2, 3, ..., 100}</li>
+            </ul>
+
+            <ul>
+                <li>El conjunto de todas las letras del abecedario se escribe: {a, b, c, ..., z}</li>
+            </ul>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+<style>
+    .notacion {
+        font-size: 18px;
+        padding: 2px 3px;
+        background-color: cadetblue;
+        display: inline-block;
+        border-radius: 2px;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    #imagenConjuntos {
+        max-width: 90vw;
+        margin: 10px auto;
+        display: block;
+    }
+</style>

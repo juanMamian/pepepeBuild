@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Ley de gravitación universal - Evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo la ley de gravitación universal si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo explicar en qué consiste la ley de gravitación universal.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo nombrar las propiedades que son directamente proporcionales a la intensidad de la fuerza
+                gravitacional y las que son inversamente proporcionales a la intensidad de la fuerza gravitacional.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo nombrar algunos ejemplos de fenómenos causados por fuerzas gravitacionales.
+            </template>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+    })
+</script>

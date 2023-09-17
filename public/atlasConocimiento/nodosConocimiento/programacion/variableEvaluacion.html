@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Variable - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+	    <p>
+	    Comprendo el concepto de variable si:
+	    </p>
+
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Puedo explicar qué es una variable.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Puedo nombrar algunas instrucciones relacionadas con variables.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Dadas algunas instrucciones relacionadas con variables sé cuál sería el contenido de las variables después de ser ejecutadas las instrucciones.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+                Puedo crear un programa informático que incluya variables.
+		    </template>
+	    </bloque-component>
+
+
+
+    </div>
+    </div>
+</body>
+</html>
+
+<script>
+	const app= new Vue({
+		el: "#doc",
+		components:{
+			recuadroComponent,
+			bloqueComponent
+		},
+		data(){
+			return {
+
+			}
+		},
+		computed:{
+		},
+	});
+</script>
+<style>
+</style>
+

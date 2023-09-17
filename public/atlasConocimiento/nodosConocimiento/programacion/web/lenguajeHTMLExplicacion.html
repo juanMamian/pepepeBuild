@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Lenguaje de etiquetas</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            El lenguaje de marcado de hipertexto (<span class="resaltado">HTML</span>) es un lenguaje de etiquetas diseñado para ser interpretado por navegadores web.
+        </recuadro-component>        
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestran una lista de marcas HTML que son conocidas por los navegadores de internet.
+            </template>
+
+            <ul>
+                <li>
+                    <span class="resaltado">
+                        center
+                    </span>
+                    Texto centrado.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        i
+                    </span>
+                    Texto en itálica.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        b
+                    </span>
+                    Texto en negrilla.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        h1
+                    </span>
+                    Cabecera de primer nivel.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        h2
+                    </span>
+                    Cabecera de segundo nivel.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        h3
+                    </span>
+                    Cabecera de tercer nivel.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        p
+                    </span>
+                    Párrafo.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        mark
+                    </span>
+                    Texto marcado.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        s
+                    </span>
+                    Texto tachado.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        small
+                    </span>
+                    Texto pequeño.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        strong
+                    </span>
+                    Texto importante.
+                </li>
+                <li>
+                    <span class="resaltado">
+                        sub
+                    </span>
+                    Texto en sublinea.
+                </li>
+
+            </ul>
+        </bloque-component>
+
+        Un navegador web puede leer un documento de texto e interpretar marcas HTML si las hay.
+
+        <recuadro-component tipo="datoPrevio">
+            Si se asigna una extensión <span class="resaltado">html</span> a un documento de texto, el sistema operativo de un computador sabrá que puede ser interpretado por un navegador.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data(){
+            return {
+                marca: null,
+            }
+        }
+    })
+</script>
+
+<style>    
+
+.textoMarcar{
+    text-align: center;
+    margin: 10px auto;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+
+}
+.etiqueta{
+    color: brown;
+}
+
+li{
+    margin: 10px 0px;
+}
+</style>

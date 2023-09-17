@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Algebrista primer grado - ejemplos</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <bloque-component tipo="ejemplo" textoCabecera="Ejemplo 1" @plegado="reiniciarEjemplo1">
+
+            <div class="ecuacion ecuacionOriginal">
+                \(3(k+2) = 39\)
+            </div>
+
+            <recuadro-component tipo="datoPrevio">
+                En esta ecuación la única operación que se puede trasladar tiene en su magnitud a la incógnita.
+            </recuadro-component>
+            <recuadro-component tipo="datoPrevio">
+                Se debe manipular esta expresión para poder trasladar operaciones que no tengan como magnitud a la
+                incógnita.
+            </recuadro-component>
+
+            <div class="boton" @click="stepEjemplo1=1">
+                Reemplazar la expresión <span class="resaltado">\( 3(k+2) \)</span> por <span class="resaltado">\( (k+
+                    2) \cdot 3 \)</span> teniendo en cuenta la conmutatividad de la multiplicación.
+            </div>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=1" v-show="stepEjemplo1>=1">
+                    \( (k + 2) \cdot 3 = 39\)
+                </div>
+            </transition>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo1>=1" class="boton" @click="stepEjemplo1=2">
+                    Trasladar la operación <span class="resaltado">multiplicación por 3</span>.
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=2">
+                    \( k + 2 = {39 \over 3 }\)
+                </div>
+            </transition>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo1>=2" class="boton" @click="stepEjemplo1=3">
+                    Trasladar la <span class="resaltado"> suma de 2 <span>
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=3">
+                    \( k = {{39 \over 3} - 2}\)
+                </div>
+            </transition>
+
+            <recuadro-component tipo="descubrimiento" v-show="stepEjemplo1>=3">
+                La incógnita está despejada.
+            </recuadro-component>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo1>=3" class="boton" @click="stepEjemplo1=4" style="line-height: 28px;">
+                    Reemplazar la expresión de la derecha por su valor numérico.
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=4">
+                    \( k = { 11 } \)
+                </div>
+            </transition>
+
+            <recuadro-component tipo="descubrimiento" v-show="stepEjemplo1>=4">
+                Se ha descubierto el valor de la incógnita.
+            </recuadro-component>
+
+        </bloque-component>
+
+
+        <bloque-component tipo="ejemplo" textoCabecera="Ejemplo 2" @plegado="reiniciarEjemplo2">
+
+            <div class=" ecuacion ecuacionOriginal">
+                \({2m \over 3} = 39 + 3m\)
+            </div>
+
+            <recuadro-component tipo="datoPrevio">
+                En esta ecuación la incógnita está repetida. El objetivo es deducir una ecuación donde no
+                lo esté.
+                Se buscará que los términos que contienen a la incógnita aparezcan consecutivamente para factorizar.
+            </recuadro-component>
+
+            <div class="boton" @click="stepEjemplo2=1">
+                Trasladar la <span class="resaltado">suma de \(3m\)</span>
+            </div>
+
+
+            <div class="ecuacion" v-show="stepEjemplo2>=1">
+                \({2m \over 3}-3m = 39 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=1">
+                Ahora los términos que contienen a la incógnita aparecen de forma consecutiva.
+            </recuadro-component>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=1">
+                Para factorizar debería haber una multiplicación o división distribuida en los términos. No la hay.
+            </recuadro-component>
+
+
+            <transition name="fade">
+                <div v-show="stepEjemplo2>=1" class="boton" @click="stepEjemplo2=2" style="line-height: 32px;">
+                    Reemplazar la expresión <span class="resaltado" style="padding: 4px 2px;">\( {2 \cdot m} \over 3
+                        \)</span> por
+                    la expresión idéntica <span class="resaltado" style="padding: 4px 2px;">\( {2 \over 3} \cdot m
+                        \)</span>.
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=2">
+                \({ {2 \over 3} \cdot m }-3 \cdot m = 39 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=2">
+                Ahora hay una multiplicación por <span class="resaltado">m</span> distribuida en ambos términos.
+            </recuadro-component>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo2>=2" class="boton" @click="stepEjemplo2=3" style="line-height: 33px;">
+                    Factorizar la expresión <span class="resaltado" style="padding: 4px 2px">\( {{2 \over 3} \cdot m }-3
+                        \cdot m
+                        \)</span>
+                </div>
+            </transition>
+
+
+            <div class="ecuacion" v-show="stepEjemplo2>=3">
+                \({ ( {2 \over 3}- 3) \cdot m} = 39 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=3">
+                Ahora la incógnita no está repetida.
+            </recuadro-component>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=3">
+                Ahora el objetivo es que no aparezca aplicando una operación sino recibiéndola.
+            </recuadro-component>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo2>=3" class="boton" @click="stepEjemplo2=4" style="line-height: 35px;">
+                    Reemplazar la expresión <span class="resaltado" style="padding:7px 3px">\( ( {2 \over 3}- 3) \cdot
+                        m\)</span>
+                    por la expresión idéntica <span class="resaltado" style="padding:7px 3px">\( m ( {2 \over 3}- 3)
+                        \)</span>
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=4">
+                \({ m( {2 \over 3}- 3)} = 39 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=4">
+                Ahora la ecuación está lista para iniciar el proceso de despeje.
+            </recuadro-component>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo2>=4" class="boton" @click="stepEjemplo2=5" style="line-height: 28px;">
+                    Trasladar la expresión
+                    <span class="resaltado" style="padding:4px 2px;"> \( ({{2 \over 3} - 3}) \)</span>
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=5">
+                \({ m } = { 39 \over {{2 \over 3}- 3} } \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=5">
+                Ahora la incógnita está despejada.
+            </recuadro-component>
+
+            <transition name="fade">
+                <div v-show="stepEjemplo2>=5" class="boton" @click="stepEjemplo2=6" style="line-height: 40px;">
+                    Reemplazar la expresión numérica <span class="resaltado"
+                        style="padding:4px 2px; padding-bottom: 10px;"> \(
+                        39 \over
+                        {{2 \over 3}- 3} \) </span>
+                    por su forma simplificada : <span class="resaltado" style="padding:4px 2px;">\( -{7 \over 3}
+                        \)</span>
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=6">
+                \({ m } = { -{7 \over 3} } \)
+            </div>
+
+            <recuadro-component tipo="descubrimiento" v-show="stepEjemplo2>=6">
+                Se ha descubierto el valor de la incógnita.
+            </recuadro-component>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepEjemplo1: 0,
+                stepEjemplo2: 0,
+            }
+        },
+        methods: {
+            reiniciarEjemplo1() {
+                this.stepEjemplo1 = 0;
+            },
+            reiniciarEjemplo2() {
+                this.stepEjemplo2 = 0;
+            }
+        }
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    .informacion {
+        background-color: #86b2c8;
+        padding: 15px;
+        width: fit-content;
+        border-radius: 15px;
+        width: min(600px, 90%);
+        margin: 0px auto;
+        font-size: 14px;
+        font-style: italic;
+    }
+
+
+    .ecuacion {
+        margin: 30px auto;
+        display: block;
+        text-align: center;
+    }
+
+
+    .observacion {
+        margin: 10px 0px;
+        font-style: italic;
+    }
+
+    .conclusion {
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px 5px;
+        width: min(90%, 500px);
+        background-color: rgb(209, 127, 33);
+    }
+
+    .subrayado {
+        border-bottom: 2px solid chocolate;
+    }
+</style>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Sistema decimal - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            El <span class='resaltado'>Sistema decimal</span> permite escribir los números.
+        </p>
+
+        <p>
+        En el sistema decimal
+        </p>
+
+        <bloque-component tipo='herramientaInteractiva'>
+            <template #cabecera>
+                En este cuadro se puede ver un número y probar divisiones con otros
+            </template>
+
+            <div class='contenedorFlex'>
+                <input type="range" min=1 max=20 v-model="numeroEjemplo1">
+                <div>
+                    {{numeroEjemplo1}}
+                </div>
+
+                <div id="listaDivisores">
+                    <transition-group name="fadeIn" tag="div" style="display: flex; flex-wrap:wrap; gap:20px">
+                        <div class='itemDivisor' v-for="(divisorPosible, index) of divisoresPosibles"
+                            :key="'itemDivisor'+index" class="anchoMediano">
+                            <button class='boton' @click="probarDivisor(index)"
+                                :class="{deshabilitado: divisorPosible <= maxDivisorProbado  }">
+                                Dividir entre {{index+1}}
+                            </button>
+                            <transition name="enterTop">
+                                <div class='resultadoDivision' v-show="divisorPosible.probado">
+                                    \( { {{numeroEjemplo1}} \over {{(index+1)}} } = {{numeroEjemplo1/(index+1)}} \)
+                                </div>
+                            </transition>
+                            <transition name="fadeIn">
+                                <recuadro-component tipo="infoResultado" v-show="divisorPosible.anunciado"
+                                    :modo="(numeroEjemplo1/(index+1)) % 1 !=0?'incorrecto':'correcto'">
+                                    {{index+1}} {{numeroEjemplo1 / ((index+1))%1!=0?'no':''}} es divisor de
+                                    {{numeroEjemplo1}}.
+                                </recuadro-component>
+                            </transition>
+                        </div>
+                    </transition-group>
+                </div>
+            </div>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                divisoresPosibles: [
+                    {
+                        resultado: 9,
+                        probado: false,
+                        anunciado: false,
+                    }
+                ],
+                numeroEjemplo1: 9,
+                maxDivisorProbado: 0,
+            }
+        },
+        methods: {
+            probarDivisor(index) {
+                console.log("Probando divisor " + index);
+                this.divisoresPosibles[index].probado = true;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+                setTimeout(() => {
+                    this.divisoresPosibles[index].anunciado = true;
+                }, 1500);
+                setTimeout(() => {
+                    this.divisoresPosibles.push({probado: false, anunciado: false});
+                }, 3000);
+            }
+        },
+        watch: {
+            numeroEjemplo1() {
+                this.divisoresPosibles[0].resultado = this.numeroEjemplo1;
+            }
+        }
+    }).mount("#doc")
+</script>
+
+
+<style>
+    #listaDivisores {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .itemDivisor {
+        padding: 10px 10px;
+        border: 2px solid var(--paletaPrevio);
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+    }
+
+    .resultadoDivision {
+        font-size: 30px;
+    }
+</style>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Funciones - invocación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Si ya se ha declarado una función, ahora se puede escribir una instrucción que indica que se deben ejecutar
+            sus instrucciones empaquetadas.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Una instrucción que indica la ejecución de las instrucciones empaquetadas por una función es una <span
+                class='resaltado'>invocación</span> de la función.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Al invocar una función se debe asignar un valor a los parámetros de la función.
+        </recuadro-component>
+
+        <p>
+        La instrucción de invocación de una función es distinta en cada lenguaje de programación.
+        </p>
+        <bloque-component tipo="ejemplo" @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se ven ejemplos de invocación de funciones.
+            </template>
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <recuadro-component tipo="datoPrevio">
+                        Se quiere invocar la función <span class="programacionNombreObjeto">saludarUsuario</span>
+                    </recuadro-component>
+
+                    <div class="programacionCodigo">
+                        <span
+                            :class="ejemplo1Step>=3?'':ejemplo1Step===1?'programacionCodigoActual':'programacionCodigoPrevio'"
+                            v-show="ejemplo1Step>=1">saludarUsuario</span>
+                        <span
+                            :class="ejemplo1Step>=3?'':ejemplo1Step===2?'programacionCodigoActual':'programacionCodigoPrevio'"
+                            v-show="ejemplo1Step>=2">()</span>
+                    </div>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=1" v-show="ejemplo1Step==0">
+                            Escribir el nombre de la función
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=2" v-show="ejemplo1Step==1">
+                            Escribir entre paréntesis los parámetros de la función
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step>=2">
+                            Ya que esta función no necesita parámetros, los paréntesis se
+                            dejaron vacíos.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step>=3">
+                            La función está invocada. Esta línea significa que se deben ejecutar las instrucciones
+                            empaquetadas en la función
+                            <span class='resaltado'>saludarUsuario</span>.
+                        </recuadro-component>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La invocación de una función es una instrucción que indica que se deben ejecutar las instrucciones
+            empaquetadas por ella.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const app = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.reiniciarEjemplo1();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            }
+        },
+        computed: {
+        },
+        watch: {
+            ejemplo1Step(step) {
+                if (step == 2) {
+                    setTimeout(() => {
+                        this.ejemplo1Step = 3;
+                    }, 2000);
+                }
+            }
+        }
+    });
+</script>
+<style>
+</style>

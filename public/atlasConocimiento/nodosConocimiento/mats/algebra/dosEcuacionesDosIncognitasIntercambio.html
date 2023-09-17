@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dos ecuaciones con dos incógnitas - Intercambio</title>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La siguiente es una estrategia para combinar dos ecuaciones.
+        </p>
+
+        <ul style="line-height: 40px;">
+            <li>
+                Escoger una de las dos ecuaciones.
+            </li>
+            <li>
+                Despejar una de las incógnitas para descubrir una expresión idéntica a ella.
+            </li>
+            <li>
+                En la otra ecuación, intercambiar la incógnita por su expresión idéntica.
+            </li>
+            <li>
+                Ahora se tiene una ecuación con una sola incógnita.
+            </li>
+        </ul>
+
+        <bloque-component @plegado="stepEjemplo1=0" tipo="ejemplo"
+            textoCabecera="En este cuadro se muestra un ejemplo de combinación de dos ecuaciones.">
+
+            <p>Si se tiene las siguientes dos ecuaciones: </p>
+
+            <ul style="line-height: 40px; font-size: 20px;">
+                <li>\( {{a \times 3} + 5} = {b \over 3} \)</li>
+                <li>\({a+b}=10\)</li>
+            </ul>
+
+            <div id="ejemploAnimado1">
+                <transition name="bajar">
+                    <div class="ecuacionEjemplo" id="primeraEcuacionEjemplo1" v-show="stepEjemplo1>=1">\({a+b}\) &nbsp
+                        &nbsp
+                        \( =10\)</div>
+                </transition>
+                <div class="boton botonStepEjemplo1 ejemplo1Boton1" v-on:click="stepEjemplo1=1"
+                    v-show="stepEjemplo1==0">
+                    Escojer una de las ecuaciones
+                </div>
+                <div class="boton botonStepEjemplo1" v-on:click="stepEjemplo1=3" v-show="stepEjemplo1==1">
+                    Despejar una de las incógnitas
+                </div>
+
+                <transition name="bajar">
+                    <div class="ecuacionEjemplo" id="primeraEcuacionEjemplo1" v-show="stepEjemplo1>=3">\(a=10 - b\)
+                    </div>
+                </transition>
+
+            </div>
+            <br>
+            <transition name="fade">
+                <recuadro-component tipo="descubrimiento" v-show="stepEjemplo1>=3">
+                    Se ha descubierto que la incógnita <span class="resaltado">a</span> tiene el mismo valor que la
+                    expresión <span class="resaltado">\(10-b\)</span>. Por lo tanto son intercambiables.
+                </recuadro-component>
+            </transition>
+
+            <div class="boton" v-show="stepEjemplo1===3" @click="stepEjemplo1=4">
+                Trabajar en la otra ecuación.
+            </div>
+            <transition name="bajar" @after-enter="stepEjemplo1=5">
+
+                <div v-show="stepEjemplo1>=4">
+                    <div id="ejemploAnimado2">
+                        <div class="ecuacionEjemplo">
+                            <transition name="intercambiar">
+                                <span class="intercambiadasEjemplo2" v-show="intercambiarEjemplo2==false">
+                                    \(a\)
+                                </span>
+                            </transition>
+                            <transition name="intercambiar">
+                                <span v-show="intercambiarEjemplo2==true" class="intercambiadasEjemplo2">
+                                    \((10-b)\)
+                                </span>
+                            </transition>
+                            \( {{ \times 3} + 5} = {b \over 3} \)
+                        </div>
+
+                    </div>
+                    <br>
+                    <transition name="bajar">
+                        <p v-show="intercambiarEjemplo2==false">Esta es la ecuación original</p>
+                    </transition>
+                    <transition name="fade">
+                        <div class="boton" id="botonIntercambiarEjemplo2" v-show="stepEjemplo1===5"
+                            v-on:click.prevent="intercambiarEjemplo2=!intercambiarEjemplo2">
+                             <span v-show="!intercambiarEjemplo2">Intercambiar <span class="resaltado">\(a\)</span> por <span class="resaltado">\(10 - b\)</span></span>
+                             <span v-show="intercambiarEjemplo2">Regresar a la ecuación original</span>
+                        </div>
+                    </transition>
+
+                    <transition name="bajar">
+                        <p v-show="intercambiarEjemplo2==true">Esta nueva ecuación contiene una sola incógnita, así que
+                            ya se puede intentar resolver.</p>
+                    </transition>
+                </div>
+            </transition>
+
+        </bloque-component>
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepEjemplo1: 0,
+                intercambiarEjemplo2: false,
+            }
+        },
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 2px;
+    }
+
+    #ejemploAnimado1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 10px;
+    }
+
+    #primeraEcuacionEjemplo1 {
+        padding-left: 0px;
+    }
+
+    .segundaEcuacion {
+        grid-row: 2/3;
+    }
+
+    .ecuacionEjemplo {
+        grid-column: 1/2;
+    }
+
+    .botonStepEjemplo1 {
+        grid-column: 2/3;
+    }
+
+    .deshabilitado {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    .fadeout-leave {
+        background-color: brown;
+        opacity: 1;
+    }
+
+    .fadeout-leave-to {
+        background-color: brown;
+        opacity: 0;
+    }
+
+    .fadeout-leave-active {
+        transition: background-color 1s, opacity 1s;
+    }
+
+    .bajar-enter {
+        transform: translateY(-80%);
+    }
+
+    .bajar-enter-active {
+        transition: transform 1s;
+    }
+
+    #ejemploAnimado2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #botonIntercambiarEjemplo2 {
+        grid-column: 2/3;
+    }
+
+
+    .intercambiar-leave-active,
+    .intercambiar-enter-active {
+        transition: all 1.5s;
+    }
+
+    .intercambiar-leave-to,
+    .intercambiar-enter {
+        opacity: 0;
+        background-color: cadetblue;
+    }
+
+    .cuadroEjemplo {
+        border: 2px solid blueviolet;
+        border-radius: 15px;
+        padding: 5% 2%;
+        margin: 10px 0px;
+    }
+</style>

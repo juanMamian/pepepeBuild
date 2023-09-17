@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+     
+    <script id="MathJax-script" async src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <link rel="stylesheet" href="numerosColores.css">
+    <link rel="stylesheet" href="figuras.css">
+    <title>Entrenamiento propiedad asociativa</title>
+</head>
+
+<body>
+    <div id="doc">
+        <center>
+            <label for="selectorDificultad">Selecciona el nivel de dificultad</label>
+            <div id="dificultad">{{dificultad}}</div>
+            <input type="range" name="selectorDificultad" min="1" max="5" v-model="dificultad">
+            <br>
+            <button v-on:click="generarExpresionOriginal(); expresionGenerada=true;">¡Generar una expresión
+                numérica!</button>
+
+            <div :key="versionExpresionOriginal" id="expresionOriginal">
+                {{expresionOriginal}}
+            </div>
+
+            <div class="instruccion recuadro" v-show="expresionGenerada">
+                ¡Reescribe la expresión cambiando de lugar los paréntesis de forma que obtengas una nueva expresión numérica de igual valor
+                a la expresión original (Si es posible)!
+            </div>
+
+            <div class="nota recuadro" v-show="expresionGenerada">
+                <img src="alerta.png" alt="alerta">
+                No olvides verificar si tu nueva expresión numérica
+                tiene el mismo valor que la expresión original.
+            </div>
+        </center>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        data() {
+            return {
+                numero1: null,
+                numero2: null,
+                numero3: null,
+                numero4: null,
+                dificultad: 1,
+
+                expresionOriginal: null,
+                versionExpresionOriginal: 0,
+
+                expresionGenerada: false,
+
+                probAsociable:0.5,
+
+            }
+        },
+        methods: {
+            generarExpresionOriginal() {
+                this.probAsociable=0.5;
+                var dif = this.dificultad;
+                var numero1 = this.generarNumero(parseInt(dif));
+                dif--;
+                var numero2 = this.generarNumero(parseInt(dif));
+                dif--;
+                if (Math.random() > 0.5) {
+                    //Intercambiar el valor de las variables
+                    var temp = numero1;
+                    numero1 = numero2;
+                    numero2 = temp;
+                }
+
+                var { opPrimaria, opSecundaria } = this.generarOperaciones();
+
+                var expresion = numero1 + opPrimaria + numero2;   
+                
+                if (this.probAsociable == 0.5) {
+                    console.log(`Creando posiblidad de asociación en primer nivel`);
+                    var numero3 = this.generarNumero(parseInt(dif));
+                    var expresion = "{({" + expresion + "})}" + opPrimaria + numero3;
+                }
+
+                this.expresionOriginal = "\\(" + expresion + "\\)";
+
+                this.versionExpresionOriginal++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+
+
+            },
+            generarNumero(dif) {
+                // console.log(`Generando número con dif: ${dif}`);
+                const compuesto = (dif > 1);
+                var asociable=(Math.random()<this.probAsociable);
+                if (compuesto) {
+                    var distribuible = (Math.random() < this.probDistribuible);
+                    console.log(`Compuesto`);
+                    var numero1 = this.generarNumero(dif - 1);
+                    dif--;
+                    var numero2 = this.generarNumero(dif - 1);
+                    dif--;                  
+                    var { opPrimaria, opSecundaria } = this.generarOperaciones();
+
+                    var numeroCompuesto = "{({" + numero1 + opPrimaria + numero2 + "})}";   
+                    
+                    if (asociable) {
+                        console.log(`Compuesto asociable`);
+                        var numero3 = this.generarNumero(dif - 1);
+                        numeroCompuesto = "{({" + numeroCompuesto + opPrimaria + numero3 + "})}";
+                        this.probAsociable = this.probAsociable / 2;
+                    }
+
+                    return numeroCompuesto;
+                }
+                else {
+                    return (Math.random() * 50).toFixed();
+                }
+            },
+            generarOperaciones() {
+                const rand1 = Math.floor(Math.random() * 4);
+                const rand2 = Math.floor(Math.random() * 4);
+
+                var opPrimaria = " + ";
+                var opSecundaria = " + ";
+
+                if (rand1 < 1) {
+                    opPrimaria = " + ";
+                }
+                else if (rand1 < 2) {
+                    opPrimaria = " - ";
+                }
+                else if (rand1 < 3) {
+                    opPrimaria = " \\times "
+                }
+                else if (rand1 < 4) {
+                    opPrimaria = " \\over "
+                }
+
+                if (rand2 < 1) {
+                    opSecundaria = " + ";
+                }
+                else if (rand2 < 2) {
+                    opSecundaria = " - ";
+                }
+                else if (rand2 < 3) {
+                    opSecundaria = " \\times "
+                }
+                else if (rand2 < 4) {
+                    opSecundaria = " \\over "
+                }
+                
+                return { opPrimaria, opSecundaria };
+            }
+        }
+    })
+
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .nota {
+        width: 60%;
+    }
+
+    button {
+        padding: 10px;
+        margin: 10px auto;
+    }
+</style>

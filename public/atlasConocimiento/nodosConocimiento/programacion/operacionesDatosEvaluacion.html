@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Operaciones entre datos - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Comprendo las operaciones que se pueden hacer entre datos si:
+
+        </p>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dados dos tipos de datos, puedo pensar en las operaciones que un procesador puede realizar con ellos.
+            </template>
+
+            <div class='boton' @click="generarReto1">
+                Generar reto
+            </div>
+
+            <transition name="enterTop">
+                <div id='contenedorTiposDatoReto1' :key="'contenedorTiposDatoReto1v' + versionReto1" v-show="tiposReto1[0] && tiposReto1[1]">
+                    <div class='tipoDatoParaOperacion'>
+                        {{tiposReto1[0]}}
+                    </div>
+                    <div class='tipoDatoParaOperacion'>
+                        {{tiposReto1[1]}}
+                    </div>
+                </div>
+            </transition>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dado un programa informático que contiene expresiones puedo describir su funcionamiento.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo escribir un programa informático que contiene expresiones.
+            </template>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const app = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                versionReto1: 0,
+                todosTipos:['int', 'float', 'string', 'char', 'bool'],
+                tiposReto1: [null, null],
+            }
+        },
+        computed: {
+        },
+        methods: {
+            generarReto1() {
+                this.tiposReto1 = [null, null];
+
+                let tipo1 = this.todosTipos[Math.floor(Math.random() * this.todosTipos.length)];
+                let tipo2 = this.todosTipos[Math.floor(Math.random() * this.todosTipos.length)];
+
+                this.tiposReto1 = [tipo1, tipo2];
+                this.versionReto1++;
+            }
+
+        }
+    });
+</script>
+<style>
+    #contenedorTiposDatoReto1 {
+        display: flex;
+        width: min(400px, 90%);
+        margin: 20px auto;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .tipoDatoParaOperacion {
+        padding: 10px 10px;
+        text-align: center;
+        border-radius: 2px;
+        box-shadow: 2px 2px 2px 2px gray;
+    }
+</style>

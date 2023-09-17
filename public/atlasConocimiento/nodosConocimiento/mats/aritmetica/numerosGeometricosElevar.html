@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Números geométricos - Elevación
+
+    </title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Para formar un número geométrico, a menudo se parte de un número base. Después se continúa hacia arriba.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            El proceso de construir hacia arriba un número geométrico a partir de un número base se llama <span
+                class="resaltado">elevar</span>.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciar">
+            <template #cabecera>
+                En este cuadro se puede seleccionar un número y elevarlo.
+            </template>
+
+            <div id="bloqueSeleccionNumero" v-show="!numeroRaiz">
+                <div class="boton" @click="numeroRaiz=4">
+                    Seleccionar el 4
+                </div>
+                <div class="boton" @click="numeroRaiz=6">
+                    Seleccionar el 6
+                </div>
+                <div class="boton" @click="numeroRaiz=5">
+                    Seleccionar el 5
+                </div>
+            </div>
+
+            <div id="bloqueSeleccionFigura" v-show="numeroRaiz && !figura">
+                <div class="boton" @click="figura='cuadrado'">
+                    Formar un cuadrado
+                </div>
+                <div class="boton" @click="figura='triangulo'">
+                    Formar un triángulo
+                </div>
+            </div>
+
+            <div id="bloqueElevar" v-if="numeroRaiz && figura">
+                <div class="boton" @click="gradoElevacion++" :class="{deshabilitado: gradoElevacion>=numeroRaiz}">
+                    Elevar
+                </div>
+
+                <div id="numeroTotal" :style="[estiloMargenTop]">
+                    <transition-group name="travelBottom">
+                        <div class="filaElevacion" v-for="fila of gradoElevacion" :key="'filaElevacion'+fila">
+                            <div class="bolitaNumero" v-for="bola of getBolasFila(fila)" :key="'bola'+bola">
+
+                            </div>
+                        </div>
+                    </transition-group>
+                </div>
+
+                <recuadro-component tipo="datoNuevo" v-show="gradoElevacion===numeroRaiz">
+                    ¡El número {{numeroRaiz}} ha sido elevado al {{figura}}!
+                </recuadro-component>
+
+                <div v-show="gradoElevacion===numeroRaiz" class="boton" @click.stop="reiniciar">Reiniciar</div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroRaiz: null,
+                figura: null,
+                gradoElevacion: 1,
+            }
+        },
+        methods: {
+            getBolasFila(fila) {
+                if (!this.numeroRaiz || !this.figura) {
+                    return null;
+                }
+                if (this.figura === 'cuadrado') {
+                    return this.numeroRaiz
+                }
+                else if (this.figura === 'triangulo') {
+                    return this.numeroRaiz - (fila - 1)
+                }
+
+                return 0;
+            },
+            reiniciar() {
+                this.numeroRaiz = null;
+                this.figura = null;
+                this.gradoElevacion = 1;
+            },
+
+        },
+        computed:{
+            estiloMargenTop(){
+                let espacioFila=30;
+                let espaciosRestantes=this.numeroRaiz-this.gradoElevacion;
+                return {
+                    marginTop: (espacioFila*espaciosRestantes)+'px'
+                }
+            }
+        }
+    })
+</script>
+
+
+
+<style scoped>
+    .filaElevacion {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    #numeroTotal {
+    }
+
+    #numeroTotal span{
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bolitaNumero{
+        margin: 0px;
+    }
+</style>

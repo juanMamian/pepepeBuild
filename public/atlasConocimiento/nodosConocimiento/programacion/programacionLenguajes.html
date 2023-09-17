@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+	<title>Programación - lenguajes de programación</title>
+</head>
+
+<body>
+	<div id="doc">
+		<p>
+			Los procesadores pueden ejecutar instrucciones escritas en <span class='resaltado'>lenguaje de
+				máquina</span>. Este lenguaje es difícil de leer para los seres humanos.
+		</p>
+
+		<p>
+			Para facilitar la escritura de programas informáticos se crearon <span
+				class='resaltado'>lenguajes de programación</span>, que son más fáciles de leer para los seres
+			humanos.
+		</p>
+
+		<bloque-component tipo="ejemplo">
+			<template #cabecera>
+				En este cuadro se muestran los nombres de algunos lenguajes de programación populares y algunos datos
+				sobre ellos.
+			</template>
+			<div class="listaEjemplos">
+				<div class="itemEjemplo">
+					<div class="nombreLenguaje">
+						<img class="iconoLenguaje" src="jsIcon.png">
+						Javascript
+					</div>
+					<div class="descripcionLenguaje">
+						Es un lenguaje creado para hacer páginas web dinámicas y que con el
+						tiempo ha sido usado para otras tareas relacionadas
+						con la web.
+					</div>
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="nombreLenguaje">
+						<img class="iconoLenguaje" src="cMasMasIcon.png">
+						C++
+					</div>
+					<div class="descripcionLenguaje">
+						Es un lenguaje de uso general que fue creado para ampliar la utilidad
+						del lenguaje C.
+					</div>
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="nombreLenguaje">
+						<img class="iconoLenguaje" src="pyIcon.png">
+						Python
+					</div>
+					<div class="descripcionLenguaje">
+						Es un lenguaje de programación moderno famoso por ser amigable para
+						principiantes.
+					</div>
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="nombreLenguaje">
+						<img class="iconoLenguaje" src="bashIcon.png">
+                        Bash
+					</div>
+					<div class="descripcionLenguaje">
+						Es un lenguaje de programación usado para hacer instrucciones dirigidas a sistemas UNIX.
+					</div>
+				</div>
+
+			</div>
+
+
+		</bloque-component>
+
+		<p>
+			Los procesadores no pueden leer las instrucciones escritas en los lenguajes de
+			programación. Éstas deben ser traducidas al lenguaje de máquina antes de ser ejecutadas.
+		</p>
+
+		<p>
+			Algunos programas informáticos son completamente traducidos al lenguaje de máquina para generar un nuevo programa que sí puede ser
+			enviado al procesador. Esto se llama <span class='resaltado'>compilar</span> el programa. El
+			software encargado de esta tarea se llama <span class='resaltado'>compilador</span>.
+		</p>
+
+		<p>
+			Algunos programas informáticos son traducidos instrucción por instrucción: cada vez que se
+			traduce una instrucción al lenguaje de máquina, es enviada al procesador y éste la ejecuta inmediatamente. Esto se llama
+			<span class='resaltado'>interpretación</span> del programa. El software encargado de esta tarea
+			se llama <span class='resaltado'>intérprete</span>.
+		</p>
+	</div>
+</body>
+
+</html>
+
+<script>
+	const app = new Vue({
+		el: "#doc",
+		components: {
+			recuadroComponent,
+			bloqueComponent,
+		},
+		data() {
+			return {
+
+			}
+		},
+		computed: {
+		},
+	});
+</script>
+<style>
+	.itemEjemplo {
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.nombreLenguaje {
+		font-weight: bold;
+		text-align: center;
+		display: flex;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+
+	}
+
+	.iconoLenguaje {
+		height: 50px;
+		border-radius: 10px;
+		.
+	}
+</style>

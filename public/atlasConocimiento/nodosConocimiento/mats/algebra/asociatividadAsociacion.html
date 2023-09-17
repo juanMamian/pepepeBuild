@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Asociatividad - asociación</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+        Algunas expresiones numéricas expresan una aplicación doble de alguna operación aritmética.
+        </p>
+
+        <bloque-component tipo="datoPrevio">
+            <template #cabecera>
+                En este cuadro se muestran algunas expresiones en las que aparece una aplicación doble de una operación.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 3 + 4 + 10\)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una suma.
+                   </recuadro-component>
+
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 11 - 5 - 2\)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una resta.
+                   </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 9 \times 8 \times 5\)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una resta.
+                   </recuadro-component>
+                </div>
+                
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( { 27 \over 3} \over 3 \)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una división.
+                   </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( { 4 ^ 2} ^ 3 \)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una potencia.
+                   </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( \sqrt[2]{\sqrt[4]{1024}} \)
+                   </div>
+                   <recuadro-component tipo="datoNuevo">
+                       Hay una aplicación doble de una radicación.
+                   </recuadro-component>
+                </div>
+            </div>
+
+
+
+        </bloque-component>
+
+        <p>
+        Se conoce como <span class="resaltado">asociación</span> a unir las magnitudes de las operaciones y aplicar una sola operación sobre el primer número.
+        </p>
+
+        <bloque-component tipo="datoPrevio">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de asociación de operaciónes.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 3 + 4 + 10\)
+                   </div>
+
+                   <div class="boton" @click="ejemplo1Asociado=true">
+                       Asociar las sumas.
+                   </div>
+
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo1Asociado">
+                    \( 3 + (4 + 10)\)
+                   </div>
+                   </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 11 - 5 - 2\)
+                   </div>
+
+                   <div class="boton" @click="ejemplo2Asociado=true">
+                       Asociar las restas.
+                   </div>
+
+                
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo2Asociado">
+                    \( 11 - (5 - 2)\)
+                   </div>
+                   </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                    \( 9 \times 8 \times 5\)
+                   </div>
+
+                   <div class="boton" @click="ejemplo3Asociado=true">
+                       Asociar las multiplicaciones.
+                   </div>
+
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo3Asociado">
+                    \( 9 \times (8 \times 5)\)
+                   </div>
+                   </transition>
+
+                </div>
+                
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( { 27 \over 3} \over 3 \)
+                   </div>
+
+                   <div class="boton" @click="ejemplo4Asociado=true">
+                       Asociar las divisiones.
+                   </div>
+
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo4Asociado">
+                       \(  27 \over ( {3 \over 3} ) \)
+                   </div>
+                   </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( { 4 ^ 2} ^ 3 \)
+                   </div>
+
+                   <div class="boton" @click="ejemplo5Asociado=true">
+                       Asociar las potencias.
+                   </div>
+
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo5Asociado">
+                       \(  4 ^ {(2 ^ 3)} \)
+                   </div>
+                   </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                   <div class="matsExpresion">
+                       \( \sqrt[2]{\sqrt[4]{1024}} \)
+                   </div>
+
+                   <div class="boton" @click="ejemplo6Asociado=true">
+                       Asociar las radicaciones.
+                   </div>
+
+                   <transition name="travelTop">
+                   <div class="matsExpresion" v-show="ejemplo6Asociado">
+                       \( \sqrt[ {\sqrt[2]{4} } ]{1024} \)
+                   </div>
+                   </transition>
+                </div>
+            </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1Asociado:false,
+                ejemplo2Asociado:false,
+                ejemplo3Asociado:false,
+                ejemplo4Asociado:false,
+                ejemplo5Asociado:false,
+                ejemplo6Asociado:false,
+            }
+        },
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 0px;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        background-color: transparent;
+        opacity: 0;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all 0.8s;
+    }
+
+
+
+    ul {
+        font-size: 35px;
+    }
+
+    .itemEjemplo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: min(300px, 90vw);
+        gap: 20px;
+    }
+
+    .numeroBolitas {
+        display: flex;
+
+    }
+
+    .bolita {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin: 10px 5px;
+        background-color: brown;
+        position: relative;
+    }
+
+    .ejemploRepresentacion {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .itemEjemploConstruccionDoble {
+        width: min(600px, 90vw);
+    }
+
+    .representacionSuma {
+        display: flex;
+        position: relative;
+    }
+
+    .opcionesOperacionExterna {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .opcionesOperacionExterna .boton {
+        margin: 0px 10px;
+    }
+
+    .boton.marcado {
+        opacity: 1;
+        background-color: var(--paletaPrevio);
+    }
+
+    .primerNumero {
+        color: chocolate;
+    }
+
+    .segundoNumero {
+        color: blue;
+    }
+
+    li{
+        font-size: 17px;
+    }
+</style>

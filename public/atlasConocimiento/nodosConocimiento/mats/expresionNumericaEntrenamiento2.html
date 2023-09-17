@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Entrenamiento expresión numérica parte 2</title>
+</head>
+
+<body>
+    <div id="doc">
+        <center>
+            <label for="selectorDificultad">Selecciona el nivel de dificultad</label>
+            <div id="dificultad">{{dificultad}}</div>
+            <input type="range" name="selectorDificultad" min="1" max="5" v-model="dificultad">
+            <br>
+            <button v-on:click="generarExpresionOriginal(); expresionGenerada=true; estadoRespuesta=null; ">¡Generar una
+                expresión
+                numérica!</button>
+            <br>
+            <br>
+            <transition name="caer" @after-enter="esperandoRespuesta=true">
+                <div :key="versionExpresionOriginal" id="expresionOriginal" class="expresion"
+                    v-show="expresionGenerada">
+                    {{expresionOriginal}}
+                </div>
+            </transition>
+
+            <transition name="fade">
+                <div v-show="esperandoRespuesta && estadoRespuesta!='correcta'">
+                    <recuadro-component tipo="instruccionTeclado">
+                        ¡Descubre el valor de esta expresión numérica!<br>
+                        
+                    </recuadro-component>
+                    <br>
+
+                    <input type="number" v-show="expresionGenerada" v-model="respuestaUsuario"><br>
+                    <div class="boton" @click="evaluarRespuesta(); versionRespuesta++"
+                        v-show="estadoRespuesta!='correcta'">Aceptar</div>
+
+
+                </div>
+            </transition>
+            <br><br>
+            <transition name="popIn">
+                <div id="respuesta" v-show="estadoRespuesta=='correcta'">{{valorExpresion}}</div>
+            </transition>
+            <br><br>
+            <transition name="popIn">
+                <div class="respuesta" v-show="estadoRespuesta=='correcta'" style="background-color: rgb(60, 187, 60);">
+                    ¡Correcto!
+                </div>
+            </transition>
+
+            <transition name="popIn">
+                <div class="respuesta" v-show="estadoRespuesta=='incorrecta'"
+                    style="background-color: rgb(202, 55, 55);" :key="versionRespuesta">
+                    Incorrecto ¡Sique intentando!
+                </div>
+            </transition>
+
+        </center>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numero1: null,
+                numero2: null,
+                numero3: null,
+                numero4: null,
+                dificultad: 1,
+
+                expresionOriginal: null,
+                valorExpresion: 0,
+                versionExpresionOriginal: 0,
+
+                expresionGenerada: false,
+
+                respuestaUsuario: null,
+                estadoRespuesta: null,
+                versionRespuesta: 0,
+                esperandoRespuesta: false
+
+
+            }
+        },
+        methods: {
+            evaluarRespuesta() {
+                if (this.valorExpresion == this.respuestaUsuario) {
+                    console.log(`Respuesta correcta`);
+                    this.estadoRespuesta = "correcta";
+                }
+                else {
+                    this.estadoRespuesta = "incorrecta"
+                }
+            },
+            generarExpresionOriginal() {
+                var dif = parseInt(this.dificultad);
+                var { expresion, valor } = this.generarNumero(dif);
+                var numero1 = expresion
+                var valor1 = Number(valor);
+                dif--;
+                var { expresion, valor } = this.generarNumero(dif);
+                var numero2 = expresion
+                var valor2 = Number(valor);
+                dif--;
+                if (Math.random() > 0.5) {
+                    //Intercambiar el valor de las variables
+                    var temp = numero1;
+                    numero1 = numero2;
+                    numero2 = temp;
+
+                    var tempv = valor1;
+                    valor1 = valor2;
+                    valor2 = tempv;
+                }
+
+                var { opPrimaria, opSecundaria } = this.generarOperaciones();
+                if (opPrimaria == " \\over ") {
+                    numero2 = Math.random() > 0.5 ? 4 : 2;
+                    valor2 = numero2;
+                }
+
+                if (opPrimaria == " \\times ") {
+                    this.valorExpresion = valor1 * valor2;
+                }
+                else if (opPrimaria == " \\over ") {
+                    this.valorExpresion = valor1 / valor2;
+                }
+                else if (opPrimaria == " + ") {
+                    this.valorExpresion = valor1 + valor2;
+                }
+                else if (opPrimaria == " - ") {
+                    this.valorExpresion = valor1 - valor2;
+                }
+
+                var expresion = numero1 + opPrimaria + numero2;
+
+                this.expresionOriginal = "\\(" + expresion + "\\)";
+
+                this.versionExpresionOriginal++;
+                this.esperandoRespuesta = false;
+                this.respuestaUsuario = null;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+
+            },
+            generarNumero(dif) {
+                // console.log(`Generando número con dif: ${dif}`);
+                const compuesto = (dif > 1);
+                if (compuesto) {
+                    console.log(`Compuesto`);
+                    var { expresion, valor } = this.generarNumero(dif - 1);
+                    var numero1 = expresion
+                    var valor1 = Number(valor);
+                    dif--;
+                    var { expresion, valor } = this.generarNumero(dif - 1);
+                    var numero2 = expresion
+                    var valor2 = Number(valor);
+                    dif--;
+                    var { opPrimaria, opSecundaria } = this.generarOperaciones();
+
+                    if (opPrimaria == " \\over ") {//La operación división causará dificultades con resultados tipo 4.3333333333333
+                        if (dif < 1 || parseInt(this.dificultad) < 2) {
+                            numero2 = Math.random() > 0.5 ? 4 : 2;
+                            valor2 = numero2;
+                        }
+                        else {
+                            opPrimaria = " \\times ";
+                        }
+                    }
+                    var valor = 0;
+                    if (opPrimaria == " \\times ") {
+                        valor = valor1 * valor2;
+                    }
+                    else if (opPrimaria == " \\over ") {
+                        valor = valor1 / valor2;
+                    }
+                    else if (opPrimaria == " + ") {
+                        valor = valor1 + valor2;
+                    }
+                    else if (opPrimaria == " - ") {
+                        valor = valor1 - valor2;
+                    }
+
+                    console.log(`Valor: ${valor}`);
+
+                    var numeroCompuesto = "{({" + numero1 + opPrimaria + numero2 + "})}";
+                    return { expresion: numeroCompuesto, valor };
+                }
+                else {
+                    var valor = (Math.random() * 20).toFixed();
+                    return { expresion: valor, valor }
+                }
+            },
+            generarOperaciones() {
+                const rand1 = Math.floor(Math.random() * 4);
+                const rand2 = Math.floor(Math.random() * 4);
+
+                var opPrimaria = " + ";
+                var opSecundaria = " + ";
+
+                if (rand1 < 1) {
+                    opPrimaria = " + ";
+                }
+                else if (rand1 < 2) {
+                    opPrimaria = " - ";
+                }
+                else if (rand1 < 3) {
+                    opPrimaria = " \\times "
+                }
+                else if (rand1 < 4) {
+                    opPrimaria = " \\over "
+                }
+
+                if (rand2 < 1) {
+                    opSecundaria = " + ";
+                }
+                else if (rand2 < 2) {
+                    opSecundaria = " - ";
+                }
+                else if (rand2 < 3) {
+                    opSecundaria = " \\times "
+                }
+                else if (rand2 < 4) {
+                    opSecundaria = " \\over "
+                }
+
+                return { opPrimaria, opSecundaria };
+            }
+        }
+    })
+
+</script>
+
+<style>
+    .expresion {
+        background-color: cadetblue;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 19px;
+        display: inline-block;
+    }
+
+    .respuesta {
+        background-color: cadetblue;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 19px;
+        display: inline-block;
+
+    }
+
+    #respuesta {
+        padding: 15px;
+        border-radius: 50%;
+        background-color: rgb(60, 187, 60);
+        display: inline-block;
+    }
+
+    .caer-enter {
+        transform: translateY(-50px);
+    }
+
+    .caer-enter-active {
+        transition: all 0.8s;
+    }
+
+    .caer-enter-to {
+        transform: translateY(0%)
+    }
+</style>

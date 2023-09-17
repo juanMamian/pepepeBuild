@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Javascript básico - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <div id="bloqueCalculador">
+            <div class="bloqueInput">
+                <label for="inputElo1"></label>
+                <input min="0" type="number" name="inputElo1" id="inputElo1">
+            </div>
+
+            <div class="bloqueInput">
+                <label for="inputElo2"></label>
+                <input min="0" type="number" name="inputElo2" id="inputElo2">
+            </div>
+
+            <div id="zonaBotones">
+                <div class="boton" @click.stop="calcularElos(1)">
+                    Ganó jugador 1
+                </div>
+
+                <div class="boton" @click.stop="calcularElos(0.5)">
+                    Empate
+                </div>
+                <div class="boton" @click.stop="calcularElos(0)">
+                    Ganó jugador 2
+                </div>
+            </div>
+
+            <div id="bloqueResultados" v-if="nuevoElo1 && nuevoElo2">
+                <div class="bloqueResultado" v-if="nuevoElo1">
+                    {{'Nuevo Elo1: '+nuevoElo1.toFixed(0)}}
+                </div>
+
+                <div class="bloqueResultado" v-if="nuevoElo2">
+                    {{'Nuevo Elo2: '+nuevoElo2.toFixed(0)}}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+                nuevoElo1:null,
+                nuevoElo2: null,
+            }
+        },
+        methods:{
+            calcularElos(resultado){
+                
+                const eloInicial1=Number(document.querySelector("#inputElo1").value);
+                const eloInicial2=Number(document.querySelector("#inputElo2").value);
+
+                if(!eloInicial1 || !eloInicial2){
+                    return ;
+                }
+                console.log(`Elo inicial 1: ${eloInicial1}`);
+                console.log(`Elo inicial 2: ${eloInicial2}`);
+                console.log(`Calculando elo con resultado ${resultado}`);
+
+                const expectedRes1=1/(1+Math.pow(10, (eloInicial2-eloInicial1)/400));
+                const expectedRes2=1/(1+Math.pow(10, (eloInicial1-eloInicial2)/400));
+
+                const nuevoElo1=eloInicial1+(32*(resultado-expectedRes1));
+                const nuevoElo2=eloInicial2+(32*((1-resultado)-expectedRes2));
+
+                console.log(`Nuevo elo1: ${nuevoElo1}, nuevoElo2: ${nuevoElo2}`);
+
+                this.nuevoElo1=nuevoElo1;
+                this.nuevoElo2=nuevoElo2;
+            }
+        }
+    })
+</script>
+
+<style>
+    #bloqueCalculador{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+    #zonaBotones {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #bloqueResultados{
+        padding: 20px 10px;
+        border: 2px solid blue;
+    }
+</style>

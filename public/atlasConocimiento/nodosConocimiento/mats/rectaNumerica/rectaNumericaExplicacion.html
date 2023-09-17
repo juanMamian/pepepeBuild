@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Recta numérica</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            La <span class="resaltado">recta numérica</span> es una
+            linea recta imaginaria
+            usada para representar los números.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Los números son representados como puntos sobre la
+            <span class="resaltado">recta numérica</span>.
+
+        </recuadro-component>
+        <recuadro-component tipo="datoPrevio">
+            ¡La recta numérica es infinitamente larga!
+        </recuadro-component>
+
+
+        <bloque-component tipo="herramientaInteractiva" @plegado="reiniciarRectaNumerica"
+            textoCabecera="En este cuadro se muestra una representación de la recta numérica y los números naturales.">
+
+            <div id="explicacionAnimada" class="recuadro">               
+                <div class="boton" v-on:click="stepExplicacionAnimada=1"
+                    v-show="stepExplicacionAnimada==0">Iniciar</div>
+                <div id="contenedorRectaNumerica" v-show="stepExplicacionAnimada>=1">
+                    <transition name="unfoldHorizontal">
+                        <div id="rectaNumerica" v-show="stepExplicacionAnimada>=1"></div>
+                    </transition>
+                    <div id="contenedorBolitas" v-show="stepExplicacionAnimada>=3">
+                        <transition-group name="popIn" tag="div" style="display: flex;">
+                            <div class="bolitaNumero" :key="numero"
+                                :class="{fondoActivo:numeroActivo==(numero-1), bolitaOrigen:numero==1}"
+                                :style="{left:  (40*(parseInt(numero) + panRectaNumerica))+'px'}"
+                                v-for="numero of (numeroActivo+1)">
+                                <div class="nombreNumero" :class="{fondoActivo:numeroActivo==(numero-1)}">
+                                    {{numero-1}}
+                                </div>
+                            </div>
+                            </transition>
+                    </div>
+
+                    <div id="contenedorSegmentos" v-show="numeroActivo!=0" :style="[posicionSegmentos]">
+                        <div style="display: flex;">
+                            <div class="segmentoUnidad" :key="numero"
+                                v-for="numero of Math.abs(parseInt(numeroActivo))">
+                            </div>
+                        </div>
+                    </div>
+
+                    <transition name="travelBottom">
+                        <div id="unidadReferencia" v-show="stepExplicacionAnimada>=5">
+                            <div id="segmentoReferencia"></div>
+                            <div id="nombreUnidad">Unidad</div>
+                        </div>
+                    </transition>
+                </div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=2">
+                    <div class="comentario" v-show="stepExplicacionAnimada==1 || stepExplicacionAnimada==2">
+                        Esta es una representación de la recta numérica. Los números son puntos de esta linea.
+                    </div>
+                </transition>
+
+                <div class="boton" v-on:click="stepExplicacionAnimada=3"
+                    v-show="stepExplicacionAnimada==2">¡Imaginar el primer número!</div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=4">
+                    <div class="comentario" v-show="stepExplicacionAnimada==3 || stepExplicacionAnimada==4">El primer
+                        número
+                        imaginado es el punto del número cero.
+                        Se le suele llamar <span style="font-weight: bold;">el orígen</span>.</div>
+                </transition>
+
+                <div class="boton" v-on:click="stepExplicacionAnimada=5" v-show="stepExplicacionAnimada==4"
+                    class="botonExplicacionAnimada">¿Y dónde imaginamos los demás números?</div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=6">
+                    <div class="comentario"
+                        v-show="(stepExplicacionAnimada==5 || stepExplicacionAnimada==6) && numeroActivo==0">
+                        Para imaginar los demás números se usará este segmento de recta imaginario. Representa una
+                        unidad y
+                        sirve para contar.
+                    </div>
+                </transition>
+
+                <div class="boton" v-show="stepExplicacionAnimada>=6"
+                    :class="{deshabilitado: disableContar}" v-on:click="numeroActivo++">{{numeroActivo>0?'¡Seguir contando':'¡Empezar a contar!'}}</div>
+                <transition name="travelTop">
+                    <div class="comentario" v-show="numeroActivo>0" :key="numeroActivo">A {{numeroActivo}}
+                        unidad{{numeroActivo>1?'es':null}} de distancia desde el 0 está el número {{numeroActivo}}.
+                    </div>
+                </transition>
+
+
+
+            </div>
+        </bloque-component>
+    </div>
+
+
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepExplicacionAnimada: 0,
+                numeroActivo: 0,
+                maxNumero: 19,
+                anchoSegmento: 10,
+                panRectaNumerica: 0,
+
+                disableContar: false,
+            }
+        },
+        methods:{
+            reiniciarRectaNumerica(){
+                this.stepExplicacionAnimada=0; 
+                this.numeroActivo=0; 
+                this.panRectaNumerica=0;
+            }
+        },
+        computed: {
+            anchoRecta() {
+                return Math.max(600, this.numeroActivo * 4 * this.anchoSegmento)
+            },
+            anchoNumeros() {
+                return {
+                    width: ((this.numeroActivo * 30) + 100) + "px",
+                }
+            },
+            posicionNumeros() {
+                return {
+                    left: Math.min(0, 200 - (this.numeroActivo * 30)) + "px"
+                }
+            },
+            posicionSegmentos() {
+                return {
+                    left: 45 + 40 * (this.panRectaNumerica) + 'px'
+                }
+            },
+        },
+        watch: {
+            numeroActivo() {
+                const anchoCuadro = document.getElementById("explicacionAnimada").offsetWidth;
+                const ventanaPan = Math.round(anchoCuadro * 0.3);
+                if (anchoCuadro - ((this.numeroActivo + this.panRectaNumerica) * 40) < ventanaPan) {
+                    console.log(`Acercándose al borde`);
+                    this.disableContar = true;
+                    const dis = this;
+                    setTimeout(function () {
+                        dis.disableContar = false;
+                    }, 1000);
+
+                    setTimeout(function () {
+                        dis.panRectaNumerica = dis.panRectaNumerica - 5;
+                    }, 350);
+
+                }
+            }
+        }
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    #explicacionAnimada {
+        margin: 5px auto;
+        display: block;
+        width: 90%;
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-bottom: 40px;
+    }
+
+    #contenedorRectaNumerica {
+
+        overflow: hidden;
+        height: 140px;
+        width: 100%;
+        position: relative;
+    }
+
+    #rectaNumerica {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        position: absolute;
+        top: 52px;
+    }
+
+    .comentario {
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 10px;
+        background-color: rgba(95, 158, 160, 0.767);
+        border: 1px solid black;
+        margin: 5px 20px;
+    }
+
+    .botonExplicacionAnimada {
+        margin: 10px auto;
+        display: block;
+    }
+
+    #contenedorBolitas {
+        display: flex;
+        position: relative;
+        position: absolute;
+        top: 50px;
+    }
+
+    .bolitaNumero {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: gray;
+        position: absolute;
+        transition: left 1s;
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+        width: 16px;
+        height: 16px;
+        transform: translate(-3px, -3px);
+    }
+
+    .nombreNumero {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    #contenedorSegmentos {
+        display: flex;
+        position: absolute;
+        top: 53px;
+        transition: left 1s;
+    }
+
+    #unidadReferencia {
+        position: relative;
+        top: 110px;
+    }
+
+    .segmentoUnidad {
+        width: 39px;
+        height: 3px;
+        background-color: rgb(208, 192, 62);
+        margin-left: 1px;
+        border-radius: 2px;
+    }
+
+    #segmentoReferencia {
+        width: 39px;
+        height: 4px;
+        background-color: rgb(208, 192, 62);
+
+        margin: 0px auto;
+    }
+
+    #nombreUnidad {
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .fondoActivo {
+        background-color: rgb(255, 67, 67);
+    }
+
+    .deshabilitado {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+    }
+
+    .imgCuadro {
+        width: 25px;
+
+    }
+
+    .popIn-enter-active {
+        animation: pop-in 0.3s;
+
+    }
+
+
+    @keyframes pop-in {
+        0% {
+            transform: scale(0);
+        }
+
+        80% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .travelTop-leave-active{
+        animation: none;
+    }
+
+    @keyframes travelBottom{
+	0%{transform: translateY(200px); opacity: 0}	
+	100%{transform: translateY(0px); opacity: 1}
+}
+
+   
+</style>

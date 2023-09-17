@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de contar</title>
+</head>
+<body>
+    <h1>El juego de contar</h1>
+
+    <p>Presiona la banderita verde para generar un número. Intenta contar las bolitas.</p>
+    
+
+    <div id="contenedorIframe">
+        <iframe id="iframeJuego" src="https://scratch.mit.edu/projects/510320892/embed" frameborder="0"></iframe>
+    </div>
+</body>
+</html>
+
+<style>
+    body{
+        padding: 2% 5%;
+    }
+
+    #iframeJuego{
+        width: min(500px, 90vw);
+        height: min(500px, 90vw);
+        background-image: url('loading.gif');
+        background-position: center center;
+        background-repeat: no-repeat;
+        margin: 10px auto;
+        display: block;
+    }
+
+    @keyframes girar{
+        from: {transform: rotate(0deg)}
+        to: {transform: rotate(360deg)}
+    }
+</style>

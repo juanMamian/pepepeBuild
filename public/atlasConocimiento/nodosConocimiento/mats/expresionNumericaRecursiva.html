@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Expresión numérica anidada</title>
+</head>
+
+<body>
+
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Los operandos de una expresión numérica son números y, por lo tanto, 
+            también pueden ser representados como expresiones numéricas.
+        </recuadro-component>
+
+
+        <bloque-component tipo="ejemplo" @desplegado="ejemploDesplegado" @plegado="ejemploPlegado"
+            textoCabecera="En este cuadro se puede ver una expresion numérica y se pueden expresar sus operandos en forma de nuevas expresiones numéricas">
+
+            <div id="expresionNumerica">
+                <div class="parentesisExtremo">
+                    \((\)
+                </div>
+                <div class="contenedorNumeroTransformable" style="width: 100px;"
+                    @click="$set(numerosTransformablesTransformados, 0, !numerosTransformablesTransformados[0])">
+                    <div class="opcion opcion1" v-show="!numerosTransformablesTransformados[0]">\( 3 \)</div>
+                    <div class="opcion opcion2" v-show="numerosTransformablesTransformados[0]">\( ({6 \over 2}) \)</div>
+                </div>
+
+                \(+\)
+
+                <div class="contenedorNumeroTransformable" style="width: 80px;"
+                    @click="$set(numerosTransformablesTransformados, 1, !numerosTransformablesTransformados[1])">
+                    <div class="opcion opcion1" v-show="!numerosTransformablesTransformados[1]">\( 15 \)</div>
+                    <div class="opcion opcion2" v-show="numerosTransformablesTransformados[1]">\( (5 \times 3) \)</div>
+                </div>
+                <div class="parentesisExtremo">
+                    \()\)
+                </div>
+            </div>
+
+            <recuadro-component tipo="instruccionPointer">
+                Toca los operandos de esta expresión numérica para cambiar el modo en que están expresados
+            </recuadro-component>
+
+        </bloque-component>
+
+        <recuadro-component tipo="descubrimiento">
+            Las operandos de cualquier expresión numérica pueden ser, a su vez, expresiones numéricas. 
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+                numerosTransformablesTransformados: [false, false, false, false, false, false, false]
+            }
+        },
+        methods: {
+            toggleExpresionNumerica(index) {
+                // this.mostrandoExpresionNumerica[index]=!this.mostrandoExpresionNumerica[index];
+                this.$set(this.mostrandoExpresionNumerica, index, !this.mostrandoExpresionNumerica[index]);
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+            },
+            ejemploDesplegado() {
+                console.log("Relanzando typeset")
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            ejemploPlegado(){
+                for (var i=0;i<this.numerosTransformablesTransformados.length;i++){
+                    this.$set(this.numerosTransformablesTransformados, i, false);
+                }
+            }
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .itemEjemplo .boton {
+        width: 160px;
+    }
+
+    #expresionNumerica {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .parentesisExtremo{
+        font-size: 35px;
+    }
+
+    .contenedorNumeroTransformable {
+        height: 50px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .contenedorNumeroTransformable .opcion {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .numero {
+        text-align: center;
+    }
+
+
+    .travelUp-enter-active {
+        animation: travelUp 0.5s;
+        animation-iteration-count: 1;
+    }
+
+    .travelUp-leave-active {
+        animation: travelUp 0.5s;
+        animation-iteration-count: 1;
+        animation-direction: reverse;
+    }
+
+    .travelDown-enter-active {
+        animation: travelDown 0.5s;
+        animation-iteration-count: 1;
+    }
+
+    .travelDown-leave-active {
+        animation: travelDown 0.5s;
+        animation-iteration-count: 1;
+        animation-direction: reverse;
+    }
+
+
+
+    @keyframes travelUp {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+
+    @keyframes travelDown {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+</style>

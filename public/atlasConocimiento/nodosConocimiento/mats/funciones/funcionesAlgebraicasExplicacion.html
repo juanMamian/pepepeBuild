@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Funciones algebraicas</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            Las funciones algebraicas son funciones en las que el elemento señalado por la función está dado por una
+            expresión algebráica.
+        </recuadro-component>
+        <recuadro-component tipo="datoPrevio">
+            En las funciones algebraicas, el dominio y el rango son conjuntos de números.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>Ejemplo de función algebraica.</template>
+            <p> En este ejemplo: </p>
+
+            <ul>
+                <li>\(x\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+                <li>\(y\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+            </ul>
+
+            <p>
+                <span class="expresion">\(f(x) = y\)</span> Es decir que al aplicar la función \(f\) a \(x\), la
+                función señala a \(y\)
+            </p>
+
+            <span class="expresion">\(f(x) = x+5\)</span> Es decir que al aplicar la función \(f\) a \(x\), la
+            función
+            señala al número \(x+5\).
+
+            De modo que:
+
+            <ul>
+                <li><span class="expresion">\(f(1) = 1+5\)</span> Es decir que al aplicar la función \(f\) a \(1\),
+                    la función
+                    señala al número \(1+5\).</li>
+                <li><span class="expresion">\(f(2) = 2+5\)</span> Es decir que al aplicar la función \(f\) a \(2\),
+                    la función
+                    señala al número \(2+5\).</li>
+                <li><span class="expresion">\(f(3) = 3+5\)</span> Es decir que al aplicar la función \(f\) a \(3\),
+                    la función
+                    señala al número \(3+5\).</li>
+                <li><span class="expresion">\(f(4) = 4+5\)</span> Es decir que al aplicar la función \(f\) a \(4\),
+                    la función
+                    señala al número \(4+5\).</li>
+            </ul>
+        </bloque-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>Ejemplo de función algebraica.</template>
+
+            <p> En este ejemplo: </p>
+
+            <ul>
+                <li>\(x\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+                <li>\(y\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+            </ul>
+
+            <p>
+                <span class="expresion">\(r(x) = y\)</span> Es decir que al aplicar la función \(r\) a \(x\), la
+                función señala a \(y\)
+            </p>
+
+            <span class="expresion">\(r(x) = 2x\)</span> Es decir que al aplicar la función \(r\) a \(x\), la
+            función
+            señala al número \(2x\).
+
+            De modo que:
+
+            <ul>
+                <li><span class="expresion">\(r(1) = 2 \cdot 1\)</span> Es decir que al aplicar la función \(r\) a
+                    \(1\),
+                    la función
+                    señala al número \(2 \cdot 1\).</li>
+                <li><span class="expresion">\(r(2) = 2 \cdot 2\)</span> Es decir que al aplicar la función \(r\) a
+                    \(2\),
+                    la función
+                    señala al número \(2 \cdot 2\).</li>
+                <li><span class="expresion">\(r(3) = 2 \cdot 3\)</span> Es decir que al aplicar la función \(r\) a
+                    \(3\),
+                    la función
+                    señala al número \(2 \cdot 3\).</li>
+                <li><span class="expresion">\(r(4) = 2 \cdot 4\)</span> Es decir que al aplicar la función \(r\) a
+                    \(4\),
+                    la función
+                    señala al número \(2 \cdot 4\).</li>
+            </ul>
+
+        </bloque-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>Ejemplo de función algebraica.</template>
+
+            <p> En este ejemplo: </p>
+
+            <ul>
+                <li>\(x\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+                <li>\(y\) es una variable que representa a cualquier elemento de un conjunto de números</li>
+            </ul>
+
+            <p>
+                <span class="expresion">\(g(x) = y\)</span> Es decir que al aplicar la función \(g\) a \(x\), la
+                función señala a \(y\)
+            </p>
+            <span class="expresion">\(g(x) = 2(3+x)\)</span> Quiere decir que al aplicar la función \(g\) a \(x\),
+            la
+            función
+            señala al número \(2(3+x)\).
+
+            De modo que:
+
+            <ul>
+                <li><span class="expresion">\(g(1) = 2(3+1)\)</span> Es decir que al aplicar la función \(g\) a
+                    \(1\),
+                    la función
+                    señala al número \(2(3+1)\).</li>
+                <li><span class="expresion">\(g(2) = 2(3+2)\)</span> Es decir que al aplicar la función \(g\) a
+                    \(2\),
+                    la función
+                    señala al número \(2(3+2)\).</li>
+                <li><span class="expresion">\(g(3) = 2(3+3)\)</span> Es decir que al aplicar la función \(g\) a
+                    \(3\),
+                    la función
+                    señala al número \(2(3+3)\).</li>
+                <li><span class="expresion">\(g(4) = 2(3+4)\)</span> Es decir que al aplicar la función \(g\) a
+                    \(4\),
+                    la función
+                    señala al número \(2(3+4)\).</li>
+            </ul>
+
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1Desplegado: false,
+                ejemplo2Desplegado: false,
+                ejemplo3Desplegado: false,
+            }
+        }
+    })
+</script>
+
+<style>
+    .expresion {
+        padding: 2px 5px;
+        border: 1px solid chocolate;
+        border-radius: 3px;
+        background-color: rgb(238, 176, 132);
+    }
+
+    li{
+        margin-top: 20px;
+    }
+</style>

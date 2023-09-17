@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Variables</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Una variable es un símbolo usado para significar el concepto <span class="resaltado">cualquier elemento de
+                un conjunto</span>.
+        </recuadro-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Frecuentemente se usa una letra, como <span style="font-size: 38px"> \(x, y, w, v\) </span>, etc.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Frecuentemente la letra usada como variable corresponde a la letra usada para nombrar un conjunto. Así: 
+        
+            <ul>
+                <li>
+                    <span style="font-size: 38px;">\( x \) </span> significa <span class="resaltado">Cualquier elemento del conjunto X</span>                    
+                </li>
+                <li>
+                    <span style="font-size: 38px;">\( m \) </span> significa <span class="resaltado">Cualquier elemento del conjunto M</span>                    
+                </li>
+                <li>
+                    <span style="font-size: 38px;">\( p \) </span> significa <span class="resaltado">Cualquier elemento del conjunto P</span>                    
+                </li>
+            </ul>
+        
+        </recuadro-component>
+
+
+        <bloque-component tipo="ejemplo">
+
+            <template #cabecera>
+                En este cuadro se muestra un ejemplo de interpretación de afirmaciones usando variables.
+            </template>            
+
+            Si \(n\) es una variable que representa <span class="resaltado">cualquier elemento del conjunto <span
+                style="font-style: italic;">N</span></span>, entonces:
+            <ul>
+                <li><span class="resaltado">\(n\) tiene más de tres letras</span> significa <span
+                        class="resaltado">cualquier elemento de <span style="font-style: italic;">N</span> tiene más de
+                        tres letras.</span></li>
+                <li><span class="resaltado">\(n\) es menor que 10</span> significa <span class="resaltado">cualquier
+                        elemento de <span style="font-style: italic;">N</span> es menor que 10.</span></li>
+                <li><span class="resaltado">\(n\) es un número</span> significa <span class="resaltado">cualquier
+                        elemento de <span style="font-style: italic;">N</span> es un número.</span></li>
+            </ul>
+
+            <p>
+                Si una afirmación es cierta para <span class="resaltado">Cualquier elemento del conjunto</span>, entonces también es cierta, si se escoge
+                un elemento del conjunto.
+            </p>
+
+            <recuadro-component tipo="instruccionPointer">
+                Escoge un elemento del conjunto para ver cómo aparece en lugar de la variable en las afirmaciones.
+            </recuadro-component>
+            <br>
+            <div id="listaAfirmaciones">
+                <ul>
+                    <li><span class="subrayado"><span class="variable"
+                                :key="versionAfirmaciones">{{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:'\\(n\\)'}}</span>
+                            tiene más de tres letras</span> </li>
+                    <li><span class="subrayado"><span class="variable"
+                                :key="versionAfirmaciones">{{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:'\\(n\\)'}}</span>
+                            es menor que 10</span> </li>
+                    <li><span class="subrayado"><span class="variable"
+                                :key="versionAfirmaciones">{{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:'\\(n\\)'}}</span>
+                            es un número</span> </li>
+                </ul>
+            </div>
+            <br>
+            <div class="conjunto dominio" id="dominio1" @click.self="indexElementoDominioSeleccionado=null">
+                <div class="nombreConjunto">N</div>
+                <div class="elemento elementoDominio" ref="elementosDominio1"
+                    :class="{elementoSeleccionado:indexElementoDominioSeleccionado==index}"
+                    v-for="(pais, index) of numeros" :key="index" :style="[pais.posicion]"
+                    @click="selectElementoDominio1(index)">
+                    {{pais.nombre}}
+                </div>
+            </div>
+        </bloque-component>
+
+
+
+
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeros: [
+                    {
+                        nombre: "Tres",
+                        target: [[0], [10, 13], [11]],
+                        posicion: {
+                            left: 40 + "%",
+                            top: 5 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Cuatro",
+                        target: [[2], [7], [12, 13]],
+                        posicion: {
+                            left: 20 + "%",
+                            top: 50 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Cinco",
+                        target: [[4], [9], [5]],
+                        posicion: {
+                            left: 63 + "%",
+                            top: 46 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Seis",
+                        target: [[5], [10, 13], [5]],
+                        posicion: {
+                            left: 50 + "%",
+                            top: 86 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Siete",
+                        target: [[3], [4], [1]],
+                        posicion: {
+                            left: 60 + "%",
+                            top: 70 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Ocho",
+                        target: [[6], [9], [1]],
+                        posicion: {
+                            left: 23 + "%",
+                            top: 76 + "%"
+                        }
+                    },
+
+                ],
+                versionAfirmaciones: 0,
+                indexElementoDominioSeleccionado: null,
+                ejemplo1Desplegado: true,
+                funcionSeleccionada: -1,
+            }
+        },
+        methods: {
+            selectElementoDominio1(index) {
+                this.indexElementoDominioSeleccionado = index;
+            }
+        },
+        computed: {
+            elementoDominioSeleccionado() {
+                if (this.indexElementoDominioSeleccionado != null) {
+                    return this.numeros[this.indexElementoDominioSeleccionado]
+                }
+                return null;
+            }
+        },
+        watch: {
+            elementoDominioSeleccionado() {
+                this.versionAfirmaciones++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            }
+        }
+    })
+</script>
+
+<style>
+    li {
+        margin: 10px 0px;
+    }
+
+    .cuadroEjemplo {
+        padding: 20px 20px;
+        border: 2px solid cadetblue;
+        border-radius: 10px;
+        margin: 20px 0px;
+        position: relative;
+    }
+
+    #listaAfirmaciones {
+        padding: 15px;
+        border-radius: 10px;
+        border: 2px solid cadetblue;
+        background-color: rgb(186, 221, 223);
+        width: 400px;
+        margin: 10px auto;
+    }
+
+    .variable {
+        background-color: rgba(210, 105, 30, 0.575);
+        border: 1px solid rgb(105, 47, 6);
+        padding: 1px 5px;
+    }
+
+    .conjunto {
+        border-radius: 50%;
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        padding: 15px;
+        margin: 15px auto;
+
+    }
+
+    .nombreConjunto {
+        font-size: 13px;
+        font-style: italic;
+    }
+
+    .elemento {
+        padding: 2px;
+        border: 1px solid chocolate;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 1;
+        font-size: 8px;
+    }
+
+    .elementoDominio {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .elementoSeleccionado {
+        background-color: chocolate;
+    }
+
+
+    .selectorFuncion {
+        font-size: 13px;
+        padding: 5px 7px;
+        border: 1px solid chocolate;
+        border-radius: 5px;
+        text-align: center;
+        display: inline-block;
+        margin: 10px auto;
+        z-index: 1;
+        max-width: 30%;
+        cursor: pointer;
+    }
+
+    .funcionActiva {
+        background-color: rgb(248, 214, 190);
+    }
+
+    .variablep {
+        padding: 3px 5px;
+        background-color: chocolate;
+        border-radius: 3px;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .selectorFuncion {
+            font-size: 16px;
+        }
+
+        .conjunto {
+            width: 300px;
+            height: 300px;
+        }
+
+        .elemento {
+            font-size: 16px;
+        }
+
+        .nombreConjunto {
+            font-size: 25px;
+        }
+    }
+</style>

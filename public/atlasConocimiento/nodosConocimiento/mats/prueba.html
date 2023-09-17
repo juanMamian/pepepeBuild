@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="./resources/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+   
+
+    <title>Nombre</title>
+</head>
+<body>
+    <div id="doc">
+        
+
+        <bloque-component textocabecera="Respuestas de conmutación" tipo="spoiler">
+        </bloque-component>
+
+        <enlace-component texto="Video de explicación" direccion="https://youtube.com"></enlace-component>
+    </div>
+</body>
+</html>
+
+<script>
+    const doc=new Vue({
+        el:"#doc",
+        components:{
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data(){
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+  #plano{
+      width: 200px;
+      height: 200px;
+      background-color: red;
+  }
+</style>

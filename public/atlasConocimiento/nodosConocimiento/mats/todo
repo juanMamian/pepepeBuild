@@ -1,0 +1,31 @@
+-En el generador de expresiones el Math.pow no logra ejecutar una potencia a una fracción negativa y por lo tanto no puede generar una subexpresión para radicación de números negativos.
+-Terminar de hacer el generador de retos para manipulados basico de expresiones. Por el momento genera una expresión reexpresionada una sola vez y deja el trabajo de generar un reto para que algún experto se lo invente.
+-Hacer los ejemplos de expresionesSimplificadas en el nodo simplificacionCancelacionExplicacion.html
+-Introducir al nodo de deducción de comparaciones el asunto con las multiplicaciones por números negativos.
+-Revisar si el generador de expresiones respeta el valor de las expresion cuando se hace fillExpresion y reexpresiones.
+-Cambiar el nodo identidadAlgebraica por identidadMatematicas.
+-Hacer herramientas de autoevaluación para los nodos
+    -distributividad.
+    -conmutatividad.
+    -asociatividad.
+    -expresión algebraica.
+-Hacer una herramienta de autoevaluación para el nodo de distributividad.
+-Crear una nueva sección en el nodo de multiplicación acerca del símbolo de la multiplicación.
+-Al convertir a mathjax, las divisiones de divisiones no muestran claramente cuál es operando de quién.
+-Hacer evaluacion del nodo de voltaje.
+-Corregir el nodo de funciones en javascript porque dice que para ejecutar la función hay que escribir el nombre de la variable.
+-Mas ejemplos para la explicación de operaciones aritméticas opuestas.
+-Purgar de MathJax las páginas que no lo requieren.
+-Revisar el nombre de Principia matematica en el nodo de ley de inercia.
+-Hacer el tipo de recuadro "hipotesis".
+-Había algo en los nodos de recta numérica que se salía por los lados en móviles.
+-La evaluación del nodo de elementosHtml está outdated.
+-Arreglar los botones de ejemplos de cancelación.
+-update el nodo de sumas y restas.
+-Ver la estructura de la red de sistemas arduino. Está de último el nodo de estructura básica de un programa arduino.
+-La siguiente fuente no es encontrada: http://192.168.1.105:3000/public/resources/libraries/MathJax/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff
+-Que los nodos de operaciones aritméticas básicas tengan algunos retos de evaluación.
+
+-Hacer unos ejemplos para javascriptBasicoReferenciaElementos.
+
+-Colocar los retos en la evaluación de cancelación.

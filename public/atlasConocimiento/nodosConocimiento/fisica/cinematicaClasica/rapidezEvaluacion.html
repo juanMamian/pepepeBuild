@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Rapidez - Evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el concepto de rapidez si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo explicar que es la rapidez.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo dar algunos ejemplos de rapidez.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Puedo explicar qué es la rapidez media.
+            </template>
+
+        </bloque-component>
+
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada cualquier descripción suficiente del movimiento de un cuerpo, puedo calcular su rapidez media.
+            </template>
+            <div class='boton' @click="generarReto4">
+                Generar reto
+            </div>
+
+            <transition name="enterTop">
+                <recuadro-component id='reto4' v-if="datosReto4Creados" :key="versionReto4">
+                    Un cuerpo recorrió {{textificarCantidad(distanciaReto4, unidadesDistanciaReto4.nombre)}} en
+                    {{textificarCantidad(tiempoReto4, unidadesTiempoReto4.nombre)}}.
+                </recuadro-component>
+            </transition>
+
+            <transition name="fade">
+                <recuadro-component tipo="instruccionTeclado" class='zonaRespuesta' v-show="datosReto4Creados">
+                    <p>
+                        Introduce aquí tu respuesta
+                    </p>
+
+                    <input ref="inputRespuestaReto4" id="inputRespuestaReto4"
+                        @keypress.enter="$refs.botonAceptarRespuestaReto4.click()" @focus="$event.target.select()" />
+                    <div class='boton' ref="botonAceptarRespuestaReto4" id="botonAceptarRespuestaReto4"
+                        @click="setRespuestaUsuarioReto4">
+                        Aceptar
+                    </div>
+
+                </recuadro-component>
+            </transition>
+            <transition name="popIn" @after-enter="scrollInfoResultadoReto4">
+                <recuadro-component tipo='infoResultado' :key="versionRespuestaUsuarioReto4" ref="infoResultadoReto4"
+                    v-if="datosReto4Creados && respuestaUsuarioReto4Correcta != null"
+                    :modo="respuestaUsuarioReto4Correcta?'correcto':'incorrecto'">
+
+                </recuadro-component>
+            </transition>
+
+
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada la rapidez media de un movimiento y su duración, puedo calcular la distancia recorrida.
+            </template>
+            <div class='boton' @click="generarReto5">
+                Generar reto
+            </div>
+
+            <transition name="enterTop">
+                <recuadro-component id='reto5' v-if="datosReto5Creados" :key="versionReto5">
+                    Un cuerpo se movió con una rapidez de {{textificarCantidad(rapidezReto5,
+                    unidadesDistanciaReto5.nombre)}} por
+                    {{unidadesTiempoReto5.nombre}}. Estuvo en movimiento durante {{tiempoReto5}}
+                    {{unidadesTiempoReto5.nombre}}{{tiempoReto5==1?'':"aeiou".includes(unidadesTiempoReto5.nombre.charAt(unidadesTiempoReto5.nombre.length
+                    - 1))?'s': 'es'}}
+                </recuadro-component>
+            </transition>
+
+            <transition name="fade">
+                <recuadro-component tipo="instruccionTeclado" class='zonaRespuesta' v-show="datosReto5Creados">
+                    <p>
+                        Introduce aquí tu respuesta
+                    </p>
+
+                    <input ref="inputRespuestaReto5" id="inputRespuestaReto5"
+                        @keypress.enter="$refs.botonAceptarRespuestaReto5.click()" @focus="$event.target.select()" />
+                    <div class='boton' ref="botonAceptarRespuestaReto5" id="botonAceptarRespuestaReto5"
+                        @click="setRespuestaUsuarioReto5">
+                        Aceptar
+                    </div>
+
+                </recuadro-component>
+            </transition>
+            <transition name="popIn" @after-enter="scrollInfoResultadoReto5">
+                <recuadro-component tipo='infoResultado' :key="versionRespuestaUsuarioReto5" ref="infoResultadoReto5"
+                    v-if="datosReto5Creados && respuestaUsuarioReto5Correcta != null"
+                    :modo="respuestaUsuarioReto5Correcta?'correcto':'incorrecto'">
+
+                </recuadro-component>
+            </transition>
+
+
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+<script>
+    const unidadesTiempo = [
+        {
+            nombre: "segundo",
+            abreviacion: "s",
+        },
+        {
+            nombre: "minuto",
+            abreviacion: "min",
+        },
+        {
+            nombre: "hora",
+            abreviacion: "h",
+        },
+        {
+            nombre: "día",
+            abreviacion: "dia",
+        },
+        {
+            nombre: "semana",
+            abreviacion: "sem",
+        },
+        {
+            nombre: "mes",
+            abreviacion: "mes",
+        },
+        {
+            nombre: "año",
+            abreviacion: "año",
+        },
+    ]
+    const unidadesDistancia = [
+        {
+            nombre: "centímetro",
+            abreviacion: "cm",
+        },
+        {
+            nombre: "metro",
+            abreviacion: "m",
+        },
+        {
+            nombre: "kilómetro",
+            abreviacion: "km",
+        },
+        {
+            nombre: "milla",
+            abreviacion: "mi",
+        },
+        {
+            nombre: "milímetro",
+            abreviacion: "mm",
+        },
+        {
+            nombre: "año luz",
+            abreviacion: "año luz",
+        },
+    ]
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                distanciaReto4: null,
+                unidadesDistanciaReto4: null,
+                tiempoReto4: null,
+                unidadesTiempoReto4: null,
+                respuestaReto4: null,
+                versionReto4: 0,
+                respuestaUsuarioReto4: null,
+                respuestaUsuarioReto4Correcta: null,
+                versionRespuestaUsuarioReto4: 0,
+
+                rapidezReto5: null,
+                unidadesDistanciaReto5: null,
+                tiempoReto5: null,
+                unidadesTiempoReto5: null,
+                respuestaReto5: null,
+                versionReto5: 0,
+                respuestaUsuarioReto5: null,
+                respuestaUsuarioReto5Correcta: null,
+                versionRespuestaUsuarioReto5: 0,
+            }
+        },
+        computed: {
+            datosReto4Creados() {
+                return this.distanciaReto4 && this.tiempoReto4 && this.unidadesDistanciaReto4 && this.unidadesTiempoReto4 && this.respuestaReto4;
+            },
+            datosReto5Creados() {
+                return this.rapidezReto5 && this.unidadesDistanciaReto5 && this.unidadesTiempoReto5 && this.tiempoReto5;
+            },
+        },
+        methods: {
+            generarReto5() {
+                this.reiniciarReto5();
+
+                let minRapidez = 2;
+                let maxRapidez = 200;
+                let rangoRapidez = maxRapidez - minRapidez;
+
+                this.rapidezReto5 = Math.round(Math.random() * rangoRapidez + minRapidez);
+
+                this.unidadesDistanciaReto5 = unidadesDistancia[Math.floor(Math.random() * unidadesDistancia.length)];
+
+                this.unidadesTiempoReto5 = unidadesTiempo[Math.floor(Math.random() * unidadesTiempo.length)];
+
+                let minTiempo = 2;
+                let maxTiempo = 200;
+                let rangoTiempo = maxTiempo - minTiempo;
+                this.tiempoReto5 = Math.round(Math.random() * rangoTiempo + minTiempo);
+
+                this.respuestaReto5 = this.rapidezReto5 * this.tiempoReto5;
+
+            },
+            reiniciarReto5() {
+                this.distanciaReto5 = null;
+                this.tiempoReto5 = null;
+                this.unidadesDistanciaReto5 = null;
+                this.unidadesTiempoReto5 = null;
+                this.respuestaReto5 = null;
+                this.respuestaUsuarioReto5 = null;
+                this.respuestaUsuarioReto5Correcta = null;
+            },
+            setRespuestaUsuarioReto5() {
+                let inputUsuario = this.$refs.inputRespuestaReto5.value;
+
+                if (!inputUsuario || !this.datosReto5Creados) {
+                    return false;
+                }
+                this.versionRespuestaUsuarioReto5++;
+                inputUsuario = inputUsuario.trim();
+                let indexFrontera = inputUsuario.search(/[^0-9\.]/) + 1;
+                let numero = Number(inputUsuario.slice(0, indexFrontera));
+                console.log("El número es " + numero);
+
+                let unidades = inputUsuario.slice(indexFrontera).trim().toLowerCase();
+                console.log("La parte de unidades es " + unidades);
+
+                if (Math.abs(numero - this.respuestaReto5) > 0.1) {
+                    this.respuestaUsuarioReto5Correcta = false;
+                    return;
+                }
+                //Ahora revisar unidades.
+                //Primero encontrar separación.
+                let palabrasNombreUnidades = this.unidadesDistanciaReto5.nombre.split(" ");
+                let patronNombreUnidades = palabrasNombreUnidades[0] + "s?";
+                for (let i = 1; i < palabrasNombreUnidades.length; i++) {
+                    patronNombreUnidades += " " + palabrasNombreUnidades[i];
+                }
+                console.log("El patron de nombre unidades está en: " + patronNombreUnidades);
+
+                const patronUnidadesDistancia = "^(" + patronNombreUnidades + "|" + this.unidadesDistanciaReto5.abreviacion + ")$";
+                const testExpr = new RegExp(patronUnidadesDistancia, "g");
+
+                if (!unidades.match(patronUnidadesDistancia)) {
+                    this.respuestaUsuarioReto5Correcta = false;
+                    return;
+                }
+                this.respuestaUsuarioReto5Correcta = true;
+
+            },
+            scrollInfoResultadoReto5() {
+                this.$nextTick(() => {
+                    if (this.$refs.infoResultadoReto5) {
+                        this.$refs.infoResultadoReto5.$el.scrollIntoView({behavior: 'smooth'});
+                    }
+                });
+
+            },
+            scrollInfoResultadoReto4() {
+                this.$nextTick(() => {
+                    if (this.$refs.infoResultadoReto4) {
+                        this.$refs.infoResultadoReto4.$el.scrollIntoView({behavior: 'smooth'});
+                    }
+                });
+
+            },
+            setRespuestaUsuarioReto4() {
+                let inputUsuario = this.$refs.inputRespuestaReto4.value;
+
+                if (!inputUsuario || !this.datosReto4Creados) {
+                    return false;
+                }
+                this.versionRespuestaUsuarioReto4++;
+                inputUsuario = inputUsuario.trim();
+                let indexFrontera = inputUsuario.search(/[^0-9\.]/) + 1;
+                let numero = Number(inputUsuario.slice(0, indexFrontera));
+                console.log("El número es " + numero);
+
+                let unidades = inputUsuario.slice(indexFrontera).trim().toLowerCase();
+                console.log("La parte de unidades es " + unidades);
+                let resCorrecta = true;
+
+                if (Math.abs(numero - this.distanciaReto4 / this.tiempoReto4) > 0.1) {
+                    this.respuestaUsuarioReto4Correcta = false;
+                    return;
+                }
+                //Ahora revisar unidades.
+                //Primero encontrar separación.
+                const patronUnidadesDistancia = "( *" + this.unidadesDistanciaReto4.nombre + "s? *| *" + this.unidadesDistanciaReto4.abreviacion + " *)";
+                const patronUnidadesTiempo = "( *" + this.unidadesTiempoReto4.nombre + " *| *" + this.unidadesTiempoReto4.abreviacion + " *)";
+                const patronFinal = "^" + patronUnidadesDistancia + "(cada|por|\\/)" + patronUnidadesTiempo + "$";
+                const testExpr = new RegExp(patronFinal, "g");
+
+                if (!unidades.match(patronFinal)) {
+                    this.respuestaUsuarioReto4Correcta = false;
+                    return;
+                }
+                this.respuestaUsuarioReto4Correcta = true;
+
+            },
+            reiniciarReto4() {
+                this.distanciaReto4 = null;
+                this.tiempoReto4 = null;
+                this.unidadesDistanciaReto4 = null;
+                this.unidadesTiempoReto4 = null;
+                this.respuestaReto4 = null;
+                this.respuestaUsuarioReto4 = null;
+                this.respuestaUsuarioReto4Correcta = null;
+            },
+            generarReto4() {
+                console.log("Reiniciando reto");
+                this.reiniciarReto4();
+                console.log("Reto reiniciado");
+
+                let minDistancia = 2;
+                let maxDistancia = 200;
+                let rangoDistancia = maxDistancia - minDistancia;
+
+                this.distanciaReto4 = Math.round(Math.random() * rangoDistancia + minDistancia);
+
+                this.unidadesDistanciaReto4 = unidadesDistancia[Math.floor(Math.random() * unidadesDistancia.length)];
+
+                let minTiempo = 2;
+                let maxTiempo = 50;
+                let rangoTiempo = maxTiempo - minTiempo;
+
+                this.tiempoReto4 = Math.round(Math.random() * rangoTiempo + minTiempo);
+
+                this.unidadesTiempoReto4 = unidadesTiempo[Math.floor(Math.random() * unidadesTiempo.length)];
+                this.respuestaReto4 = this.distanciaReto4 / this.tiempoReto4;
+            },
+            textificarCantidad(cantidad, unidad) {
+                if (cantidad != 1) { // Hay que poner las unidades en plural.
+                    let palabras = unidad.split(" ");
+                    let terminacionPlural = "s";
+                    if (!"aeiou".includes(palabras[0].charAt(palabras[0].length - 1))) {
+                        terminacionPlural = 'es';
+                    }
+                    unidad = palabras[0] + terminacionPlural;
+                    for (var index = 1; index < palabras.length; index++) {
+                        unidad += " " + palabras[index];
+                    }
+                }
+                return cantidad + " " + unidad;
+
+            },
+        }
+    })
+</script>

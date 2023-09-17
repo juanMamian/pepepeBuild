@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Fusión</title>
+</head>
+
+<body>
+
+    <div id="doc">
+
+        <h4>Fusión</h4>
+        El cambio que sufre una sustancia
+        cuando pasa de estado solido a estado líquido.
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta fusión absorbe energía térmica, de modo que sus 
+            particulas aumentan su energía cinética incrementando la distancia entre ellas.
+        </recuadro-component>
+
+        <hr>
+        <h4>Solidificación</h4>
+        <p>
+            El cambio que sufre una sustancia
+            cuando pasa de estado líquido a estado sólido.
+        </p>
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta solidificación libera energía térmica, de modo que sus 
+            particulas disminuyen su energía cinética reduciendo la distancia entre ellas.
+        </recuadro-component>
+        <hr>
+        <h4>Ebullición</h4>
+            El cambio
+            que sufre una sustancia
+            cuando pasa de estado líquido a estado gaseoso.
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta ebullición absorbe energía térmica, de modo que sus 
+            particulas aumentan su energía cinética incrementando la distancia entre ellas. 
+        </recuadro-component>
+
+
+        <hr>
+        <h4>Condensación</h4>
+            El cambio que sufre una sustancia
+            cuando pasa de estado gaseoso a estado líquido.
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta condensacion libera energía térmica, de modo que sus 
+            particulas disminuyen su energía cinética reduciendo la distancia entre ellas.
+        </recuadro-component>
+
+
+        <hr>
+        <h4>Sublimación</h4>
+            El cambio que sufre una sustancia
+            cuando pasa de estado solida a estado gaseoso sin pasar por el estado líquido.
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta sublimación absorbe energía térmica, de modo que sus 
+            particulas aumentan su energía cinética incrementando la distancia entre ellas.
+        </recuadro-component>
+
+        <hr>
+        <h4>Sublimación inversa</h4>
+            El cambio que sufre una sustancia
+            cuando pasa de estado gaseoso a estado solido sin pasar por el estado líquido.
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando una sustancia experimenta sublimación inversa libera energía térmica, de modo que sus 
+            particulas disminuyen su energía cinética reduciendo la distancia entre ellas.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

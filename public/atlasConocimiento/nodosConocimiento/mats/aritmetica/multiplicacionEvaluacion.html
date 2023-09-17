@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Multiplicación - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de multiplicación si: </p>
+
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo expresar una multiplicación de varios modos y calcular el resultado.">
+
+            <div class='flexVertical'>
+                <div class='boton' @click="generarReto1">
+                    Generar multiplicación
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto1' :key="versionReto1" v-if="reto1">
+                        {{reto1}}
+                    </div>
+                </transition>
+                <transition name="fadeIn">
+                    <recuadro-component tipo='instruccionTeclado' v-show="resultadoReto1 != null">
+                        <p>
+                            Escribe aquí tu respuesta
+                        </p>
+
+                        <input id='inputRespuestaResultadoReto1' ref='inputRespuestaResultadoReto1'
+                            @keypress.enter="$refs.botonSetRespuestaResultadoReto1.click()"
+                            @focus="$event.target.select()" type="number">
+                        <div class='boton' @click="setRespuestaResultadoReto1" ref="botonSetRespuestaResultadoReto1">
+                            Aceptar
+                        </div>
+                    </recuadro-component>
+                </transition>
+
+                <transition name="popIn" @before-enter="$nextTick(()=>{$refs.infoResultadoReto1.$el.scrollIntoView({behavior: 'smooth', block:'center'})})">
+                    <recuadro-component tipo='infoResultado'
+                        :key="'infoRespuestaResultadoReto1'+versionRespuestaResultadoReto1"
+                        ref="infoResultadoReto1"
+                        v-show="respuestaResultadoReto1!=null && resultadoReto1 != null"
+                        :modo="respuestaResultadoReto1 === resultadoReto1?'correcto':'incorrecto'">
+                    </recuadro-component>
+                </transition>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        el: "#doc",
+        data() {
+            return {
+                reto1: null,
+                versionReto1: 0,
+                resultadoReto1: null,
+                respuestaResultadoReto1: null,
+                versionRespuestaResultadoReto1: 0,
+            }
+        },
+        methods: {
+            setRespuestaResultadoReto1() {
+                let valorIntroducido = this.$refs.inputRespuestaResultadoReto1.value;
+                if (valorIntroducido.length < 1) {
+                    console.log("inválido");
+                    return;
+                }
+                this.respuestaResultadoReto1 = Number(this.$refs.inputRespuestaResultadoReto1.value);
+                this.versionRespuestaResultadoReto1++;
+            },
+            generarReto1() {
+                this.reto1 = null;
+                this.resultadoReto1 = null;
+                this.respuestaResultadoReto1 = null;
+                this.$refs.inputRespuestaResultadoReto1.value=null;
+
+                const minNumero = 0;
+                const maxNumero = 12;
+                const rangoNumero = maxNumero - minNumero;
+                const minRepeticiones = 0;
+                const maxRepeticiones = 6;
+                const rangoRepeticiones = maxRepeticiones - minRepeticiones;
+
+                let primerNumero = Math.round(Math.random() * rangoNumero + minNumero);
+                let segundoNumero = Math.round(Math.random() * rangoRepeticiones + minRepeticiones);
+
+                let dado = Math.random() * 3;
+                let simbolo = dado < 1 ? "x" : dado < 2 ? "multiplicado por" : "por";
+
+                this.resultadoReto1 = primerNumero * segundoNumero;
+                this.reto1 = primerNumero + " " + simbolo + " " + segundoNumero;
+                this.versionReto1++;
+
+            },
+
+        }
+
+    }).mount("#doc")
+</script>

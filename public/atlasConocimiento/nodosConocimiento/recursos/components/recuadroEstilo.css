@@ -1,0 +1,97 @@
+.recuadro{
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+    margin: 35px auto;
+    padding: 25px;
+    padding-right: 50px;
+}
+.recuadro.datoPrevio{
+    background-color: var(--paletaPrevio);
+}
+.recuadro.datoNuevo{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.descubrimiento{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccion{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccionPointer{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccionTeclado{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+.recuadro.instruccionTeclado .iconoRecuadro{
+    height: 20px;
+}
+
+.recuadro.reto{
+    background-color: var(--paletaActual);
+    color: whitesmoke;
+}
+
+.iconoRecuadro{
+    height: 30px;
+    margin-right: 20px;
+}
+.recuadro.infoResultado .textoRecuadro{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+}
+.recuadro.centrado .textoRecuadro{
+flex-grow: 1;
+}
+
+.recuadro.instruccionPointer .textoRecuadro{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+}
+
+.recuadro.instruccionTeclado .textoRecuadro{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+}
+
+
+.recuadro.instruccion .textoRecuadro{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+}
+
+.recuadro.reto .textoRecuadro{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+}
+
+.recuadro.infoResultado{
+    flex-grow: 0;
+    width: fit-content;
+    color:black;
+}
+
+.recuadro.infoResultado.correcto{
+    background-color: var(--paletaCheck);
+}
+.recuadro.infoResultado.incorrecto{
+    background-color: var(--paletaFail);
+}
+
+.recuadro.infoResultado .textoRecuadro{
+    flex-grow: 0;
+}
+
+

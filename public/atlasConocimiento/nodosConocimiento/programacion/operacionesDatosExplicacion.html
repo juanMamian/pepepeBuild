@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Expresiones - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Los procesadores pueden realizar operaciones entre datos.
+        </p>
+
+        <recuadro-component tipo='datoPrevio'>
+            Entre datos numéricos se pueden realizar <span class='resaltado'>operaciones aritméticas</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Entre datos que son caracteres(<span class='programacionTipoDato'>char</span>) o cadenas de caracteres
+            (<span class='programacionTipoDato'>string</span>),
+            se pueden realizar <span class='resaltado'>concatenaciones</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Entre datos <span class='programacionTipoDato'>booleanos</span> se pueden realizar <span
+                class='resaltado'>operaciones lógicas</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Entre datos de cualquier tipo se pueden realizar <span class='resaltado'>comparaciones de igualdad y
+                desigualdad</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Entre datos numéricos se pueden realizar <span class='resaltado'>comparaciones mayor que y menor que.</span>
+        </recuadro-component>
+
+        <p>
+            Una instrucción de realizar una operación entre dos datos se llama una <span
+                class='resaltado'>expresión</span>.
+        </p>
+
+        <p>
+            Al ejecutar una expresión, el procesador obtiene un dato resultante. Esto se conoce como <span
+                class='resaltado'>resolver</span> la expresión.
+        </p>
+
+        <bloque-component tipo='ejemplo' @plegado="reiniciarBloqueEjemplos">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de expresiones.
+            </template>
+
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        15 + 10
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se debe realizar una suma entre dos números.
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo1MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo1MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo1MostrarResolucion">
+                            25
+                        </div>
+                    </transition>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        "Hogar " + "dulce hogar"
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se debe concatenar el string <span class='resaltado'>hogar </span> y
+                        el string <span class='resaltado'>dulce hogar</span>
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo2MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo2MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo2MostrarResolucion">
+                            "hogar dulce hogar"
+                        </div>
+                    </transition>
+
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        9 / 2
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se deben dividir los números <span class='resaltado'>9</span> y
+                        <span class='resaltado'>2</span>.
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo3MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo3MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo3MostrarResolucion">
+                            4.5
+                        </div>
+                    </transition>
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        true && false
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se deben realizar la operación lógica <span
+                            class='resaltado'>and</span> entre los valores
+                        true y false.
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo4MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo4MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo4MostrarResolucion">
+                            false
+                        </div>
+                    </transition>
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        12 == "hola"
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se deben realizar una <span class="resaltado">comparación de
+                            igualdad</span>
+                        entre el número 12 y la palabra hola.
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo5MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo5MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo5MostrarResolucion">
+                            false
+                        </div>
+                    </transition>
+                </div>
+                <div class='itemEjemplo anchoMediano'>
+                    <div class='programacionCodigo'>
+                        14 < 40
+                    </div>
+                    <recuadro-component tipo='datoNuevo'>
+                        Esta instrucción indica que se debe realizar una de <span class='resaltado'>comparación menor qué</span> entre
+                        el 14 y el 40.
+                    </recuadro-component>
+
+                    <div class='boton' @click="ejemplo6MostrarResolucion = true"
+                        :class={deshabilitado:ejemplo6MostrarResolucion}>
+                        Resolver
+                    </div>
+
+                    <transition name="enterTop">
+                        <div class='resolucionExpresion' v-show="ejemplo6MostrarResolucion">
+                            true
+                        </div>
+                    </transition>
+                </div>
+            </div>
+
+        </bloque-component>
+
+
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1MostrarResolucion: false,
+                ejemplo2MostrarResolucion: false,
+                ejemplo3MostrarResolucion: false,
+                ejemplo4MostrarResolucion: false,
+                ejemplo5MostrarResolucion: false,
+                ejemplo6MostrarResolucion: false,
+
+            }
+        },
+        methods: {
+            reiniciarBloqueEjemplos() {
+                this.ejemplo1MostrarResolucion = false;
+                this.ejemplo2MostrarResolucion = false;
+                this.ejemplo3MostrarResolucion = false;
+                this.ejemplo4MostrarResolucion = false;
+                this.ejemplo5MostrarResolucion = false;
+                this.ejemplo6MostrarResolucion = false;
+            },
+        },
+        computed: {
+        },
+    }).mount("#doc");
+</script>
+<style>
+</style>

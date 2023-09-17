@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Calculista básico - evaluación</title>
+</head>
+
+<body>
+
+    <div id="doc">
+        <p>Tengo la habilidad de un calculista básico si: </p>
+
+
+        <!-- Suma -->
+        <bloque-component tipo="evaluacion" textoCabecera="Puedo calcular cualquier suma simple entre números naturales.">
+
+            <div class="contenedorFlex">
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad
+                    </span>
+
+                    <input type="range" ref="inputDificultadSuma" id="inputDificultadSuma" v-model="dificultadSuma" min="1" max="3">
+                </div>  
+
+                <div class="boton" style="margin-top: 40px;" @click="generarSuma"
+                    :class="{deshabilitado:estadoRespuestaSuma!='correcto' && expresionSuma }">
+                    {{estadoRespuestaSuma=='correcto'?'¡Generar una nueva suma':'¡Generar una suma!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionSuma" v-show="expresionSuma">
+                        {{expresionSuma}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionSuma">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaSuma=='correcto'}"
+                        v-model="inputResultadoSuma" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarSuma"
+                        :class="{deshabilitado: !inputResultadoSuma}"
+                        v-show="estadoRespuestaSuma!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaSuma"
+                        :key="versionInputResultadoSuma">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaSuma=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaSuma=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- Resta -->
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo calcular cualquier resta positiva simple entre números naturales.">
+
+
+            <div class="contenedorFlex">
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad
+                    </span>
+
+                    <input type="range" ref="inputDificultadResta" id="inputDificultadResta" v-model="dificultadResta" min="1" max="3">
+                </div>  
+
+                <div class="boton" style="margin-top: 40px;" @click="generarResta"
+                    :class="{deshabilitado:estadoRespuestaResta!='correcto' && expresionResta }">
+                    {{estadoRespuestaResta=='correcto'?'¡Generar una nueva resta':'¡Generar una resta!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionResta" v-show="expresionResta">
+                        {{expresionResta}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionResta">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaResta=='correcto'}"
+                        v-model="inputResultadoResta" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarResta"
+                        :class="{deshabilitado: !inputResultadoResta}"
+                        v-show="estadoRespuestaResta!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaResta"
+                        :key="versionInputResultadoResta">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaResta=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaResta=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- Division -->
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo calcular cualquier división entera simple entre números naturales.">
+            <div class="contenedorFlex">
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad
+                    </span>
+
+                    <input type="range" ref="inputDificultadDivision" id="inputDificultadDivision" v-model="dificultadDivision" min="1" max="3">
+                </div>  
+
+                <div class="boton" style="margin-top: 40px;" @click="generarDivision"
+                    :class="{deshabilitado:estadoRespuestaDivision!='correcto' && expresionDivision }">
+                    {{estadoRespuestaDivision=='correcto'?'¡Generar una nueva división':'¡Generar una división!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionDivision" v-show="expresionDivision">
+                        {{expresionDivision}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionDivision">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaDivision=='correcto'}"
+                        v-model="inputResultadoDivision" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarDivision"
+                        :class="{deshabilitado: !inputResultadoDivision}"
+                        v-show="estadoRespuestaDivision!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaDivision"
+                        :key="versionInputResultadoDivision">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaDivision=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaDivision=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- Multiplicación -->
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo calcular cualquier multiplicación simple entre números naturales.">
+            <div class="contenedorFlex">
+                
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad
+                    </span>
+
+                    <input type="range" ref="inputDificultadMultiplicacion" id="inputDificultadMultiplicacion" v-model="dificultadMultiplicacion" min="1" max="3">
+                </div>                
+
+                <div class="boton" style="margin-top: 40px;" @click="generarMultiplicacion"
+                    :class="{deshabilitado:estadoRespuestaMultiplicacion!='correcto' && expresionMultiplicacion }">
+                    {{estadoRespuestaMultiplicacion=='correcto'?'¡Generar una nueva multiplicación':'¡Generar una multiplicación!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionMultiplicacion" v-show="expresionMultiplicacion">
+                        {{expresionMultiplicacion}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionMultiplicacion">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaMultiplicacion=='correcto'}"
+                        v-model="inputResultadoMultiplicacion" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarMultiplicacion"
+                        :class="{deshabilitado: !inputResultadoMultiplicacion}"
+                        v-show="estadoRespuestaMultiplicacion!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaMultiplicacion"
+                        :key="versionInputResultadoMultiplicacion">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaMultiplicacion=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaMultiplicacion=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                // Suma
+                versionExpresionSuma: 0,
+                expresionSuma: null,
+
+                dificultadSuma:1,
+                minMinuendo: 1,
+                maxMinuendo: 10,
+                minSustraendo: 1,
+                maxSustraendo: 10,
+
+                minuendo: 1,
+                sustraendo: 1,
+
+                estadoRespuestaSuma: null,
+                inputResultadoSuma: null,
+                versionInputResultadoSuma: 0,
+
+
+                // Resta
+                versionExpresionResta: 0,
+                expresionResta: null,
+
+                dificultadResta:1,
+                minMinuendo: 1,
+                maxMinuendo: 10,
+                minSustraendo: 1,
+                maxSustraendo: 10,
+
+                minuendo: 1,
+                sustraendo: 1,
+
+                estadoRespuestaResta: null,
+                inputResultadoResta: null,
+                versionInputResultadoResta: 0,
+
+                // Multiplicacion
+                versionExpresionMultiplicacion: 0,
+                expresionMultiplicacion: null,
+
+                dificultadMultiplicacion:1,
+                minMultiplicando: 1,
+                maxMultiplicando: 10,
+                minMultiplicador: 1,
+                maxMultiplicador: 10,
+
+                multiplicando: 1,
+                multiplicador: 1,
+
+                estadoRespuestaMultiplicacion: null,
+                inputResultadoMultiplicacion: null,
+                versionInputResultadoMultiplicacion: 0,
+
+                // Division
+                versionExpresionDivision: 0,
+                expresionDivision: null,
+
+                dificultadDivision:1,
+                minDivisor: 1,
+                maxDivisor: 10,
+                minResultadoDivision: 1,
+                maxResultadoDivision: 10,
+
+                numerador: 1,
+                denominador: 1,
+
+                estadoRespuestaDivision: null,
+                inputResultadoDivision: null,
+                versionInputResultadoDivision: 0,
+            }
+        },
+        methods: {
+            generarMultiplicacion() {
+                if(Number(this.dificultadMultiplicacion)===1){
+                    this.minMultiplicando=2;
+                    this.maxMultiplicando=5;
+
+                    this.minMultiplicador=2;
+                    this.maxMultiplicador=4;
+                }
+                else if(Number(this.dificultadMultiplicacion)===2){
+                    this.minMultiplicando=4;
+                    this.maxMultiplicando=7;
+
+                    this.minMultiplicador=3;
+                    this.maxMultiplicador=5;
+                }
+                else if(Number(this.dificultadMultiplicacion)===3){
+                    this.minMultiplicando=6;
+                    this.maxMultiplicando=12;
+
+                    this.minMultiplicador=4;
+                    this.maxMultiplicador=8;
+                }
+                else{
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+                if (this.minMultiplicando >= this.maxMultiplicando || this.minMultiplicador >= this.maxMultiplicador) {
+                    console.log("Rango no válido");
+                    return;
+                }
+
+                var minMultiplicando = parseInt(this.minMultiplicando);
+                var maxMultiplicando = parseInt(this.maxMultiplicando);
+
+                var minMultiplicador = parseInt(this.minMultiplicador);
+                var maxMultiplicador = parseInt(this.maxMultiplicador);
+
+                var numero1 = Math.round(Math.random() * (maxMultiplicando - minMultiplicando) + minMultiplicando);
+                var numero2 = Math.round(Math.random() * (maxMultiplicador - minMultiplicador) + minMultiplicador);
+
+                this.multiplicando = numero1;
+                this.multiplicador = numero2;
+
+                this.expresionMultiplicacion = `\\(${numero1} \\times ${numero2} \\)`;
+
+                this.inputResultadoMultiplicacion = null;
+                this.estadoRespuestaMultiplicacion = null;
+
+                this.versionExpresionMultiplicacion++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarMultiplicacion() {
+                var respuesta = this.multiplicando * this.multiplicador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoMultiplicacion}`)
+                if (this.inputResultadoMultiplicacion == respuesta) {
+                    this.estadoRespuestaMultiplicacion = "correcto";
+                }
+                else {
+                    this.estadoRespuestaMultiplicacion = "incorrecto";
+                }
+                this.versionInputResultadoMultiplicacion++;
+            },
+            generarDivision() {
+                
+                if(Number(this.dificultadDivision)===1){
+                    this.minResultadoDivision=2;
+                    this.maxResultadoDivision=6;
+
+                    this.minDivisor=2;
+                    this.maxDivisor=5;
+                }
+                else if(Number(this.dificultadDivision)===2){
+                    this.minResultadoDivision=4;
+                    this.maxResultadoDivision=6;
+
+                    this.minDivisor=3;
+                    this.maxDivisor=6;
+                }
+                else if(Number(this.dificultadDivision)===3){
+                    this.minResultadoDivision=6;
+                    this.maxResultadoDivision=12;
+
+                    this.minDivisor=4;
+                    this.maxDivisor=8;
+                }
+                else{
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+
+                const resDivision=Math.round(Math.random() * (this.maxResultadoDivision - this.minResultadoDivision) + this.minResultadoDivision);
+                const divisor=Math.round(Math.random() * (this.maxDivisor - this.minDivisor) + this.minDivisor);
+
+
+                this.numerador = resDivision*divisor;
+                this.denominador = divisor;
+
+                this.expresionDivision = `\\(${this.numerador} \\over ${this.denominador} \\)`;
+
+                this.inputResultadoDivision = null;
+                this.estadoRespuestaDivision = null;
+
+                this.versionExpresionDivision++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarDivision() {
+                var respuesta = this.numerador / this.denominador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoDivision}`)
+                if (this.inputResultadoDivision == respuesta) {
+                    this.estadoRespuestaDivision = "correcto";
+                }
+                else {
+                    this.estadoRespuestaDivision = "incorrecto";
+                }
+                this.versionInputResultadoDivision++;
+            },
+            generarResta() {
+                
+                if(Number(this.dificultadResta)===1){
+                    this.minMinuendo=5;
+                    this.maxMinuendo=10;
+
+                    this.minSustraendo=3;
+                    this.maxSustraendo=5;
+                }
+                else if(Number(this.dificultadResta)===2){
+                    this.minMinuendo=12;
+                    this.maxMinuendo=20;
+
+                    this.minSustraendo=6;
+                    this.maxSustraendo=12;
+                }
+                else if(Number(this.dificultadResta)===3){
+                    this.minMinuendo=15;
+                    this.maxMinuendo=30;
+
+                    this.minSustraendo=8;
+                    this.maxSustraendo=15;
+                }
+                else{
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+
+                const minuendo=Math.round(Math.random() * (this.maxMinuendo - this.minMinuendo) + this.minMinuendo);
+                const sustraendo=Math.round(Math.random() * (this.maxSustraendo - this.minSustraendo) + this.minSustraendo);
+
+
+                this.minuendo = minuendo;
+                this.sustraendo = sustraendo;
+
+                this.expresionResta = `\\(${this.minuendo} - ${this.sustraendo} \\)`;
+
+                this.inputResultadoResta = null;
+                this.estadoRespuestaResta = null;
+
+                this.versionExpresionResta++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarResta() {
+                var respuesta = this.minuendo - this.sustraendo;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoResta}`)
+                if (this.inputResultadoResta == respuesta) {
+                    this.estadoRespuestaResta = "correcto";
+                }
+                else {
+                    this.estadoRespuestaResta = "incorrecto";
+                }
+                this.versionInputResultadoResta++;
+            },
+            generarSuma() {
+                
+                if(Number(this.dificultadSuma)===1){
+                    this.minSumando=5;
+                    this.maxSumando=10;
+
+                    this.minSumador=2;
+                    this.maxSumador=8;
+                }
+                else if(Number(this.dificultadSuma)===2){
+                    this.minSumando=10;
+                    this.maxSumando=20;
+
+                    this.minSumador=5;
+                    this.maxSumador=15;
+                }
+                else if(Number(this.dificultadSuma)===3){
+                    this.minSumando=15;
+                    this.maxSumando=30;
+
+                    this.minSumador=12;
+                    this.maxSumador=25;
+                }
+                else{
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+
+                const sumando=Math.round(Math.random() * (this.maxSumando - this.minSumando) + this.minSumando);
+                const sumador=Math.round(Math.random() * (this.maxSumador - this.minSumador) + this.minSumador);
+
+
+                this.sumando = sumando;
+                this.sumador = sumador;
+
+                this.expresionSuma = `\\(${this.sumando} + ${this.sumador} \\)`;
+
+                this.inputResultadoSuma = null;
+                this.estadoRespuestaSuma = null;
+
+                this.versionExpresionSuma++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarSuma() {
+                var respuesta = this.sumando + this.sumador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoSuma}`)
+                if (this.inputResultadoSuma == respuesta) {
+                    this.estadoRespuestaSuma = "correcto";
+                }
+                else {
+                    this.estadoRespuestaSuma = "incorrecto";
+                }
+                this.versionInputResultadoSuma++;
+            }
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    input {
+        padding: 5px 5px;
+        font-size: 17px;
+    }
+
+    .contenedorFlex {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(600px, 90%);
+    }
+
+    .resaltado {
+        padding: 2px 3px;
+        border-radius: 2px;
+    }
+
+    .bloqueRango {
+        display: flex;
+        margin: 10px 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .limiteRango {
+        max-width: 70px;
+        margin: 0px 10px;
+    }
+</style>

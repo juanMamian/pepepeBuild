@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+   
+
+    <title>Longitud - Evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el concepto de longitud si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo dibujar una representación de la linea unitaria.
+            </template>
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada una representación de una línea recta y de una linea unitaria, puedo compararlas y expresar la comparación en términos de longitud.
+            </template>
+        </bloque-component>        
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Conozco algunas líneas usadas en lugar de la línea unitaria para medir longitud de líneas reales.
+            </template>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoLinea1: false,
+                cantidadUnitarias1: 0,
+                cantidadUnitarias2: 0,
+                comparacion1Longitud: false,
+                comparacion2Longitud: false,
+            }
+        },
+        methods: {
+            increaseCantidadUnitarias1() {
+                if (this.cantidadUnitarias1 >= 3) {
+                    this.cantidadUnitarias1 = 3;
+                }
+                else {
+                    this.cantidadUnitarias1++;
+                }
+
+
+            },
+            increaseCantidadUnitarias2() {
+                if (this.cantidadUnitarias2 >= 4) {
+                    this.cantidadUnitarias2 = 4;
+                }
+                else {
+                    this.cantidadUnitarias2++;
+                }
+
+
+            }
+        }
+    })
+</script>
+
+<style>
+    #lineaUnitaria {
+        margin: 10px auto;
+        width: 50px;
+        height: 5px;
+        background-color: black;
+    }
+
+    .recursoImagen {
+        max-width: 100%;
+    }
+
+
+
+    .linea {
+        height: 5px;
+        background-color: black;
+
+    }
+
+    .lineaUnitaria {
+        width: 50px;
+        background-color: red;
+        position: relative;
+    }
+
+    .zonaLinea {
+        margin: 10px auto;
+        display: flex;
+    }
+
+    #linea1 {
+        width: 150px;
+        margin-top: 20px;
+    }
+
+    .zonaLineaEjemplo1 {
+        width: 150px;
+    }
+
+
+    #linea2 {
+        width: 200px;
+        margin-top: 20px;
+    }
+
+    .zonaLineaEjemplo2 {
+        width: 200px;
+    }
+
+    .expresionLongitud {
+        position: relative;
+    }
+
+    #botonComparacion1 {
+        margin: 50px auto;
+    }
+
+    .ejemploLongitud {
+        border: 3px dotted gray;
+        border-spacing: 10px;
+        padding: 5%;
+    }
+
+    .itemEjemplo {
+        border: 3px dotted gray;
+        border-spacing: 10px;
+        padding: 5%;
+        margin: 10px 0px;
+    }
+
+    .lineaEjemploLongitud {
+        margin: 15px auto;
+    }
+
+    
+
+    .despliegueHorizontal-enter-active,
+    .despliegueHorizontal-leave-active {
+        transition: opacity 1s ease;
+    }
+
+    .despliegueHorizontal-enter-from,
+    .despliegueHorizontal-leave-to {
+        opacity: 0;
+    }
+
+    .despliegueHorizontal-enter-to,
+    .despliegueHorizontal-leave-from {
+        opacity: 1;
+    }
+
+    .floatup-enter-active {
+        animation: subir 0.3s linear;
+    }
+
+    .slideLeft-enter-active {
+        animation: slideInLeft 0.3s;
+    }
+
+    /* .slideLeft-leave-active {
+        animation: slideOutLeft 0.3s;
+    } */
+
+    @keyframes slideInLeft {
+        0% {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0px);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutLeft {
+        0% {
+            left: 0px;
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes subir {
+        0% {
+            top: 20px;
+        }
+
+        100% {
+            top: 0px;
+        }
+    }
+</style>

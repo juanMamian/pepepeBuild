@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Igualdades y desigualdades - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de igualdades y desigualdades si: </p>
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Puedo explicar qué son las igualdades o desigualdades y quienes son sus miembros.
+            </template>
+            
+        </bloque-component>
+        
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dados dos números, puedo hacer una afirmación comparativa acerca de ellos y expresarla usando los símbolos apropiados.">
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='contenedorFlex'>
+                    Selecciona la dificultad
+                    <input type="range" ref="inputDificultarReto1" min="1" max="3" v-model="dificultadReto1">
+                    {{dificultadReto1}}
+                </div>
+            </recuadro-component>
+            <div class='contenedorFlex'>
+
+                <div class='boton' @click="generarReto1">
+                    Generar números
+                </div>
+
+                <transition name="fadeIn">
+                    <recuadro-component tipo='instruccionPointer'>
+                        Presiona en el signo de interrogación para cambiar el símbolo de comparación.
+                    </recuadro-component>
+
+                </transition>
+
+                <transition name="travelTop">
+                    <div id='contenedorReto1' v-if="expresion1Reto1 && expresion2Reto1" :key="versionReto1">
+                        <span class='matsExpresion'>\({{expresion1Reto1.toMathJax()}}\)</span>
+                        <div id='simboloReto1' @click="toggleRespuestaReto1">{{respuestaReto1 || '?'}}</div><span
+                            class='matsExpresion'>\({{expresion2Reto1.toMathJax()}}\)</span>
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <div class='boton' @click="comprobarRespuestaReto1" v-if="respuestaReto1">
+                        Aceptar
+                    </div>
+                </transition>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado' :modo="respuestaReto1Correcta?'correcto':'incorrecto'"
+                        v-if="respuestaReto1Correcta !=null" :key="'respuesta1V'+ versionRespuesta1">
+                        {{respuestaReto1Correcta?'Correcto':'Incorrecto, sigue intentando'}}
+                    </recuadro-component>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo leer una igualdad o una desigualdad como una afirmación comparativa, decidir si es verdadera o no y corregirla si es necesario">
+
+            <recuadro-component tipo='instruccionTeclado'>
+
+                <div class='contenedorFlex' style="gap: 30px">
+                    Selecciona la dificultad
+                    <input type="range" min="1" max="3" ref="inputDificultadReto2" v-model="dificultadReto2">
+                    {{dificultadReto2}}
+                </div>
+
+            </recuadro-component>
+
+            <div class='contenedorFlex' style="gap: 30px">
+
+                <div class='boton' @click="generarReto2">
+                    Generar reto
+                </div>
+
+                <transition name="travelTop">
+                    <div class='matsExpresion' v-if="igualdadReto2String" :key="'igualdad'+versionReto2"
+                        style="font-size: 30px;">
+                        {{igualdadReto2String}}
+                    </div>
+                </transition>
+
+                <div id='contenedorBotonesRespuesta2' v-if="igualdadReto2String">
+                    <div class='boton selector' :class="{seleccionado: respuestaReto2Verdadera}"
+                        @click="comprobarVerdaderaReto2(true)">
+                        Es verdadera
+                    </div>
+                    <div class='boton selector'
+                        :class="{seleccionado: respuestaReto2Verdadera != null && !respuestaReto2Verdadera}"
+                        @click="comprobarVerdaderaReto2(false)">
+                        Es falsa
+                    </div>
+                </div>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado'
+                        :modo="respuestaReto2Verdadera===reto2Verdadera?'correcto':'incorrecto'"
+                        v-if="reto2Verdadera != null && respuestaReto2Verdadera != null"
+                        :key="'respuesta'+versionRespuestaReto2Verdadera">
+                        {{respuestaReto2Verdadera === reto2Verdadera?'Correcto':'Incorrecto'}}
+
+                    </recuadro-component>
+                </transition>
+
+
+            </div>
+
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                dificultadReto1: 1,
+                expresion1Reto1: null,
+                expresion2Reto1: null,
+                valoresRespuestaReto1: ["=", "<", ">"],
+                indexRespuestaReto1: null,
+                respuestaReto1Correcta: null,
+                versionReto1: 0,
+                versionRespuesta1: 0,
+
+                dificultadReto2: 1,
+                igualdadReto2: null,
+                igualdadReto2String: null,
+                versionReto2: 0,
+                reto2Verdadera: false,
+                respuestaReto2Verdadera: null,
+                versionRespuestaReto2Verdadera: 0,
+            }
+        },
+        computed: {
+            respuestaReto1() {
+                if (this.indexRespuestaReto1 == null) {
+                    return null
+                }
+                return this.valoresRespuestaReto1[this.indexRespuestaReto1];
+            },
+
+        },
+        methods: {
+            comprobarRespuestaReto1() {
+                this.respuestaReto1Correcta = (this.respuestaReto1 === '=' && this.expresion1Reto1.valor === this.expresion2Reto1.valor) ||
+                    (this.respuestaReto1 === '<' && this.expresion1Reto1.valor < this.expresion2Reto1.valor) ||
+                    (this.respuestaReto1 === '>' && this.expresion1Reto1.valor > this.expresion2Reto1.valor)
+                    ;
+                this.versionRespuesta1++;
+            },
+
+            toggleRespuestaReto1() {
+                if (this.indexRespuestaReto1 == null) {
+                    this.indexRespuestaReto1 = 0;
+                    return;
+                }
+                if (++this.indexRespuestaReto1 >= this.valoresRespuestaReto1.length) {
+                    this.indexRespuestaReto1 = 0;
+                }
+            },
+            generarReto1() {
+                this.expresion1Reto1 = null;
+                this.expresion2Reto1 = null;
+                this.indexRespuestaReto1 = null;
+                this.respuestaReto1Correcta = null;
+
+                let primeraExpresion = new ExpresionNumerica();
+                let segundaExpresion = new ExpresionNumerica();
+                const seranIguales = Math.random() < 0.5;
+                if (this.dificultadReto1 == 1) {
+                    const minValor = -50;
+                    const maxValor = 50;
+                    const rangoValor = maxValor - minValor;
+
+                    primeraExpresion.valor = Math.round(Math.random() * rangoValor + minValor);
+                    segundaExpresion.valor = seranIguales ? primeraExpresion.valor : Math.round(Math.random() * rangoValor + minValor);
+                }
+                else if (this.dificultadReto1 == 2) {
+                    primeraExpresion.fillExpresion({}, {keepInteger: true});
+                    const opcionesGenerar = {keepInteger: true}
+                    if (seranIguales) {
+                        opcionesGenerar.operaciones = ["suna", "resta", "multiplicacion"] //Para que la segunda expresión pueda generar el segundo valor con keepInteger para el valor de la primera.
+                        segundaExpresion.valor = primeraExpresion.valor;
+                    }
+                    segundaExpresion.fillExpresion({}, opcionesGenerar);
+                }
+                else {
+                    const opcionesGenerar = {keepInteger: true}
+                    if (seranIguales) {
+                        opcionesGenerar.operaciones = ["suna", "resta", "multiplicacion"] //Para que la segunda expresión pueda generar el segundo valor con keepInteger para el valor de la primera.
+                        segundaExpresion.valor = primeraExpresion.valor;
+                    }
+                    primeraExpresion.reexpresionar(Number(this.dificultadReto1) - 1, {keepInteger: true});
+                    segundaExpresion.fillExpresion({}, {keepInteger: true});
+                }
+                this.expresion1Reto1 = primeraExpresion;
+                this.expresion2Reto1 = segundaExpresion;
+
+                this.versionReto1++;
+
+            },
+            comprobarVerdaderaReto2(respuesta) {
+                this.respuestaReto2Verdadera = respuesta;
+                this.versionRespuestaReto2Verdadera++;
+            },
+            generarReto2() {
+                this.respuestaReto2Verdadera = null;
+                this.reto2Verdadera = null;
+
+                let primeraExpresion = new ExpresionNumerica();
+                let segundaExpresion = new ExpresionNumerica();
+
+                if (this.dificultadReto2 == 1) {
+                    const minValor = -50;
+                    const maxValor = 50;
+                    const rangoValor = maxValor - minValor;
+
+                    primeraExpresion.valor = Math.round(Math.random() * rangoValor + minValor);
+                    segundaExpresion.valor = Math.random() < 0.5 ? primeraExpresion.valor : Math.round(Math.random() * rangoValor + minValor);
+                }
+                else if (this.dificultadReto2 == 2) {
+                    primeraExpresion.fillExpresion({}, {keepInteger: true});
+                    if (Math.random() > 0.5) {
+                        segundaExpresion.valor = primeraExpresion.valor
+                    }
+                    segundaExpresion.fillExpresion({}, {keepInteger: true});
+                }
+                else {
+                    primeraExpresion.fillExpresion({}, {keepInteger: true});
+                    primeraExpresion.reexpresionar(Number(this.dificultadReto2) - 1, {keepInteger: true});
+                    segundaExpresion.fillExpresion({}, {keepInteger: true});
+                }
+                let dado = Math.random() * 3;
+
+                let simbolo = dado < 1 ? '<' : dado < 2 ? '>' : '='; // menor < 1 <= mayor < 2 <= igual
+
+                this.igualdadReto2String = "\\({" + primeraExpresion.toMathJax() + "}" + simbolo + "{" + segundaExpresion.toMathJax() + "}\\)";
+                this.reto2Verdadera = (primeraExpresion.valor === segundaExpresion.valor && dado >= 2) ||
+                    (primeraExpresion.valor < segundaExpresion.valor && dado < 1) ||
+                    (primeraExpresion.valor > segundaExpresion.valor && dado >= 1 && dado < 2)
+                    ;
+            }
+
+        },
+        watch: {
+            igualdadReto2String(texto) {
+                this.versionReto2++
+                if (texto) {
+                    this.$nextTick(() => {
+                        MathJax.typeset();
+                    });
+                }
+            },
+            versionReto1() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+            },
+        }
+    }).mount("#doc")
+</script>
+<style>
+    #contenedorReto1 {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    #simboloReto1 {
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    #contenedorReto1 .matsExpresion {
+        font-size: 35px;
+    }
+
+    #contenedorBotonesRespuesta2 {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .travelTop-leave-active {
+        animation-duration: 0s;
+
+    }
+</style>

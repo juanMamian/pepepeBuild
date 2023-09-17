@@ -1,0 +1,18 @@
+
+.controlesAnimacion{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+.botonControl{
+    height: 40px;
+    width:40px;
+    margin: 0px 0px;
+    flex-shrink: 0;
+    
+}
+.botonControl img{
+    height: 100%;
+    width: 100%;
+}

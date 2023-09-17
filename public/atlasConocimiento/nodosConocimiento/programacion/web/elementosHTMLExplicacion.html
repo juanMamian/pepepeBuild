@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Elementos HTML</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>Las etiquetas HTML también pueden marcar zonas del documento web.</p>
+
+        <recuadro-component tipo="datoPrevio">
+            La etiqueta HTML más usada para marcar una zona del documento es la etiqueta <span class="resaltado">div</span>.
+        </recuadro-component>
+
+        La zona marcada no recibe inicialmente ningún trato especial. 
+
+        <recuadro-component tipo="datoPrevio">
+            Las zonas del documento marcadas con una etiqueta HTML apropiada son llamadas <span class="resaltado">elementos</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Los elementos pueden anidarse unos dentro de otros.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestra un ejemplo de elementos y las marcas correspondientes.                
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Los elementos de este documento están señalados por cuadros de colores. Dentro de ellos está el código que los genera (Pares de etiquetas <span class="resaltado">div</span> )
+                Puedes activarlos y desactivarlos.
+            </recuadro-component>
+
+            <div class="elemento" :style="[{backgroundColor: verRecuadros?'cadetblue':'transparent'}]">
+                <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;div&gt;</div>
+                <br>
+                <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/div&gt;</div>
+            </div>
+            <div class="elemento" :style="[{backgroundColor: verRecuadros?'coral':'transparent'}]">
+                <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]" >&lt;div&gt;</div>
+                <br>
+                <div class="elemento" :style="[{backgroundColor: verRecuadros?'cornflowerblue':'transparent'}]">
+                    <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;div&gt;</div>
+                    <br>
+                    <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/div&gt;</div>
+                </div>
+            </bloque-component>
+                <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/div&gt;</div>
+            </div>
+
+            <label for="checkVerCodigo">Ver código</label>
+            <input type="checkbox" v-model="verCodigo" name="checkVerCodigo" id="checkVerCodigo" >
+            <br>
+            <label for="checkVerCodigo">Ver recuadros</label>
+            <input type="checkbox" v-model="verRecuadros" name="checkVerCodigo" id="checkVerCodigo" >
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data(){
+            return {
+                marca: null,
+                verCodigo:false,
+                verRecuadros:true,
+            }
+        }
+    })
+</script>
+
+<style>    
+
+.textoMarcar{
+    text-align: center;
+    margin: 10px auto;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+
+}
+.etiqueta{
+    color: brown;
+}
+
+li{
+    margin: 10px 0px;
+}
+.elemento{
+    padding: 5px;
+    margin: 5px;
+}
+</style>

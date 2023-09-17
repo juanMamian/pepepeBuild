@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Función - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            En los programas informáticos frecuentemente se repiten series de instrucciones.
+        </p>
+
+        <p>
+            Para facilitar la escritura y análisis de los programas informáticos, es útil <span
+                class="resaltado">empaquetar</span> intrucciones.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Un paquete de instrucciones se llama <span class="resaltado">una función</span>. Se le asigna un nombre a
+            una función para referirse a ella en algún otro lugar del programa.
+        </recuadro-component>
+
+
+        <p>
+            Si la ejecución de las instrucciones empaquetadas requiere algún dato, la función puede crear variables
+            propias en donde se almacenarán esos datos. Estas variables propias de una función se llaman <span class='resaltado'>parámetros de la
+                función</span>
+        </p>
+
+        <recuadro-component tipo='datoPrevio'>
+            Los parámetros de una función son variables que solo existen mientras se ejecuta la función.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const app = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+
+            }
+        },
+        computed: {
+        },
+    });
+</script>
+<style>
+</style>

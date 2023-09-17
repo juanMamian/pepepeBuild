@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Representación gráfica de funciones</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>Si se tiene una función, </p>
+
+        <recuadro-component tipo="datoPrevio">Al aplicar la función a un número, ésta señala un segundo número. Es decir que se genera una
+            pareja de números.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Una pareja de números se puede representar como un punto en el plano cartesiano.
+        </recuadro-component>
+
+    <p>
+        Cada vez que se aplica la función a un número, se genera una nueva pareja de números, la cual puede ser
+        representada como un punto en el plano cartesiano.
+    </p>
+
+    <bloque-component tipo="ejemplo">
+
+        <template #cabecera>
+            En este cuadro se puede generar parejas de números usando una función y se pueden representar como puntos en el plano cartesiano.
+        </template>
+
+        <recuadro-component class="instruccion">
+            <ul>
+                <li style="margin-top:20px">
+                    Escoge distintos números para que la función señale diversos números.
+                </li>
+                <li style="margin-top:20px">
+                    Presiona el boton de ubicar en el plano para representar esas parejas de números como puntos en el
+                    plano cartesiano.
+                </li>
+                <li style="margin-top:20px">
+                    Genera muchos puntos con la función.
+                </li>
+                <li style="margin-top:20px">
+                    Puedes presionar sobre la función para cambiarla.
+                </li>
+            </ul>
+        </recuadro-component>
+
+
+        <div id="renglonFuncion" style="text-align: center;">
+            <div id="numeroSeleccionado" class="enRenglon placeVariable">
+                <!-- <div class="flecha" style="transform: rotateZ(-90deg); border:none" @click="numeroSeleccionado++">
+                    <div class="triangulo"></div>
+                </div> -->
+                <input type="number" v-model="numeroSeleccionado" style="width:40px">
+
+                <!-- <div class="flecha" style="transform: rotateZ(90deg); border: none;" @click="numeroSeleccionado--">
+                    <div class="triangulo"></div>
+                </div> -->
+            </div>
+            <div class="lineaConexion enRenglon">
+                <div class="triangulo" style="border-left-color: chocolate;"></div>
+
+            </div>
+            <div id="placeFuncion" class="enRenglon" style="cursor: pointer;" @click="cambiarFuncion">
+                <transition name="bajarFuncion">
+                    <div class="funcion" v-show="funcionSeleccionada==0">
+                        \(f(x)=x+2\)
+                    </div>
+                </transition>
+                <transition name="bajarFuncion">
+                    <div class="funcion" v-show="funcionSeleccionada==1">
+                        \(f(x)=2x-4\)
+                    </div>
+                </transition>
+                <transition name="bajarFuncion">
+                    <div class="funcion" v-show="funcionSeleccionada==2">
+                        \(f(x)=2-x\)
+                    </div>
+                </transition>
+
+            </div>
+            <div class="lineaConexion enRenglon">
+                <div class="triangulo" style="border-left-color: chocolate;"></div>
+            </div>
+            <div class="placeVariable enRenglon"style="font-size:24px" :key="'numeroSignaled'+numeroSignaled">
+                \({{numeroSignaled}}\)
+            </div>
+
+        </div>
+
+     <div class="boton" @click="marcarPuntoFuncion">Ubicar en el plano el punto ({{numeroSeleccionado}},
+                {{numeroSignaled}})</div>
+
+        <div id="planoCartesiano">
+
+            <div id="zonaEjes" @mousedown.left.self="planoAgarrado=true" @mouseup.left="mouseUpPlano"
+                @mousemove="panPlano" @touchstart="inicioPanMobile" @touchmove.stop.prevent="panPlanoMobile">
+                <div class="eje" id="ejeHorizontal" :style="[posEjeH]">
+                    <div class="bolita" :class="{bolitaOrigen:Math.ceil(posEsquina.x)+numero-2==0}"
+                        v-for="numero of numerosHorizontales+2"
+                        :style="[ {left: ( ((numero-2)*distanciaNumeros)-((posEsquina.x%1)*distanciaNumeros) )+'px'} ]">
+                        <div class="etiquetaNumero etiquetaNumeroH" :style="[estiloNumero]">
+                            {{(posEsquina.x>0?Math.floor(posEsquina.x):Math.ceil(posEsquina.x))+numero-2}}
+                        </div>
+                    </div>
+                </div>
+
+                <transition-group name="popIn">
+                    <div class="bolitaFuncion" v-for="(punto, index) of puntosFuncion" :key="index"
+                        :style="[posicionesPuntosFuncion[index]]"></div>
+                </transition-group>
+
+                <div class="eje" id="ejeVertical" :style="[posEjeV]">
+                    <div class="bolita" v-for="numero of (numerosVerticales+1)"
+                        :class="{bolitaOrigen:Math.ceil(posEsquina.y)-numero==0}"
+                        :style="[ {top: ( ((numero-1)*distanciaNumeros)+((posEsquina.y%1==0?1:posEsquina.y%1)*distanciaNumeros) )+'px'} ]">
+                        <div class="etiquetaNumero etiquetaNumeroV" :style="[estiloNumero]">
+                            {{(posEsquina.y>0?Math.floor(posEsquina.y):Math.ceil(posEsquina.y))-(numero-1)}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando se generan todos los puntos posibles de una función, la imágen resultante en el plano cartesiano es
+            llamada <span class="resaltado">la representación gráfica de la función</span>
+        </recuadro-component>
+    </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                sizePlano: {
+                    x: 1,
+                    y: 1,
+                },
+                planoPreparado: false,
+                distanciaNumeros: 50,
+                posEsquina: {
+                    x: 0,
+                    y: 0
+                },
+
+                planoAgarrado: false,
+                planoPanned: false,
+                zoom: 100,
+
+                versionx: 0,
+                versiony: 0,
+                versionFuncion: 0,
+                numeroSeleccionado: 2,
+                funcionSeleccionada: 0,
+                stepGeneracionPareja: 0,
+
+                puntosFuncion: [],
+
+                lastPlanoX: 0,
+                lastPlanoY: 0,
+            }
+        },
+        methods: {
+            inicioPanMobile(e) {
+                this.lastPlanoX = e.changedTouches[0].clientX;
+                this.lastPlanoY = e.changedTouches[0].clientY;
+            },
+            panPlanoMobile(e) {
+                const deltaX = e.changedTouches[0].clientX - this.lastPlanoX;
+                const deltaY = e.changedTouches[0].clientY - this.lastPlanoY;
+                this.lastPlanoX = e.changedTouches[0].clientX;
+                this.lastPlanoY = e.changedTouches[0].clientY;
+
+                this.desplazarVista(deltaX, deltaY);
+            },
+            panPlano(e) {
+                if (!this.planoAgarrado) {
+                    return
+                }
+                this.desplazarVista((e.movementX / this.factorZoom), (e.movementY / this.factorZoom));
+                e.preventDefault();
+                this.planoPanned = true;
+            },
+            desplazarVista(deltaX, deltaY) {
+                this.$set(this.posEsquina, "x", this.posEsquina.x - (deltaX / (this.factorZoom * 20)));
+                this.$set(this.posEsquina, "y", this.posEsquina.y + (deltaY / (this.factorZoom * 20)));
+                //this.actualizarTrazos++;
+            },
+            mouseUpPlano() {
+                this.planoPanned = false,
+                    this.planoAgarrado = false
+            },
+            marcarPuntoFuncion() {
+                console.log(`Marcando en ${this.numeroSeleccionado}, ${this.numeroSignaled}`);
+                const indexP = this.puntosFuncion.findIndex(p => p.x == this.numeroSeleccionado);
+                if (indexP > -1) {
+                    this.puntosFuncion.splice(indexP, 1);
+                }
+                this.puntosFuncion.push({ x: Number(this.numeroSeleccionado), y: this.numeroSignaled })
+            },
+            cambiarFuncion() {
+                this.funcionSeleccionada++
+                if (this.funcionSeleccionada > 2) this.funcionSeleccionada = 0;
+
+                this.puntosFuncion = [];
+            }
+        },
+        computed: {
+            estiloNumero() {
+                return {
+                    fontSize: Math.round(this.distanciaNumeros / 3) + "px"
+                }
+            },
+            factorZoom() {
+                console.log(`Factor: ${this.zoom / 100}`);
+                return Number((this.zoom / 100).toFixed(2));
+            },
+            posEjeH() {
+                if (!this.planoPreparado) return { top: '1px' }
+                return {
+                    top: ((this.posEsquina.y * this.distanciaNumeros) - 1) + "px"
+                }
+            },
+            posEjeV() {
+                if (!this.planoPreparado) return { left: '1px' }
+                return {
+                    left: -1 - (this.posEsquina.x * this.distanciaNumeros) + "px"
+                }
+            },
+            numerosHorizontales() {
+                if (!this.planoPreparado) return 0;
+                return Math.ceil(this.sizePlano.x / this.distanciaNumeros);
+            },
+            numerosVerticales() {
+                if (!this.planoPreparado) return 0;
+                return Math.ceil(this.sizePlano.y / this.distanciaNumeros);
+            },
+            numeroSignaled() {
+                if (this.funcionSeleccionada == 0) {
+                    return Number(this.numeroSeleccionado) + 2;
+                }
+                if (this.funcionSeleccionada == 1) {
+                    return (Number(this.numeroSeleccionado) * 2) - 4;
+                }
+                if (this.funcionSeleccionada == 2) {
+                    return 2 - Number(this.numeroSeleccionado);
+                }
+            },
+            posicionesPuntosFuncion() {
+                nuevoPosiciones = []
+                this.puntosFuncion.forEach(punto => {
+                    nuevoPosiciones.push({
+                        left: (((punto.x - this.posEsquina.x) * this.distanciaNumeros) - 5) + "px",
+                        top: (((this.posEsquina.y - punto.y) * this.distanciaNumeros) - 5) + "px",
+                    })
+                });
+                return nuevoPosiciones;
+            }
+        },
+        watch: {
+            numeroSeleccionado() {
+                this.versiony++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            funcionSeleccionada() {
+                this.versiony++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            }
+        },
+        mounted() {
+
+            const elemPlano = document.getElementById("planoCartesiano");
+            const anchoVentana = screen.width;
+            var ancho = Math.round(anchoVentana * 0.7);
+            if (ancho > 650) ancho = 650
+            const alto = ancho;
+            elemPlano.style.height = alto + "px";
+            elemPlano.style.width = ancho + "px";
+
+            this.distanciaNumeros = Math.ceil(ancho / 13);
+            if (this.distanciaNumeros < 30) this.distanciaNumeros = 30;
+
+            this.$set(this.sizePlano, "x", ancho);
+            this.$set(this.sizePlano, "y", alto);
+
+            this.$set(this.posEsquina, "x", -ancho / (this.distanciaNumeros * 2));
+            this.$set(this.posEsquina, "y", alto / (this.distanciaNumeros * 2));
+            this.planoPreparado = true;
+        }
+    })
+</script>
+
+<style>
+    #planoCartesiano {
+        position: relative;
+        width: min(400px, 90%);
+        height: 200px;
+        background-color: rgb(214, 214, 214);
+        margin: 10px auto;
+        position: relative;
+    }
+
+    .canvasPlano {
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .placeVariable {
+        padding: 10px;
+        border-radius: 50%;
+        border: 2px solid chocolate;
+    }
+
+    #placeFuncion {
+        padding: 5px;
+        border-radius: 5px;
+        border: 2px solid chocolate;
+    }
+
+
+    #zonaEjes {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .bolitaFuncion {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgb(243, 119, 18);
+        position: absolute;
+
+        z-index: 3;
+    }
+
+    .eje {
+        position: absolute;
+    }
+
+    #ejeHorizontal {
+        width: 100%;
+        height: 3px;
+        background-color: gray;
+    }
+
+    #ejeHorizontal>.bolita {
+        top: 50%;
+    }
+
+    #ejeVertical {
+        top: 0%;
+        height: 100%;
+        width: 3px;
+        background-color: gray;
+    }
+
+    #ejeVertical>.bolita {
+        left: 50%;
+    }
+
+    .bolita {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: gray;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+    }
+
+    .etiquetaNumero {
+        position: absolute;
+    }
+
+    .etiquetaNumeroH {
+        left: 50%;
+        top: 105%;
+        transform: translateX(-50%);
+    }
+
+    .etiquetaNumeroV {
+        right: 102%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .lineaConexion {
+        height: 2px;
+        background-color: chocolate;
+        width: 30px;
+        position: relative;
+        top: -5px
+    }
+
+    .flecha {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 1px solid black;
+    }
+
+    .flecha:hover {
+        background-color: tomato;
+    }
+
+    .triangulo {
+        width: 1px;
+        height: 1px;
+        border: 7px solid transparent;
+        border-left: 7px solid black;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .linea {
+        position: absolute;
+        width: 40%;
+        height: 2px;
+        left: 12%;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: black;
+        pointer-events: none;
+    }
+
+    .deshabilitado {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .enRenglon {
+        display: inline-block;
+    }
+
+    .bajarFuncion-enter {
+        transform: translateY(-80%);
+        opacity: 0.3;
+    }
+
+    .bajarFuncion-enter-to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    .bajarFuncion-enter-active {
+        transition: all 0.5s;
+    }
+</style>

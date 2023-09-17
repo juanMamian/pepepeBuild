@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Multiplicaciones en la recta numérica</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>Dado que:</p>
+
+        <recuadro-component tipo="datoPrevio">
+            Un número es ubicado en la recta numérica contando unidades desde el órigen.
+        </recuadro-component>
+
+        y
+
+        <recuadro-component tipo="datoPrevio">
+            Multiplicación significa repetición.
+        </recuadro-component>
+        Entonces:
+        <recuadro-component tipo="datoPrevio">
+            En la recta numérica las multiplicaciones
+            son imaginadas repitiendo las unidades que señalan un número.
+        </recuadro-component>
+
+
+
+        <bloque-component @plegado="reiniciarRecta" tipo="herramientaInteractiva"
+            textoCabecera="En este cuadro se muestra una representación de multiplicaciones sobre la recta numérica.">
+
+            <recuadro-component tipo="instruccionPointer" v-show="numeroBase==null">
+                Selecciona un número sobre la recta numérica.
+            </recuadro-component>
+
+            <div ref="contenedorRectaNumerica" id="contenedorRectaNumerica">
+                <img :class="{deshabilitado: cayendoSegmentos}" class="pannerRecta" src="flecha.png"
+                    style="left: 0px; transform: rotate(180deg);" @click="panRectaNumerica+=2">
+                <img :class="{deshabilitado: cayendoSegmentos}" class="pannerRecta" src="flecha.png" style="right: 0px;"
+                    @click.stop="panRectaNumerica-=2">
+
+                <div id="rectaNumerica"></div>
+                <div id="contenedorBolitas">
+                    <div class="bolitaNumero" :key="numero" v-for="numero of 200"
+                        v-on:click="numeroBase=(parseInt(numero)+numeroVisibleInicial); reloadExpresion(); cantidadMultiplicado=0; multiplicandoOtroLado=false"
+                        :class="{numeroBase:numeroBase==(parseInt(numero)+numeroVisibleInicial), bolitaOrigen: (numero+numeroVisibleInicial)==0, bolitaResultado:resultado==(numero+numeroVisibleInicial) && cayendoSegmentos==false && resultado!=0}"
+                        :style="{left:  40*(parseInt(numero)+numeroVisibleInicial+panRectaNumerica)+'px'}">
+                        <div class="nombreNumero">
+                            {{numero+numeroVisibleInicial}}
+                        </div>
+                    </div>
+                </div>
+                <transition name="subirDeRecta">
+                    <div id="contenedorSegmentosBase" class="contenedorSegmentos" v-if="numeroBase!=null"
+                        :key="'segmentos'+numeroBase" v-show="numeroBase!=0" :style="[posicionSegmentosBase]">
+                        <div style="font-size: 12px; text-align: center;">{{Math.abs(numeroBase)}}
+                            unidad{{Math.abs(numeroBase)>1?'es':''}}</div>
+                        <div style="display: flex;">
+                            <div class="segmentoUnidad" :key="numero" v-for="numero of Math.abs(parseInt(numeroBase))"
+                                :style="{backgroundColor:aPuntoDeMultiplicar?'rgb(208, 192, 62)':'gray'}">
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+
+                <transition-group name="caerPropio" tag="div" v-on:before-enter="cayendoSegmentos=true;"
+                    v-on:after-enter="cayendoSegmentos=false" style="display: flex; position: absolute; top: 73px;"
+                    :style="[posicionSegmentosResultado, {flexDirection:resultado<0?'row-reverse': 'row', transition:cayendoSegmentos?'none':'left 0.3s', pointerEvents:'none'}]"
+                    v-show="cantidadMultiplicado>0">
+                    <div class="contenedorSegmentosMultiplicados contenedorSegmentos"
+                        v-for="vez of parseInt(cantidadMultiplicado)" :key="vez" style="display: flex;">
+                        <div class="segmentoUnidad" :key="numero" v-for="numero of Math.abs(parseInt(numeroBase))">
+                        </div>
+                    </div>
+                </transition-group>
+            </div>
+            <center>
+                <input v-show="numeroBase!=null" type="checkbox" v-model="multiplicandoOtroLado" v-if="faseMultiplicacionNegativa"> <span
+                    v-if="faseMultiplicacionNegativa" v-show="numeroBase!=null" :style="{color: multiplicandoOtroLado?'black':'gray'}"> Hacia el
+                    otro lado </span>
+                <div @click="cantidadMultiplicado++" v-show="numeroBase!=null" class="boton"
+                    :class="{deshabilitado:cayendoSegmentos}">¡Multiplicar!</div>
+                <div class="informacion" v-show="cantidadMultiplicado>0">
+                    {{parseInt(cantidadMultiplicado)}}
+                    ve{{cantidadMultiplicado==1?'z':'ces'}}
+                </div>
+                <!-- <div id="expresionLenguajeNatural">
+                    El número {{numeroBase}} <input type="checkbox" v-model="multiplicandoActivado"> <span
+                        :style="{color:multiplicandoActivado?'black':'gray'}">multiplicado</span> <input
+                        v-if="faseMultiplicacionNegativa" v-show="multiplicandoActivado" type="checkbox"
+                        v-model="multiplicandoOtroLado"> <span v-show="multiplicandoActivado"
+                        v-if="faseMultiplicacionNegativa" :style="{color:multiplicandoOtroLado?'black':'gray'}">hacia el
+                        otro
+                        lado</span> <span
+                        v-show="multiplicandoActivado && cantidadMultiplicado>0">{{cantidadMultiplicado}}
+                        {{cantidadMultiplicado!=1?'veces': 'vez'}}</span><br>
+                    <button v-show="multiplicandoActivado" v-on:click="multiplicar"
+                        :class="{deshabilitado:cayendoSegmentos}" @mouseenter="aPuntoDeMultiplicar=true"
+                        @mouseleave="aPuntoDeMultiplicar=false">{{cantidadMultiplicado+1}}
+                        ve{{cantidadMultiplicado>0?'ces':'z'}} </button>
+                </div> -->
+            </center>
+
+            <!-- <input type="checkbox" v-model="mostrarExpresion" name="inputMostrarExpresion"> <label for="inputMostrarExpresion">Ver cómo se escribe la multiplicación</label> -->
+
+            <transition name="caerFade">
+                <div id="expresion" style="font-size: 34px;" v-if="mostrarExpresion" v-show="cantidadMultiplicado>0"
+                    :key="versionExpresion">
+                    {{expresion}}
+                </div>
+            </transition>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La multiplicación también puede realizarse hacia el otro lado.
+
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Para representar multiplicaciones hacia el otro lado, se usa el símbolo <span class="resaltado">-</span>.
+
+        </recuadro-component>
+
+        <p>Por eso:</p>
+        <recuadro-component tipo="datoPrevio">
+            Una multiplicación hacia el otro lado es una multiplicacion por un número negativo.
+        </recuadro-component>
+        <p>
+            Si quieres probar multiplicaciones hacia el otro lado en el cuadro de arriba, puedes activarlas con este
+            boton:
+        </p>
+
+        <div class="boton" @click="faseMultiplicacionNegativa=true" :class="{deshabilitado:faseMultiplicacionNegativa}">¡Quiero
+            activar multiplicaciones hacia el otro lado!</div>
+
+        <transition name="caerFade">
+            <recuadro-component tipo="instruccion" v-show="faseMultiplicacionNegativa">
+                ¡Regresa al cuadro de arriba para realizar multiplicaciones hacia el otro lado!
+            </recuadro-component>
+        </transition>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroBase: null,
+                numeroVisibleInicial: -100,
+                panRectaNumerica: 5,
+
+                versionExpresion: 0,
+                hoveringRecta: false,
+
+                cantidadMultiplicado: 0,
+
+                multiplicandoOtroLado: false,
+
+                cayendoSegmentos: false,
+
+                faseMultiplicacionNegativa: false,
+                mostrarExpresion: true,
+                aPuntoDeMultiplicar: false,
+            }
+        },
+        computed: {
+            posicionSegmentosBase() {
+
+
+                var puntoRef = this.numeroBase;
+
+                if (puntoRef > 0) {
+                    console.log(`Ubicando en ${puntoRef - Math.abs(this.numeroBase)}`);
+                    return {
+                        left: 5 + 40 * (this.panRectaNumerica + (puntoRef - Math.abs(this.numeroBase))) + 'px'
+                    }
+                }
+                else if (puntoRef < 0) {
+                    return {
+                        left: (5 + 40 * (this.panRectaNumerica - Math.abs(puntoRef))) + 'px'
+                    }
+                }
+            },
+            posicionSegmentosResultado() {
+                if (this.resultado > 0) {
+
+                    return {
+                        left: 5 + 40 * (this.panRectaNumerica) + 'px'
+                    }
+                }
+                else if (this.resultado < 0) {
+                    return {
+                        left: (5 + 40 * (this.panRectaNumerica)) - (40 * Math.abs(this.resultado)) + 'px'
+                    }
+                }
+                else {
+                    return this.posicionSegmentosBase;
+                }
+            },
+            resultado() {
+                var numMultiplicado = this.cantidadMultiplicado;
+                if (this.multiplicandoOtroLado) {
+                    numMultiplicado = -1 * this.cantidadMultiplicado;
+                }
+                return this.numeroBase * numMultiplicado;
+            },
+            proximoResultado() {
+                if (this.multiplicandoOtroLado) {
+                    return this.resultado - this.numeroBase;
+                }
+                else {
+                    return this.resultado + this.numeroBase;
+                }
+            },
+            expresion() {
+                var expresion = this.numeroBase;
+                if (!this.cantidadMultiplicado > 0) {
+                    return ''
+                }
+
+                expresion = expresion + " \\times ";
+                if (this.multiplicandoOtroLado) {
+                    expresion = expresion + "-";
+                }
+
+                if (this.cantidadMultiplicado == 0) {
+                    return "\\( " + expresion + "\\)";
+                }
+
+                var expresion = expresion + this.cantidadMultiplicado;
+
+                return "\\( " + expresion + "\\)";
+            },
+        },
+        methods: {
+            reiniciarRecta() {
+                this.numeroBase = null;
+                this.panRectaNumerica = 5;
+                this.cantidadMultiplicado = 0;
+                this.multiplicandoOtroLado = false;
+            },
+            reloadExpresion() {
+                this.versionExpresion++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            multiplicar() {
+                this.$nextTick(() => {
+                    this.cantidadMultiplicado++;
+                });
+            },
+            multiplicarConNegativo() {
+                if (!this.multiplicarPorNegativo) {
+                    this.cantidadMultiplicado = 0;
+                    this.multiplicarPorNegativo = true;
+                }
+                this.$nextTick(() => {
+
+                    this.cantidadMultiplicado++;
+                });
+            },
+        },
+        watch: {
+            panRectaNumerica(nuevo) {
+                if (-nuevo - this.numeroVisibleInicial < 10) {
+                    this.numeroVisibleInicial = this.numeroVisibleInicial - 100;
+                }
+
+                if (((this.numeroVisibleInicial + 200) + nuevo) < 50) {
+                    this.numeroVisibleInicial = this.numeroVisibleInicial + 100
+                }
+            },
+            expresion() {
+                this.reloadExpresion();
+            },
+            multiplicandoOtroLado() {
+                this.cantidadMultiplicado = 0;
+            },
+            mostrarExpresion(nuevo) {
+                if (nuevo) {
+                    this.$nextTick(() => {
+                        MathJax.typeset();
+                    })
+                }
+
+            }
+        },
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    #cuadroEjemplo {
+        position: relative;
+        width: 90%;
+        border: 2px solid cadetblue;
+        border-radius: 15px;
+        padding: 10px;
+        padding-bottom: 40px;
+        padding-top: 30px;
+        margin-bottom: 60px;
+    }
+
+    #contenedorRectaNumerica {
+        overflow: hidden;
+        height: 100px;
+        width: 100%;
+        position: relative;
+    }
+
+    #rectaNumerica {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        position: absolute;
+        top: 72px;
+    }
+
+    #contenedorBolitas {
+        display: flex;
+        position: relative;
+        transition: left 0.3s;
+        position: absolute;
+        top: 70px;
+
+    }
+
+    .bolitaNumero {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgb(128, 128, 128);
+        position: absolute;
+        cursor: pointer;
+        transition: left 0.3s;
+        user-select: none;
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+        width: 16px;
+        height: 16px;
+        transform: translate(-3px, -3px);
+    }
+
+    .bolitaOrigen>.nombreNumero {
+        background-color: rgba(128, 0, 128, 0.384);
+    }
+
+    .nombreNumero {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 13px;
+    }
+
+    .numeroBase {
+        background-color: red;
+    }
+
+    .segmentoUnidad {
+        width: 39px;
+        height: 3px;
+        background-color: rgb(208, 192, 62);
+        margin-left: 1px;
+        border-radius: 2px;
+        pointer-events: none;
+    }
+
+    .contenedorSegmentos {
+        display: flex;
+        position: absolute;
+        top: 73px;
+        pointer-events: none;
+    }
+
+    #contenedorSegmentosBase {
+        top: 2px;
+        transition: all 0.3s;
+        display: block;
+    }
+
+    .contenedorSegmentosMultiplicados {
+        top: 0px;
+        position: relative;
+    }
+
+    .bolitaResultado {
+        scale: 1.3;
+        transform: translate(-6%, -6%);
+        background-color: rgb(19, 54, 5);
+    }
+
+    #expresionLenguajeNatural {
+        font-size: 18px;
+        padding: 10px;
+        text-align: center;
+        min-width: 400px;
+    }
+
+    #expresion {
+        text-align: center;
+        max-width: 200px;
+        padding: 10px 20px;
+        border: 2px solid cadetblue;
+        border-radius: 15px;
+        margin: 0px auto;
+        background-color: rgb(168, 209, 211);
+    }
+
+    .pannerRecta {
+        position: absolute;
+        top: 0px;
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 3px;
+        z-index: 10;
+    }
+
+    .pannerRecta:hover {
+        background-color: rgba(128, 128, 128, 0.637);
+
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(800px, 80%);
+    }
+
+    .instruccion {
+        margin: 10px auto;
+    }
+
+    .informacion {
+        margin: 10px auto;
+    }
+
+    .imgCuadro {
+        width: 25px;
+
+    }
+
+    .deshabilitado {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+
+    .subirDeRecta-enter {
+        transform: translateY(41px);
+    }
+
+    .subirDeRecta-enter-active {
+        transition: all 1.2s;
+    }
+
+    .subirDeRecta-enter-to {
+        transform: translateY(0px);
+    }
+
+
+    .caerPropio-enter {
+        transform: translateY(-41px);
+    }
+
+    .caerPropio-enter>.segmentoUnidad {
+        background-color: rgb(134, 101, 18);
+    }
+
+    .caerPropio-enter-active {
+        transition: transform 1s;
+    }
+
+    .caerPropio-enter-to {
+        transform: translateY(0%);
+    }
+
+    .caerPropio-enter-to>.segmentoUnidad {
+        background-color: rgb(134, 101, 18);
+    }
+
+    .caerFade-enter {
+        transform: translateY(-21px);
+        opacity: 0;
+    }
+
+    .caerFade-enter-active {
+        transition: all 1s;
+    }
+
+    .caerFade-enter-to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+</style>

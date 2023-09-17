@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Identidad algebraica</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Si se sabe que dos expresiones algebraicas representan el mismo número sin importar el valor de la o las
+            incógnitas presentes, se dice que:
+        <ul>
+            <li>Las dos expresiones algebraicas son idénticas.</li>
+            <li>Entre las dos expresiones algebraicas hay identidad algebraica.</li>
+        </ul>
+        </p>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se muestran ejemplos de identidades algebráicas">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <p>Las expresiones</p>
+                            <div class="expresion">
+                                \(a +4\)
+                            </div>
+                            <p>y</p>
+                            <div class="expresion">
+                                \(4 + a\)
+                            </div>
+                    <p>Son idénticas pues la suma es una operación conmutativa.</p>
+
+                    <recuadro-component tipo="datoNuevo">
+                        Sin importar el valor de la incógnita, representan el mismo número.
+                    </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                            <div class="expresion">
+                                \( (c + 3) \cdot 6 \)
+                            </div>
+                            <p>y</p>
+                            <div class="expresion">
+                                \( {c \cdot 6} + {3 \cdot 6} \)
+                            </div>
+                    <p>Son idénticas pues la multiplicación es una operación distributiva sobre la suma.</p>
+                    <recuadro-component tipo="datoNuevo">
+                        Sin importar el valor de la incógnita, representan el mismo número.
+                    </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                            <div class="expresion">
+                                \( {c + 3} \over 6 \)
+                            </div>
+                            <p>y</p>
+                            <div class="expresion">
+                                \( {c \over 6} + {3 \over 6} \)
+        
+                            </div>
+                    <p>Son idénticas pues la división es una operación distributiva sobre la suma.</p>
+
+                    <recuadro-component tipo="datoNuevo">
+                        Sin importar el valor de la incógnita, representan el mismo número.
+                    </recuadro-component>
+                </div>
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .nota {
+        background-color: rgb(233, 185, 150);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px auto;
+        width: min(650px, 90%);
+    }
+
+    .tituloEjemplo {
+        font-size: 13px;
+        font-style: italic;
+        color: rgb(71, 71, 71);
+    }
+
+    .conclusion {
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px 5px;
+        width: min(90%, 650px);
+        background-color: rgb(209, 127, 33);
+        margin: 10px auto;
+    }
+
+    .nota {
+        background-color: rgb(233, 185, 150);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px auto;
+        width: min(650px, 90%);
+    }
+
+    .expresion {}
+</style>

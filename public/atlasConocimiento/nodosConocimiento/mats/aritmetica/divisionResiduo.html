@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/anuncioFullScreen.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/anuncioFullScreenEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>El resto de una división</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            En una división, si todas las unidades quedan repartidas decimos que es una
+            división exacta.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando no se puede seguir repartiendo unidades debido a que ya no hay suficientes unidades,
+            se dice que la división no es exacta. Las unidades que no se pudieron repartir son llamadas <span
+                class="resaltado">resto</span> o
+            <span class="resaltado">residuo</span>.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" @desplegado="posicionarBolitas" @plegado="reiniciar">
+            <template #cabecera>
+                En este cuadro se muestra una división en la que sobran algunas unidades.
+            </template>
+
+            <div class="zonaInteraccion" ref="zonaInteraccion" style="position: relative;">
+
+                <div class="zonaNumero" ref="zonaNumero">
+                    <div ref="bolitas" class="bolitaNumero bolitaAbsolute" v-for="bolita of numerador"
+                        :key="'bolita'+bolita">
+
+                    </div>
+                </div>
+
+                <div class="boton" @click="aumentarInstanciaReparticion" >
+                    Repartir
+                </div>
+                <anuncio-full-screen @cerrarme="anunciarFinReparticion=false" v-show="anunciarFinReparticion">
+                    <template #contenido>
+                        ¡Ya no hay suficientes unidades para repartir parejo!
+                    </template>
+                </anuncio-full-screen>
+                <div class="zonaCajas" ref="zonaCajas">
+                    <div class="caja" ref="cajitas" v-for="num of denominador" :key="'caja'+num"></div>
+                </div>
+            </div>
+
+            <transition name="travelTop">
+                <recuadro-component tipo="datoNuevo" v-show="reparticionTerminada">
+                    ¡Ya no se puede seguir repartiendo parejo!
+                </recuadro-component>
+            </transition>
+
+            <div class="boton" @click="mostrarConclusion=true" v-show="reparticionTerminada">
+                ¿Y cuál es el resultado?
+            </div>
+
+            <transition name="travelTop">
+                <recuadro-component tipo="datoNuevo" v-show="mostrarConclusion" style="text-align: center;">
+                    ¡El resultado de la división es 3! <br>
+                    ¡Y el residuo es 2!
+
+                </recuadro-component>
+            </transition>
+
+
+
+
+
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent,
+            anuncioFullScreen
+        },
+        data() {
+            return {
+                instanciaReparticion: -1,
+                numerador: 14,
+                denominador: 4,
+
+                gapBolitas: 10,
+
+                mostrarConclusion: false,
+                anunciarFinReparticion:false,
+            }
+        },
+        computed: {
+            reparticionTerminada() {
+                return (this.numerador - (this.instanciaReparticion * this.denominador)) < this.denominador
+            },
+
+        },
+        methods: {
+            aumentarInstanciaReparticion(){
+                let nuevaInstancia=this.instanciaReparticion;
+                console.log("Entrando en instancia "+nuevaInstancia);
+                if((this.numerador - (nuevaInstancia * this.denominador)) < this.denominador){
+                    this.anunciarFinReparticion=true;
+                }
+                else{
+                    this.instanciaReparticion++
+                }
+                
+            },
+            reiniciar() {
+                this.mostrarConclusion = false;
+                this.instanciaReparticion = -1;
+            },
+            posicionarBolitas() {
+                this.instanciaReparticion = 0;
+
+                setTimeout(()=>{
+                    const posZonaNumero = this.$refs.zonaNumero.getBoundingClientRect();
+                    if (posZonaNumero.width <= 0) {
+                        return;
+                    }
+                    const espacioBolita = 20 + this.gapBolitas;
+                    const bolitasFila = Math.floor(posZonaNumero.width / espacioBolita);
+                    const anchoFila = bolitasFila * espacioBolita;
+                    const numFilas = Math.ceil(this.numerador / bolitasFila);
+                    const altoFila = this.gapBolitas + 20;
+
+                    const altoZonaNumero=Math.round(numFilas*altoFila);
+
+                    this.$refs.zonaNumero.style.height=altoZonaNumero+"px";
+
+
+                    for (var i = 1; (i <= numFilas && i < 20); i++) {
+                        let bolitasEstaFila = i < numFilas ? bolitasFila : (this.numerador % bolitasFila);
+                        let anchoEstaFila = bolitasEstaFila * espacioBolita;
+                        let leftInicioFila = (posZonaNumero.width / 2) - (anchoEstaFila / 2);
+
+                        for (var j = ((i - 1) * bolitasFila); (j < i * bolitasFila && j < this.numerador); j++) {
+                            let posEnFila = j % bolitasFila;
+                            let leftBolita = leftInicioFila + (posEnFila * espacioBolita);
+                            let topBolita = this.gapBolitas + ((i - 1) * altoFila)
+
+                            this.$refs.bolitas[j].style.left = Math.round(leftBolita) + 'px';
+                            this.$refs.bolitas[j].style.top = Math.round(topBolita) + 'px';
+                        }
+                    }
+                }, 100);
+
+
+            }
+        },
+        watch: {
+            instanciaReparticion: {
+                handler: function (instancia) {
+                    if (instancia <= 0) {
+                        return;
+                    }
+
+                    const bolitaMax = this.denominador * instancia;
+
+                    for (var i = 0; i < bolitaMax; i++) {
+                        const numCajita = i % this.denominador;
+                        const posicion = Math.floor(i / this.denominador);
+
+
+                        const posCajita = this.$refs.cajitas[numCajita].getBoundingClientRect();
+                        const posZonaInteraccion = this.$refs.zonaInteraccion.getBoundingClientRect();
+                        const leftCajita = posCajita.left - posZonaInteraccion.left;
+                        const topCajita = posCajita.top - posZonaInteraccion.top;
+
+
+                        const widthBolita = this.$refs.bolitas[i].offsetWidth;
+                        const widthAmpliadoBolita = widthBolita + this.gapBolitas;
+
+                        const capacidadFila = Math.floor(posCajita.width / widthAmpliadoBolita);
+
+                        const fila = Math.floor(posicion / capacidadFila);
+
+                        const nuevoLeft = leftCajita + ((posicion % capacidadFila) * widthAmpliadoBolita);
+                        const nuevoTop = topCajita + (fila * widthAmpliadoBolita);
+
+
+                        this.$refs.bolitas[i].style.left = nuevoLeft + 'px';
+                        this.$refs.bolitas[i].style.top = nuevoTop + 'px';
+
+                    }
+                }, immediate: true
+            }
+        },
+        mounted() {
+            this.instanciaReparticion = -1;
+        }
+
+    })
+</script>
+
+<style>
+    .zonaCajas {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .caja {
+        border: 2px solid red;
+        width: 100px;
+        height: 100px;
+    }
+
+    .zonaNumero {
+        margin-bottom: 50px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .bolitaNumero {
+        transition: left 0.5s, top 0.3s;
+    }
+
+    .bolitaAbsolute {
+        position: absolute;
+    }
+</style>

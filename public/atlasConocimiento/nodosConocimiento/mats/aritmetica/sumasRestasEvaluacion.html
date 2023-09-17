@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet" <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Sumas - explicación</title>
+</head>
+
+<body>
+    <div id='doc'>
+        <p>Comprendo los conceptos de suma y resta si: </p>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Puedo expresar cualquier suma o resta de varias formas y descubrir el resultado.
+            </template>
+            <div class='flexVertical'>
+                <div class='boton' @click="generarReto1">
+                    Generar reto
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto1' class='reto' v-if="reto1" :key="'reto1v'+ versionReto1">
+                        {{reto1}}
+                    </div>
+                </transition>
+
+
+                <recuadro-component tipo='instruccionTeclado' v-show="resultadoReto1!=null">
+                    <p>
+                        Escribe aquí la respuesta
+                    </p>
+                    <input id='inputRespuestaResultadoReto1' type="number" ref="inputRespuestaResultadoReto1"
+                        @keypress.enter="$refs.botonSetRespuestaResultadoReto1.click()" @focus="$event.target.select()">
+
+                    <div class='boton' @click="setRespuestaResultadoReto1" ref="botonSetRespuestaResultadoReto1">
+                        Aceptar
+                    </div>
+
+                </recuadro-component>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado'
+                        :modo="respuestaResultadoReto1===resultadoReto1?'correcto':'incorrecto'"
+                        v-if="respuestaResultadoReto1 != null && resultadoReto1 != null"
+                        :key="'infoResultadoRespuestaReto1v'+ versionRespuestaResultadoReto1">
+                    </recuadro-component>
+                </transition>
+
+
+
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+        },
+        data() {
+            return {
+                reto1: null,
+                versionReto1: 0,
+                resultadoReto1: null,
+                respuestaResultadoReto1: null,
+                versionRespuestaResultadoReto1: null,
+            }
+        },
+        methods: {
+            generarReto1() {
+                this.reto1 = null;
+                this.resultadoReto1 = null;
+                this.respuestaResultadoReto1 = null;
+                this.$refs.inputRespuestaResultadoReto1.value = null;
+                const minNumero = 0;
+                const maxNumero = 15;
+                const rangoNumero = maxNumero - minNumero;
+
+                let numero2 = Math.round(Math.random() * Math.round(rangoNumero / 2) + minNumero);
+                let numero1 = Math.round(Math.random() * (rangoNumero - numero2) + numero2);
+
+                let operacion = Math.floor(Math.random() * 2);
+
+                let dado = Math.floor(Math.random() * 3);
+                let simbolo = operacion == 0 ? '+' : '-';
+                if (dado == 0) {
+                    simbolo = operacion == 0 ? 'mas' : 'menos';
+                }
+                else if (dado == 1) {
+                    simbolo = operacion == 0 ? 'sumado con' : 'restado con';
+                }
+
+                this.resultadoReto1 = operacion === 0 ? numero1 + numero2 : numero1 - numero2;
+                this.reto1 = numero1 + " " + simbolo + " " + numero2;
+                this.versionReto1++;
+            },
+            setRespuestaResultadoReto1() {
+                this.respuestaResultadoReto1 = Number(this.$refs.inputRespuestaResultadoReto1.value);
+                this.versionRespuestaResultadoReto1++;
+            },
+
+
+        },
+        watch: {
+
+        },
+    }).mount("#doc"); 
+</script>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Perímetro - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        En figuras geométricas cerradas, la longitud de la línea exterior se llama <span
+            class='resaltado'>perímetro</span>.
+
+        <bloque-component tipo='herramientaInteractiva'>
+            <template #cabecera>
+                En este cuadro se puede ver algunas figuras geométricas y visualizar su perímetro.
+            </template>
+
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo'>
+                    <div class='figuraGeometricaEjemplo'>
+                        <div class='linea' style="top:40%; left: 10%; height: 40%; transform: rotate(-30deg);"> 
+                            <div class='lineaUnitaria' v-for="num of 4">
+
+                            </div>
+                        </div>
+                        <div class='linea' style="top:57%; left: 40%; height: 40%; transform: rotate(90deg);"> </div>
+                        <div class='linea' style="top:-2%; left: 26%; height: 60%; transform: rotate(60deg);"> </div>
+                        <div class='linea' style="top:6%; left: 69%; height: 51%; transform: rotate(138deg);"> </div>
+                        <div class='linea' style="top:44.5%; left: 73%; height: 38%; transform: rotate(44deg);"> </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoLinea1: false,
+                cantidadUnitarias1: 0,
+                cantidadUnitarias2: 0,
+                comparacion1Area: false,
+                comparacion2Area: false,
+            }
+        },
+        methods: {
+            increaseCantidadUnitarias1() {
+                if (this.cantidadUnitarias1 >= 3) {
+                    this.cantidadUnitarias1 = 3;
+                }
+                else {
+                    this.cantidadUnitarias1++;
+                }
+
+
+            },
+            increaseCantidadUnitarias2() {
+                if (this.cantidadUnitarias2 >= 12) {
+                    this.cantidadUnitarias2 = 12;
+                }
+                else {
+                    this.cantidadUnitarias2++;
+                }
+
+
+            }
+        }
+    })
+</script>
+
+<style>
+    .figuraGeometricaEjemplo {
+        position:relative;
+        width: 200px;
+        height: 200px;
+    }
+    .linea{
+        position:absolute;
+        width: 2px;
+        background-color: black;
+        display: flex;
+        gap:2px;
+    }
+    .lineaUnitaria{
+        width: 2px;
+        background-color: blue;
+        height: 20px;
+    }
+</style>

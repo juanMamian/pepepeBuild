@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+    <script id="MathJax-script" async src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <link rel="stylesheet" href="animacionesVue.css">
+    <link rel="stylesheet" href="figuras.css">
+    <title>Propiedad asociativa</title>
+</head>
+
+<body>
+    <div id="doc">
+        <div class="nota">
+            <img src="bombillo.png" alt="idea" style="width: 25px;">
+            Al realizar una asociación se genera una nueva expresión numérica. Esa nueva expresión numérica puede ser del mismo valor que la original
+            o puede tener un valor distinto.
+        </div>
+        <br><br>
+        <div class="nota">
+            <img src="bombillo.png" alt="idea" style="width: 25px;">
+            Si la nueva expresión numérica generada al realizar la asociación es de igual valor que la original, se dice que la expresión
+            original es asociativa.
+        </div>
+
+        <div class="recuadro">
+            <div class="tituloEjemplo">Ejemplo 1</div>
+            <p>La expresión: </p>
+            <div class="expresion">
+                \( (3 \times 4) \times 5 \)
+            </div>
+
+            Es un 60.
+
+            <p>Si se realiza una asociación, se obtiene la siguiente expresión:</p>
+
+            <div class="expresion">
+                \( 3 \times (4 \times 5) \)
+            </div>
+
+            <p>Que también es un 60.</p>
+
+            <div class="conclusion">
+                <img src="conclusion.png" alt="Conclusión" style="width: 25px;">
+                Así que es una expresión asociativa.
+            </div>
+        </div><br>
+
+        <div class="recuadro">
+            <div class="tituloEjemplo">Ejemplo 2</div>
+            <p>La expresión: </p>
+            <div class="expresion">
+                \( (13 - 3) + 1 \)
+            </div>
+
+            Es un 11.
+
+            <p>Si se realiza una asociación, se obtiene la siguiente expresión:</p>
+
+            <div class="expresion">
+                \( 13 - (3 + 1) \)
+            </div>
+
+            <p>Que es un 9.</p>
+
+            <div class="conclusion">
+                <img src="conclusion.png" alt="Conclusión" style="width: 25px;">
+                Así que esta no es una expresión asociativa.
+            </div>
+        </div>
+       
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        data() {
+            return {
+            }
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px;
+    }
+
+    button {
+        padding: 15px 5px;
+    }
+    .tituloEjemplo{
+        font-size: 13px;
+        font-style: italic;
+        color: rgb(71, 71, 71);
+    }
+
+
+    .primerTipo {
+        grid-column: 1/2;
+    }
+
+    .botonAplicarNuevaOperacion {
+        grid-column: 2/3;
+    }
+
+    .segundoTipo {
+        grid-column: 3/4;
+    }    
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(600px, 90%);
+    }
+    .recuadro{
+        display: block;
+        margin: 10px auto;
+        width: min(600px, 90%);
+    }
+    .expresion {
+        padding: 10px 15px;
+        border-radius: 15px;
+        background-color: cadetblue;
+        width: 150px;
+        text-align: center;
+        margin: 10px 5px;
+    }
+    .conclusion{
+        
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px 5px;
+        width: min(90%, 500px);
+        background-color: rgb(209, 127, 33);
+    }
+</style>

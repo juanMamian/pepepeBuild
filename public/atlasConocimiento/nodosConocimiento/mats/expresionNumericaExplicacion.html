@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Expresión numérica - explicación</title>
+</head>
+
+<body>
+
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Los números suelen ser expresados usando su símbolo. Así:
+            <ul>
+                <li>
+                    El seis se representa con el símbolo <span class="resaltado">6</span>
+                </li>
+                <li>
+                    El seiscientos se representa con el símbolo <span class="resaltado">600</span>
+                </li>
+                <li>
+                    El veinticuatro se representa con el símbolo <span class="resaltado">24</span>
+                </li>
+                <li>
+                    El cero se representa con el símbolo <span class="resaltado">0</span>
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <p>
+            Pero los números también pueden ser expresados como el resultado de operaciones aritméticas.
+        </p>
+
+        <bloque-component tipo="ejemplo">
+
+            <template #cabecera>
+                En este cuadro puedes ver cómo se representan algúnos números mediante operaciones aritméticas.
+            </template>
+
+            <div class="listaEjemplos" style="display: flex;">
+                <div class="itemEjemplo" v-for="(expresion, index) of expresiones" :key="'expresion'+index">
+                    <div id="contenedorNumero1">
+                        <transition name="fade">
+                            <div class="numero numeroExplicito" v-show="!mostrandoExpresionNumerica[index]">
+                                {{expresion.valor}}
+                            </div>
+                        </transition>
+                        <transition name="fade">
+
+                            <div class="numero numeroExpresionNumerica" v-show="mostrandoExpresionNumerica[index]">
+                                \({{ expresion.toMathJax() }}\)
+                            </div>
+                        </transition>
+                    </div>
+
+                    <div class="boton" @click="toggleExpresionNumerica(index)" style="max-width: 150px;">
+                        {{mostrandoExpresionNumerica[index]?'Expresar con su símbolo':'Expresar mediante una operación aritmética'}}
+                    </div>
+                </div>
+            </div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Una expresión numérica es una operación entre <span class="resaltado">dos</span> números. Esos números se
+            conocen
+            como <span class="resaltado">operandos</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            En una expresión numérica hay un símbolo que indica la operación. Ese símbolo se conoce como <span
+                class="resaltado">el operador</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo">
+
+            <template #cabecera>
+                En este cuadro se puede ver ejemplos de expresiones numéricas y se señala el operador y los operandos.
+            </template>
+
+            <div class="listaEjemplos">
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 4 \times 2 \)
+                    </div>
+
+                    <recuadro-component tipo="datoNuevo">
+                        <ul>
+                            <li>
+                                El primer operando es <span class="resaltado">\( 4 \)</span>
+                            </li>
+                            <li>
+                                El operador es <span class="resaltado">\( \times \)</span>
+                            </li>
+                            <li>
+                                El segundo operando es <span class="resaltado">\( 2 \)</span>
+                            </li>
+                        </ul>
+                    </recuadro-component>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( \sqrt[3]{125} \)
+                    </div>
+
+                    <recuadro-component tipo="datoNuevo">
+                        <ul>
+                            <li>
+                                El primer operando es <span class="resaltado">\( 3 \)</span>
+                            </li>
+                            <li>
+                                El operador es <span class="resaltado">\( \sqrt[]{} \)</span>
+                            </li>
+                            <li>
+                                El segundo operando es <span class="resaltado">\( 125 \)</span>
+                            </li>
+                        </ul>
+                    </recuadro-component>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 3 + 16 \)
+                    </div>
+
+                    <recuadro-component tipo="datoNuevo">
+                        <ul>
+                            <li>
+                                El primer operando es <span class="resaltado">\( 3 \)</span>
+                            </li>
+                            <li>
+                                El operador es <span class="resaltado">\( + \)</span>
+                            </li>
+                            <li>
+                                El segundo operando es <span class="resaltado">\( 16 \)</span>
+                            </li>
+                        </ul>
+                    </recuadro-component>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 15 ^ 3 \)
+                    </div>
+
+                    <recuadro-component tipo="datoNuevo">
+                        <ul>
+                            <li>
+                                El primer operando es <span class="resaltado">\( 15 \)</span>
+                            </li>
+                            <li>
+                                El operador no se ve.
+                            </li>
+                            <li>
+                                El segundo operando es <span class="resaltado">\( 3 \)</span>
+                            </li>
+                        </ul>
+                    </recuadro-component>
+
+                </div>
+
+            </div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            En una expresión numérica, hay una operación aplicada sobre un número inicial.
+
+            <ul>
+                <li>
+                    El primer operando indica el número inicial.
+                </li>
+                <li>
+                    El operador indica la operación que se aplica.
+                </li>
+                <li>
+                    El segundo operando indica la magnitud de la operación
+                </li>
+            </ul>
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+                numerosEjemplo1: [
+                    {
+                        valor: 4,
+                        operacion: "suma",
+                        numero1: 1,
+
+                    },
+                    {
+                        valor: 17,
+                        operacion: 'resta',
+                        numero1: 22
+                    },
+                    {
+                        valor: 7,
+                        operacion: 'division',
+                        numero1: 21
+                    },
+                    {
+                        valor: 180,
+                        operacion: 'multiplicacion',
+                        numero1: 60,
+                    },
+
+                ],
+                mostrandoExpresionNumerica: [false, false],
+                numero1: 4,
+                numero2: 8,
+
+                stepEJemplo1: 0,
+                operacionEscogida: "suma",
+
+                versionExpresion1: 0,
+                versionExpresion2: 0,
+
+                expresion1: null,
+                expresion2: null,
+
+                expresionOriginalCreada: false,
+
+                mostrarValor: false,
+
+                lastAleatorio: null,
+            }
+        },
+        computed: {
+            expresiones() {
+                return this.numerosEjemplo1.map(num => {
+                    let laExpresion=new ExpresionNumerica({valor: num});
+                    laExpresion.fillExpresion();
+                    return laExpresion;
+                });
+            }
+        },
+        methods: {
+            toggleExpresionNumerica(index) {
+                // this.mostrandoExpresionNumerica[index]=!this.mostrandoExpresionNumerica[index];
+                this.$set(this.mostrandoExpresionNumerica, index, !this.mostrandoExpresionNumerica[index]);
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                });
+            },
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+</style>

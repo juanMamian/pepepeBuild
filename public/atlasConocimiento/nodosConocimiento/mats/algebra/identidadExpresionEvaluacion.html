@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Identidad expresiones - evaluación</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Comprendo el concepto de identidad de expresiones si:
+        </p>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Dada una expresión numérica puedo inventar otra expresión numérica idéntica.
+            </template>
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='flexVertical'>
+                    <p>
+                        Selecciona la dificultad
+                    </p>
+                    <input type="range" id='inputDificultadReto1' ref="inputDificultadReto1" min="1" max="3"
+                        v-model="dificultadReto1">
+                    <p>
+                        {{dificultadReto1}}
+                    </p>
+
+                </div>
+            </recuadro-component>
+            <div class='flexVertical'>
+
+                <div class='boton' @click="generarReto1">
+                    Generar expresión
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto1' v-if="reto1" :key="'reto1'+versionReto1" class="matsExpresion" style="font-size: 30px">
+                        \({{reto1.toMathJax()}}\)
+                    </div>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                dificultadReto1: 1,
+                reto1: null,
+                versionReto1: 0,
+            }
+        },
+        methods: {
+            generarReto1() {
+                this.reto1 = null;
+                let laExpresion = new ExpresionNumerica();
+                laExpresion.fillExpresion({keepInteger: true});
+                laExpresion.reexpresionar(Number(this.dificultadReto1) - 1, {keepInteger: true});
+                this.reto1 = laExpresion;
+                this.versionReto1++;
+            }
+        },
+        watch: {
+            versionReto1() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            }
+        }
+
+
+    }).mount("#doc");
+</script>
+
+<style>
+    #ejemplosIdentidades .matsExpresion {
+        margin: 20px auto;
+    }
+</style>

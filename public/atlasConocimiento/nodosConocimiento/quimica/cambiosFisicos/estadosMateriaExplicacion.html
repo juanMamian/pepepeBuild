@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Estados de la materia</title>
+</head>
+
+<body>
+
+    <div id="doc">
+
+        <p>
+            La materia se encuentra en tres estados diferentes:
+
+        <ul>
+            <li>
+                Solido
+            </li>
+            <li>
+                Líquido
+            </li>
+            <li>
+                Gaseoso
+            </li>
+        </ul>
+        </p>
+
+
+        <recuadro-component tipo="datoPrevio">
+            El estado de la materia depende de la organización de las partículas y de las fuerzas de
+            atracción entre ellas.
+        </recuadro-component>
+        <hr>
+        <h4>Solido</h4>
+
+        <recuadro-component tipo="datoPrevio">
+            
+
+            <ul>
+                <li>
+                    Las partículas están unidas por una gran fuerza de
+                    atracción
+                </li>
+
+                <li>
+                    Las partículas están ordenadas en posiciones fijas.
+                </li>
+                <li>
+                    Las particulas sólo vibran o rotan en su posición pero no se desplazan.
+                </li>
+                <li>
+                    Las sustancias sólidas tienen forma y volúmen definido.
+                </li>
+                <li>
+                    Las sustancias sólidas no se comprimen ni fluyen.
+                </li>
+            </ul>
+        </recuadro-component>
+<hr>
+        <h4>Líquido</h4>
+
+        <recuadro-component tipo="datoPrevio">
+            
+
+            <ul>
+                <li>
+                    Las partículas están unidas por fuerzas
+                    de atracción de mediana intensidad.
+                </li>
+
+                <li>
+                    Las partículas están más separadas que en el estado sólido.
+                </li>
+                <li>
+                    Las particulas vibran y se desplazan.
+                </li>
+                <li>
+                    Las sustancias líquidas tienen forma variable y volúmen definido.
+                </li>
+                <li>
+                    Las sustancias líquidas se adaptan a la forma del recipiente que las contiene.
+                </li>
+                <li>
+                    Las sustancias líquidas pueden fluir con facilidad.
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <hr>
+        <h4>Gaseoso</h4>
+
+        <recuadro-component tipo="datoPrevio">
+            
+
+            <ul>
+                <li>
+                    Las partículas están unidas por fuerzas
+                    de atracción de baja intensidad.
+                </li>
+
+                <li>
+                    Las partículas están muy separadas entre sí.
+                </li>
+                <li>
+                    Las particulas vibran y se desplazan con gran facilidad ocupando mayor espacio.
+                </li>
+                <li>
+                    Las sustancias gaseosas no tienen forma ni volúmen definido.
+                </li>
+                <li>
+                    Las sustancias gaseosas toman la forma del recipiente que las contiene ocupando todo el espacio disponible.
+                </li>
+                <li>
+                    Las sustancias líquidas pueden fluir y comprimirse con facilidad.
+                </li>
+            </ul>
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

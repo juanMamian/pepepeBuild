@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet" <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Sumas - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo='datoPrevio'>
+            Sumar significa poner. Por eso sumar números significa ponerle un número a otro número.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Cuando dos números están sumados, se usa la palabra <span class='resaltado'>mas</span> entre ellos.
+        </recuadro-component>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra cómo se usa la palabra más.
+            </template>
+
+            <recuadro-component tipo='instruccionPointer'>
+                Presiona en cada cuadro para ver otro modo de decirlo.
+            </recuadro-component>
+            
+
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo ejemploFormaMas' ref="ejemploMas1"
+                    @click="$refs.ejemploMas1.classList.toggle('mostrandoFormaMas')">
+                    <div class='formaSumar'>
+                        4 sumado con 3
+                    </div>
+                    <div class='formaMas'>
+                        4 mas 3
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMas' ref="ejemploMas2"
+                    @click="$refs.ejemploMas2.classList.toggle('mostrandoFormaMas')">
+                    <div class='formaSumar'>
+                        12 sumado con 8
+                    </div>
+                    <div class='formaMas'>
+                        12 mas 8
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMas' ref="ejemploMas3"
+                    @click="$refs.ejemploMas3.classList.toggle('mostrandoFormaMas')">
+                    <div class='formaSumar'>
+                        20 sumado con 1
+                    </div>
+                    <div class='formaMas'>
+                        20 mas 1
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMas' ref="ejemploMas4"
+                    @click="$refs.ejemploMas4.classList.toggle('mostrandoFormaMas')">
+                    <div class='formaSumar'>
+                        6 sumado con 13
+                    </div>
+                    <div class='formaMas'>
+                        6 mas 13
+                    </div>
+                </div>
+            </div>
+
+        </bloque-component>
+
+
+        <bloque-component tipo='herramientaInteractiva' @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se muestra un número y se puede sumar.
+            </template>
+
+            <div class='flexVertical' style="position: relative" ref="contenedorSuma">
+
+                <input id='inputNumeroOriginal' type="range" min="0" max="30" v-model="numeroOriginal">
+
+                <div class='texto'>
+                    Este es el <span class='resaltado'> {{numeroOriginal}} {{numeroSumado > 0?'mas ':''}}{{numeroSumado
+                        || ''}}</span>.
+                </div>
+                <div class='numeroEnBolitas'>
+                    <div class='bolitaNumero' v-for="num of Number(numeroOriginal)" :key="'bolita'+num">
+                    </div>
+                    <div class='bolitaNumero bolitaSumada' v-for="num of Number(numeroSumado)" ref="bolitaSumada"
+                        :key="'bolitaSumada'+num">
+                    </div>
+                </div>
+
+
+
+                <div class='boton selector' :class="{activado: numeroSumado!=0, deshabilitado: numeroSumado!=0}"
+                    @click="iniciarSuma">
+                    Sumarle {{numeroSumar}}
+                </div>
+
+                <div class='numeroEnBolitas'>
+                    <div class='bolitaNumero' v-for="num of Number(numeroSumar) - Number(numeroSumado)"
+                        :key="'bolitaSumar' + num" ref="bolitaSumar"></div>
+                </div>
+                <input id='inputNumeroSumar' type="range" min="0" max="30" v-model="numeroSumar">
+
+                <div class='bolitaNumero bolitaViajera' v-for="num of Number(numeroSumar)" :key="'bolitaViajera'+num"
+                    ref="bolitaViajera">
+                </div>
+
+            </div>
+
+        </bloque-component>
+
+        <p>
+            El símbolo para la suma es <span class='resaltado'>+</span>.
+        </p>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra cómo se usa el símbolo de suma
+            </template>
+            
+            <recuadro-component tipo='instruccionPointer'>
+                Presiona en cada cuadro para ver otro modo de escribir una suma
+            </recuadro-component>
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo1" @click="$refs.ejemploFormaSimbolo1.classList.toggle('mostrandoFormaSimbolo')">
+                  <div class='formaMas'>
+                      4 mas 12
+                  </div>
+                  <div class='formaSimbolo'>
+                      4+12
+                  </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo2" @click="$refs.ejemploFormaSimbolo2.classList.toggle('mostrandoFormaSimbolo')">
+                  <div class='formaMas'>
+                      0 mas 1
+                  </div>
+                  <div class='formaSimbolo'>
+                      0+1
+                  </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo3" @click="$refs.ejemploFormaSimbolo3.classList.toggle('mostrandoFormaSimbolo')">
+                  <div class='formaMas'>
+                      20 mas 100
+                  </div>
+                  <div class='formaSimbolo'>
+                      20+100
+                  </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo4" @click="$refs.ejemploFormaSimbolo4.classList.toggle('mostrandoFormaSimbolo')">
+                  <div class='formaMas'>
+                      1 mas 1
+                  </div>
+                  <div class='formaSimbolo'>
+                      1+1
+                  </div>
+
+                </div>
+            </div>
+
+        </bloque-component>
+        
+        
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+        },
+        data() {
+            return {
+                numeroOriginal: 4,
+                numeroSumar: 3,
+                numeroSumado: 0,
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.numeroOriginal = 4;
+                this.numeroSumar = 3;
+                this.numeroSumado = 0;
+            },
+
+            iniciarSuma() {
+                if (this.numeroSumado != 0) {
+                    return;
+                }
+                this.sumar();
+            },
+            sumar() {
+                if (this.numeroSumado >= this.numeroSumar) {
+                    return;
+                }
+                let posContenedor = this.$refs.contenedorSuma.getBoundingClientRect();
+                let rectFrom = this.$refs.bolitaSumar[0].getBoundingClientRect();
+                let posFrom = {
+                    x: rectFrom.left - posContenedor.left,
+                    y: rectFrom.top - posContenedor.top,
+                }
+                this.numeroSumado++;
+                let i = this.numeroSumado - 1;
+                this.$nextTick(() => {
+
+                    const rectTo = this.$refs.bolitaSumada[i].getBoundingClientRect();
+                    const posTo = {
+                        x: rectTo.left - posContenedor.left,
+                        y: rectTo.top - posContenedor.top,
+                    }
+                    this.$refs.bolitaViajera[i].animate([
+                        {left: posFrom.x + 'px', top: posFrom.y + 'px', visibility: 'visible'},
+                        {left: posTo.x + 'px', top: posTo.y + 'px', visibility: 'visible'}
+                    ], {duration: 700}).finished.then(() => {
+                        this.$refs.bolitaSumada[i].style.opacity = 1;
+                    });
+                });
+
+                setTimeout(() => {
+                    this.sumar();
+                }, 900);
+            },
+
+        },
+        watch: {
+            numeroOriginal(num) {
+                this.numeroSumado = 0;
+            },
+            numeroSumar(){
+                this.numeroSumado=0;
+            },
+            
+        }
+    }).mount("#doc");
+</script>
+
+<style>
+.ejemploFormaMas{
+    width: min(159px, 90%);
+}
+    .ejemploFormaMas:not(.mostrandoFormaMas) .formaMas {
+        display: none;
+    }
+    .ejemploFormaMas:not(.mostrandoFormaMas) .formaSumar {
+        display: block;
+    }
+
+    .ejemploFormaMas.mostrandoFormaMas .formaMas {
+        display: block;
+    }
+    .ejemploFormaMas.mostrandoFormaMas .formaSumar {
+        display: none;
+    }
+
+    .bolitaSumada {
+        opacity: 0;
+    }
+
+    .bolitaViajera {
+        position: absolute;
+        opacity: 0.6;
+        visibility: hidden;
+    }
+
+    .ejemploFormaSimbolo{
+        width: min(150px, 90%);
+    }
+    .ejemploFormaSimbolo:not(.mostrandoFormaSimbolo) .formaMas{
+        display: block;
+    }
+    .ejemploFormaSimbolo:not(.mostrandoFormaSimbolo) .formaSimbolo{
+        display: none;
+    }
+    
+    .ejemploFormaSimbolo.mostrandoFormaSimbolo .formaMas{
+        display: none;
+    }
+    .ejemploFormaSimbolo.mostrandoFormaSimbolo .formaSimbolo{
+        display: block;
+    }
+</style>

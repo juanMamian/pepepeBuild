@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>CSS Inline</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Los navegadores web pueden interpretar instrucciones de <span class="resaltado">estilo</span> para los
+            elementos.
+            Es decir: instrucciones acerca de la apariencia de los elementos.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            El lenguaje <span class="resaltado">CSS</span> es un lenguaje para escribir instrucciones de estilo. Estas instrucciones pueden ser
+            interpretadas por un navegador web.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Una instruccion CSS tiene dos componentes:
+            <ul>
+                <li>
+                    Nombre de una propiedad.
+                </li>
+
+                <li>
+                    Valor para esa propiedad.
+                </li>
+            </ul>
+
+            Los dos componentes están conectados por un símbolo de dos puntos: <span class="resaltado">:</span>
+        </recuadro-component>        
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+               <span> En este cuadro se puede seleccionar una propiedad y un valor para escribir una <span class="resaltado"> instrucción CSS</span></span>.
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Selecciona una propiedad CSS y un valor para esa propiedad.
+            </recuadro-component>
+            <div class="zonaSelects" :style="[{display: 'flex', justifyContent: 'center'}]">
+                <select v-model="atributoSeleccionado">
+                    <option value=null>
+                        Selecciona una propiedad
+                    </option>
+                    <option :value="atributo" v-for="atributo of atributos">
+                        {{atributo.nombre}}
+                    </option>
+                </select>
+
+                <select v-model="valorSeleccionado">
+                    <option value=null>
+                        Selecciona un valor
+                    </option>
+                    <option :value="valor" v-for="valor of atributoSeleccionado?atributoSeleccionado.valores:[]">
+                        {{valor}}
+                    </option>
+                </select>
+            </div>
+            <div class="boton" @click="escribirInstruccion" v-show="atributoSeleccionado && valorSeleccionado">
+                Escribir la instrucción css
+            </div>
+            <div class="contenedorInstruccion">
+                <div class="instruccion" v-show="instruccion">
+                    {{instruccion}}
+                </div>
+            </div>
+            <div class="explicacion" v-if="atributoSeleccionado && valorSeleccionado && instruccion">
+                {{atributoSeleccionado.explicacion}}
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si se quieren escribir varias instrucciones CSS, deben separarse con un símbolo de punto y coma: <span
+                class="resaltado">;</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciarEncadenado">
+            <template #cabecera>
+                En este cuadro se muestra cómo se escriben varias instrucciones CSS.
+            </template>
+
+            <div class="instruccion">
+                <transition name="fade">
+                    <span v-show="colorEncadenado">color: red</span>
+                </transition>
+                <transition name="fade">
+                    <span v-show="anchoEncadenado"><span class="resaltado">;</span> width: 130px</span>
+                </transition>
+                <transition name="fade">
+                    <span v-show="altoEncadenado"> <span class="resaltado">;</span> height: 50px</span>
+                </transition>
+            </div>
+
+            <div class="boton" :class="{deshabilitado:colorEncadenado}" @click="colorEncadenado=true">Escribir una
+                instruccion CSS para color del texto en el elemento</div>
+            <div class="boton" :class="{deshabilitado:anchoEncadenado || !colorEncadenado}" @click="anchoEncadenado=true">Escribir una
+                instruccion CSS para ancho del elemento</div>
+            <div class="boton" :class="{deshabilitado:altoEncadenado || !anchoEncadenado}" @click="altoEncadenado=true">Escribir una
+                instruccion CSS para alto del elemento</div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            El lenguaje CSS incluye una <a target="_blank" href="https://www.htmlhelp.com/es/reference/css/properties.html">larga lista de propiedades</a>. 
+        </recuadro-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                instruccionEncadenada: null,
+                colorEncadenado: false,
+                anchoEncadenado: false,
+                altoEncadenado: false,
+                atributos: [
+                    {
+                        nombre: "color",
+                        valores: ["black", "red", "blue", "yellow"],
+                        explicacion: "Esta instrucción indica el color del texto que está en el elemento.",
+                    },
+                    {
+                        nombre: "width",
+                        valores: ["20px", "30px", "100px"],
+                        explicacion: "Esta instrucción indica el ancho del elemento en pixeles."
+                    },
+                    {
+                        nombre: "height",
+                        valores: ["15px", "50px", "100px"],
+                        explicacion: "Esta instrucción indica el alto del elemento en pixeles."
+                    }
+                ],
+                atributoSeleccionado: null,
+                valorSeleccionado: null,
+                instruccion: null,
+            }
+        },
+        methods: {
+            escribirInstruccion() {
+                var valor = this.valorSeleccionado;
+                if (this.atributoSeleccionado.nombre === 'color') {
+                    valor = '"' + valor + '"';
+                }
+                this.instruccion = this.atributoSeleccionado.nombre + ' : ' + valor;
+            },
+            encadenarInstruccion(atributo) {
+                if (!this.instruccionEncadenada) {
+                    this.instruccionEncadenada = ""
+                }
+                else {
+                    this.instruccionEncadenada += "; ";
+                }
+
+                if (atributo == "color") {
+                    this.instruccionEncadenada += 'color: "red"';
+                }
+                else if (atributo == 'ancho') {
+                    this.instruccionEncadenada += 'width: 120px';
+                }
+                else if (atributo == 'alto') {
+                    this.instruccionEncadenada += 'height: 70px';
+                }
+
+            },
+            reiniciarEncadenado(){
+                this.colorEncadenado=false;
+                this.anchoEncadenado=false;
+                this.altoEncadenado=false;
+            }
+        },
+        watch: {
+            atributoSeleccionado() {
+                this.valorSeleccionado = null;
+                this.instruccion = null;
+            }
+        }
+    })
+</script>
+
+<style>
+    .documentoWeb {
+        background-color: whitesmoke;
+        margin: 5px 10px;
+    }
+
+    .codigoNuevo {
+        background-color: brown;
+        padding: 2px 1px;
+        border-radius: 2px;
+    }
+
+    .textoPlaceHolderCodigo {
+        color: whitesmoke;
+    }
+
+    select {
+        padding: 7px 15px;
+        margin: 5px 10px;
+    }
+
+    .contenedorInstruccion {
+        display: flex;
+        justify-content: center;
+    }
+
+    .instruccion {
+        margin: 10px auto;
+        text-align: center;
+        border: 2px solid brown;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+
+    .explicacion {
+        text-align: center;
+    }
+</style>

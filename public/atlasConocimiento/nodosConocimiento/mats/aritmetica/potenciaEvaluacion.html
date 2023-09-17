@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Potencia</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el concepto de potencia si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dada cualquier expresión de un número elevado a algún nivel de potencia, puedo descubrir su valor.
+            </template>
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto1">
+                    Generar número
+                </button>
+            </div>
+
+            <transition name="enterTop">
+                <div class='contenedorFlex reto' v-show="numeroReto1!=null" :key="versionReto1">
+                    <div>
+                        {{numeroReto1}}
+                    </div>
+                    <recuadro-component tipo='instruccion' v-show="potenciaReto1">
+                        Encuentra su valor en nivel de potencia {{potenciaReto1}}.
+                    </recuadro-component>
+                </div>
+            </transition>
+
+            <recuadro-component tipo='instruccionTeclado' v-show="numeroReto1 && potenciaReto1">
+                <div class='contenedorFlex'>
+                    Escribe aquí tu respuesta
+                    <input type="number" ref="inputRespuestaUsuarioReto1"
+                        @keypress.enter="inputRespuestaUsuarioReto1" />
+                    <button class='boton' @click="inputRespuestaUsuarioReto1">
+                        Aceptar
+                    </button>
+                </div>
+            </recuadro-component>
+
+            <transition name="popIn"
+                @before-enter="$nextTick(()=>{$refs.infoResultadoReto1.$el.scrollIntoView({behavior: 'smooth', block: 'center'})})">
+                <recuadro-component tipo='infoResultado' ref="infoResultadoReto1"
+                    v-show="respuestaReto1!=null && respuestaUsuarioReto1!=null"
+                    :modo="respuestaUsuarioReto1===respuestaReto1?'correcto':'incorrecto'"
+                    :key="versionRespuestaUsuarioReto1">
+                </recuadro-component>
+            </transition>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Conozco el valor de la potencia 0 de todos los números.
+            </template>
+
+            <recuadro-component tipo='instruccionTeclado'>
+                <div class='contenedorFlex'>
+                    <div>
+                        Escribe aquí tu respuesta
+                    </div>
+                    <input type="number" ref="inputRespuestaUsuarioReto2"
+                        @keypress.enter="inputRespuestaUsuarioReto2" />
+                    <button class='boton' @click="inputRespuestaUsuarioReto2">
+                        Aceptar
+                    </button>
+                </div>
+            </recuadro-component>
+
+            <transition name="popIn"
+                @before-enter="$nextTick(()=>{$refs.infoResultadoReto2.$el.scrollIntoView({behavior: 'smooth', block:'center'})})">
+                <recuadro-component tipo='infoResultado' ref="infoResultadoReto2" v-show="respuestaUsuarioReto2!=null"
+                    :key="versionRespuestaUsuarioReto2" :modo="respuestaUsuarioReto2===1?'correcto':'incorrecto'">
+                </recuadro-component>
+            </transition>
+
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroReto1: null,
+                potenciaReto1: null,
+                versionReto1: 0,
+                respuestaReto1: null,
+                respuestaUsuarioReto1: null,
+                versionRespuestaUsuarioReto1: 0,
+
+                respuestaUsuarioReto2: null,
+                versionRespuestaUsuarioReto2: 0,
+            }
+        },
+        methods: {
+            reiniciarReto2() {
+                this.respuestaUsuarioReto2 = null;
+                this.inputRespuestaUsuarioReto2.value = null;
+            },
+            inputRespuestaUsuarioReto2() {
+                this.respuestaUsuarioReto2 = Number(this.$refs.inputRespuestaUsuarioReto2.value);
+                this.versionRespuestaUsuarioReto2++;
+            },
+            reiniciarReto1() {
+                this.numeroReto1 = null;
+                this.respuestaReto1 = null;
+                this.respuestaUsuarioReto1 = null;
+                this.$refs.inputRespuestaUsuarioReto1.value = null;
+            },
+            generarReto1() {
+                this.reiniciarReto1();
+                this.numeroReto1 = Math.ceil(Math.random() * 10);
+                let maxPotencia = this.numeroReto1 == 1 ? 1000 : this.numeroReto1 == 2 ? 8 : this.numeroReto1 == 3 ? 4 : 3;
+                this.potenciaReto1 = Math.ceil(Math.random() * maxPotencia);
+                if (Math.random() > 0.2 && this.potenciaReto1 == 1) {
+                    this.potenciaReto1++;
+                }
+                this.respuestaReto1 = Math.pow(this.numeroReto1, this.potenciaReto1);
+                this.versionReto1++;
+            },
+            inputRespuestaUsuarioReto1() {
+                this.respuestaUsuarioReto1 = Number(this.$refs.inputRespuestaUsuarioReto1.value);
+                this.versionRespuestaUsuarioReto1++;
+            },
+        }
+    })
+</script>
+
+<style>
+    .numero {
+        display: flex;
+    }
+
+    .numeroCuadrado {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .expresionMultiplicacion {
+        text-align: center;
+        font-size: 27px;
+        color: brown;
+        font-weight: bold;
+    }
+</style>

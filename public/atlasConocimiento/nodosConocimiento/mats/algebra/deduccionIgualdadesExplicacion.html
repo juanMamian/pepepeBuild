@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Deducción de igualdades</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Cuando se tiene una comparación entre dos números, es posible deducir otras comparaciones acerca de números
+            relacionados con los originales.
+        </p>
+
+        <p>
+            Cuando se construyen dos nuevos números aplicando la misma operación a los números originales es evidente
+            que la comparación entre ellos es semejante a la comparación entre los dos números originales.
+        </p>
+
+        <bloque-component tipo='ejemplo' @plegado="reiniciarBloque1">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de comparación de números y construcción de dos nuevos números
+                aplicando la misma operación en los dos números originales.
+            </template>
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo'>
+                    <div class='matsExpresion' style="font-size: 20px">
+                        \(15 < 32 \) </div>
+
+                            <recuadro-component tipo='datoNuevo'>
+                                Se aplicará una suma de magnitud 5.
+                            </recuadro-component>
+
+                            <div class='contenedorBotonesAplicacion'>
+                                <div class='bloqueGeneracionNumeros'>
+                                    <div class='boton' @click="ejemplo1OperacionAplicada1=true">
+                                        Aplicar la suma en el 15
+                                    </div>
+                                    <transition name="travelTop">
+                                        <div class='matsExpresion' v-show="ejemplo1OperacionAplicada1">
+                                            \(15 + 5\)
+                                        </div>
+                                    </transition>
+                                </div>
+                                <div class='bloqueGeneracionNumeros'>
+                                    <div class='boton' @click="ejemplo1OperacionAplicada2=true">
+                                        Aplicar la suma en el 32
+                                    </div>
+                                    <transition name="travelTop">
+                                        <div class='matsExpresion' v-show="ejemplo1OperacionAplicada2">
+                                            \(32 + 5\)
+                                        </div>
+                                    </transition>
+                                </div>
+                            </div>
+
+                            <transition name="fadeIn">
+                                <recuadro-component tipo='datoNuevo'
+                                    v-show="ejemplo1OperacionAplicada1 && ejemplo1OperacionAplicada2">
+                                    Si el \(15\) es menor que el \( 32 \) entonces es evidente que el \(15 + 5 \)
+                                    también es
+                                    menor que el \( 32 + 5 \).
+                                </recuadro-component>
+                            </transition>
+
+                            <transition name="fadeIn">
+                                <div class='boton' @click="ejemplo1Expresado=true"
+                                    v-show="ejemplo1OperacionAplicada1 && ejemplo1OperacionAplicada2">
+                                    Escribir
+                                </div>
+                            </transition>
+
+                            <transition name="travelTop">
+                                <div class='matsExpresion' v-show="ejemplo1Expresado">
+                                    \( {15 + 5} < {32 + 5} \) </div>
+                            </transition>
+                    </div>
+                    <div class='itemEjemplo'>
+                        <div class='matsExpresion' style="font-size: 20px">
+                            \( 25 = 32 - 7 \) </div>
+
+                        <recuadro-component tipo='datoNuevo'>
+                            Se aplicará una radicación de magnitud 2.
+                        </recuadro-component>
+
+                        <div class='contenedorBotonesAplicacion'>
+                            <div class='bloqueGeneracionNumeros'>
+                                <div class='boton' @click="ejemplo2OperacionAplicada1=true">
+                                    Aplicar la radicación en el 25
+                                </div>
+                                <transition name="travelTop">
+                                    <div class='matsExpresion' v-show="ejemplo2OperacionAplicada1">
+                                        \( \sqrt[2]{25}\)
+                                    </div>
+                                </transition>
+                            </div>
+                            <div class='bloqueGeneracionNumeros'>
+                                <div class='boton' @click="ejemplo2OperacionAplicada2=true">
+                                    Aplicar la radicación en el \(32 - 7 \)
+                                </div>
+                                <transition name="travelTop">
+                                    <div class='matsExpresion' v-show="ejemplo2OperacionAplicada2">
+                                        \( \sqrt[2]{32 - 7}\)
+                                    </div>
+                                </transition>
+                            </div>
+                        </div>
+
+                        <transition name="fadeIn">
+                            <recuadro-component tipo='datoNuevo'
+                                v-show="ejemplo2OperacionAplicada1 && ejemplo2OperacionAplicada2">
+                                Si el \(25\) es menor que el \( 32 - 7 \) entonces es evidente que el \( \sqrt[2]{25} \)
+                                también es
+                                menor que el \( \sqrt[2]{ 32 - 7} \).
+                            </recuadro-component>
+
+                        </transition>
+
+                        <transition name="fadeIn">
+                            <div class='boton' @click="ejemplo2Expresado=true"
+                                v-show="ejemplo2OperacionAplicada1 && ejemplo2OperacionAplicada2">
+                                Escribir
+                            </div>
+                        </transition>
+
+                        <transition name="travelTop">
+                            <div class='matsExpresion' v-show="ejemplo2Expresado">
+                                \( \sqrt[2]{25 + 5} < \sqrt[2]{32 - 7} \) </div>
+                        </transition>
+                    </div>
+
+                </div>
+
+        </bloque-component>
+
+        <p>
+            Este tipo de razonamiento permite producir comparaciones que son consecuencia de la primera. Es decir: si la
+            primera comparación es verdadera, entonces estas también lo son.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Producir comparaciones que deben ser verdaderas si la original es verdadera es una <span
+                class="resaltado">deducción de comparaciones</span>.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1OperacionAplicada1: false,
+                ejemplo1OperacionAplicada2: false,
+                ejemplo1Expresado: false,
+
+                ejemplo2OperacionAplicada1: false,
+                ejemplo2OperacionAplicada2: false,
+                ejemplo2Expresado: false,
+
+
+                operacionesBasicas: [
+                    {
+                        codigo: " + ",
+                        simbolo: " + ",
+                        nombre: "suma",
+                    },
+                    {
+                        codigo: " - ",
+                        simbolo: " - ",
+
+                        nombre: "resta"
+                    },
+                    {
+                        codigo: " \\times ",
+                        simbolo: " \\times ",
+
+                        nombre: "multiplicación"
+                    },
+                    {
+                        codigo: " \\over ",
+                        simbolo: " \\div ",
+
+                        nombre: "división"
+                    }
+                ],
+
+                mostrandoDeduccionSimbolos: false,
+
+            }
+        },
+        computed: {
+            operacionesPosibles() {
+                return this.operacionesBasicas;
+            },
+            mitad1() {
+                const mitad1 = "(4 \\times 2)" + this.operacionesPosibles[this.operacionSeleccionada].codigo + this.numeroAmbosLados;
+                return "\\(" + mitad1 + "\\)";
+            },
+            mitad2() {
+                const mitad2 = "(11 - 3)" + this.operacionesPosibles[this.operacionSeleccionada].codigo + this.numeroAmbosLados;
+                return "\\(" + mitad2 + "\\)";
+            },
+            nuevaEcuacion() {
+                console.log(`substr1: ${this.mitad1.substr(2, this.mitad1.length - 4)}`);
+                console.log(`substr2: ${this.mitad2.substr(2, this.mitad2.length - 4)}`);
+
+                const nueva = "{" + this.mitad1.substr(2, this.mitad1.length - 4) + "}={" + this.mitad2.substr(2, this.mitad2.length - 4) + "}";
+                return "\\(" + nueva + "\\)";
+            }
+        },
+        methods: {
+            reiniciarBloque1() {
+                this.reiniciarEjemplo1();
+                this.reiniciarEjemplo2();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1OperacionAplicada1 = false;
+                this.ejemplo1OperacionAplicada2 = false;
+                this.ejemplo1Expresado = false;
+            },
+            reiniciarEjemplo2() {
+                this.ejemplo2OperacionAplicada1 = false;
+                this.ejemplo2OperacionAplicada2 = false;
+                this.ejemplo2Expresado = false;
+            },
+            toggleMostrandoDeduccion() {
+                this.mostrandoDeduccionSimbolos = !this.mostrandoDeduccionSimbolos;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            }
+        },
+        watch: {
+            numeroAmbosLados() {
+                this.reloadBotonesNuevosNumeros();
+            },
+            operacionSeleccionada() {
+                this.reloadBotonesNuevosNumeros();
+            }
+
+        }
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .recuadro {
+        width: 80%;
+    }
+
+    #ejemplo1 {
+        border: 2px solid blueviolet;
+        border-radius: 20px;
+        padding: 10px;
+        padding-bottom: 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 10px;
+        justify-items: center;
+    }
+
+    .botonAnchoCompleto {
+        grid-column: 1/3;
+    }
+
+    .transversal {
+        grid-column: 1/3;
+    }
+
+    .botonEjemplo {
+        max-width: 600px;
+        margin: 10px auto;
+        padding: 10px 20px;
+    }
+
+    .divAnchoCompleto {
+        grid-column: 1/3;
+    }
+
+    .conclusion {
+        padding: 5px 10px;
+        border-radius: 10px;
+        background-color: rgb(87, 196, 87);
+    }
+
+    .columnaDerecha {
+        grid-column: 2/3;
+    }
+
+    .columnaIzquierda {
+        grid-column: 1/2;
+    }
+
+    .selectorOperacion {
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid rgb(73, 73, 73);
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .selectorOperacion:hover {
+        background-color: cadetblue;
+    }
+
+    .seleccionado {
+        background-color: cadetblue;
+    }
+
+    .codigo {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .matsExpresion {
+        font-size: 20px;
+    }
+
+    .contenedorBotonesAplicacion {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+</style>

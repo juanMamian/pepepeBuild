@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Estructura básica de una página web</title>
+</head>
+
+<body>
+    <div id="doc">        
+        <div id="fondoOpaco" @click="mostrandoExplicacion=null" v-show="mostrandoExplicacion"></div>
+        Las páginas web se construyen sobre una estructura básica de elementos.
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+                En este cuadro se muestran los elementos fundamentales de una página web.
+            </template>
+
+            <div id="estructuraWeb">
+                <div class="elemento" style="background-color: darkgoldenrod;" @click="mostrandoExplicacion='head'">
+                    <recuadro-component tipo="datoPrevio" class="explicacion" @click.stop="" v-show="mostrandoExplicacion=='head'">
+                        <span class="tituloExplicacion">
+                            head
+                        </span><br>
+                        Este elemento contiene elementos de configuración de la página web.
+                    </recuadro-component>
+                    <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;head&gt;</div>
+
+                    <div class="elemento" style="background-color: cadetblue; display: flex;" @click.stop="mostrandoExplicacion='title'">
+                        <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;title&gt;</div>
+                        <div class="etiqueta" style="margin-left: auto;" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/title&gt;</div>
+                        <recuadro-component tipo="datoPrevio" class="explicacion" @click.stop="" v-show="mostrandoExplicacion==='title'">
+                            <span class="tituloExplicacion">title</span><br>
+                            El texto contenido dentro de este elemento será mostrado por el navegador como nombre de la página.
+                        </recuadro-component>
+                    </div>
+                    <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/head&gt;</div>
+
+                </div>
+                <div class="elemento" style="background-color: coral;height: 70px; display: flex; justify-content: space-between; flex-direction: column;" @click.stop="mostrandoExplicacion='body'">
+                    <recuadro-component tipo="datoPrevio" class="explicacion" @click.stop="" v-show="mostrandoExplicacion==='body'">
+                        <span class="tituloExplicacion">body</span><br>
+                        Cuerpo de la página. El contenido de este elemento será mostrado en el visor del navegador web.
+                    </recuadro-component>
+                    <div class="etiqueta" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;body&gt;</div>
+                    <div class="etiqueta" style="margin-top: auto" :style="[{visibility: verCodigo?'visible':'hidden'}]">&lt;/body&gt;</div>
+                </div>
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+                verCodigo:true,
+                mostrandoExplicacion: null,
+            }
+        }
+    })
+</script>
+
+<style>
+    .textoMarcar {
+        text-align: center;
+        margin: 10px auto;
+        font-size: 20px;
+        cursor: pointer;
+        margin-bottom: 30px;
+
+    }
+
+    .etiqueta {
+        color: brown;
+    }
+
+    .elemento {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .explicacion{
+        position: fixed;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .tituloExplicacion{
+        background-color: var(--paletaActual);
+        padding: 2px 5px;
+        border-radius: 5px;
+    }
+
+    #fondoOpaco{
+        position: fixed;
+        top:0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(128, 128, 128, 0.158);
+    }
+</style>

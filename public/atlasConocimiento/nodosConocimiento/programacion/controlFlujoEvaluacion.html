@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Control de flujo - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+        Conozco el control de flujo básico de un programa informático si:
+        </p>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Puedo escribir y ejecutar un programa informático que contiene bloques de instrucciones que se ejecutan condicionalmente.
+            </template>
+            
+        </bloque-component>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Puedo escribir y ejecutar un programa informático que contiene bloques de instrucciones que se ejecutan repetidamente.
+            </template>
+            
+        </bloque-component>
+        
+        
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo1StepFinal: 6,
+
+                claseFinalEjemplo: '',
+
+            }
+        },
+        computed: {
+        },
+        methods: {
+            reiniciarBloque1() {
+                this.reiniciarEjemplo1();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+        },
+        watch: {
+            ejemplo1Step(step) {
+                if (step === this.ejemplo1StepFinal) {
+                    setTimeout(() => {
+                        this.ejemplo1Step++;
+                    }, 3000);
+
+                }
+
+            }
+        }
+    }).mount("#doc");
+</script>
+<style>
+</style>
+
+

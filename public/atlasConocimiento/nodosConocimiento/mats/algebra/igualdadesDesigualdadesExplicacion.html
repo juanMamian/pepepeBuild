@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Igualdades y desigualdades</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Cuando se compara dos números es posible hacer una afirmación acerca de ellos.
+
+        <ul>
+            <li>
+                Al comparar el 5 con el 7, se puede afirmar que: <span class="resaltado"> El 5 es menor que el 7</span>.
+            </li>
+
+            <li>
+                Al comparar el 3 con el 1, se puede afirmar que: <span class="resaltado"> El 3 es mayor que el 1</span>.
+            </li>
+
+            <li>
+                Al comparar el 5 con otro 5, se puede afirmar que: <span class="resaltado"> El 5 es igual al 5</span>.
+            </li>
+        </ul>
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Esas afirmaciones que resultan de comparar dos números se llaman <span class="resaltado">afirmaciones
+                comparativas</span>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Las afirmaciones comparativas se pueden escribir usando los siguientes símbolos matemáticos:
+            <ul>
+                <li>Igual: <span class="resaltado">\(=\)</span> </li><br>
+                <li>Mayor: <span class="resaltado">\(>\)</span> </li><br>
+                <li>Menor: <span class="resaltado">\(<\) </span>
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <bloque-component class="ejemplo"
+            textoCabecera="En este cuadro se ve cómo se escriben las afirmaciones comparativas usando símbolos matemáticos">
+
+            <recuadro-component tipo="instruccionPointer">
+                Toca las afirmaciones para cambiar el modo en que están escritas.
+            </recuadro-component>
+            <div class='listaEjemplos' id="ejemplosModoExpresar">
+                <div class='itemEjemplo'>
+                    <div class="itemToggleable" @click="toggleAfirmacionSimbolos(0)"><span
+                            class="afirmacion afirmacionEs" v-show="!afirmacionesSimbolos[0]">El dos es más
+                            grande que el uno</span><span v-show="afirmacionesSimbolos[0]"
+                            class="afirmacion afirmacionSimbolos">\(2 > 1\)</span>
+                    </div>
+                </div>
+                <div class='itemEjemplo'>
+                    <div class="itemToggleable" @click="toggleAfirmacionSimbolos(1)">
+                        <span class="afirmacion afirmacionEs" v-show="!afirmacionesSimbolos[1]">El siete es más grande
+                            que
+                            el cinco</span><span v-show="afirmacionesSimbolos[1]"
+                            class="afirmacion afirmacionSimbolos">\(7 > 5\)</span>
+                    </div>
+                </div>
+                <div class='itemEjemplo'>
+                    <div class="itemToggleable" @click="toggleAfirmacionSimbolos(2)"><span
+                            class="afirmacion afirmacionEs" v-show="!afirmacionesSimbolos[2]">El cien es menos grande
+                            que el ciento setenta y
+                            ocho</span><span v-show="afirmacionesSimbolos[2]"
+                            class="afirmacion afirmacionSimbolos">\(100 < 178\)</span>
+                    </div>
+
+                </div>
+                <div class='itemEjemplo'>
+                    <div class="itemToggleable" @click="toggleAfirmacionSimbolos(3)"><span
+                            class="afirmacion afirmacionEs" v-show="!afirmacionesSimbolos[3]">El ocho es igual de grande
+                            que el ocho</span><span v-show="afirmacionesSimbolos[3]"
+                            class="afirmacion afirmacionSimbolos">\(8 = 8\)</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <ul>
+                <li>
+                    Cuando se afirma que dos números son iguales, se ha escrito una <span
+                        class="resaltado">Igualdad</span> .
+                </li>
+                <li>
+                    Cuando se afirma que un número es mayor o menor que otro,
+                    se ha escrito una <span class="resaltado">Desigualdad</span>
+                </li>
+            </ul>
+
+
+        </recuadro-component>
+        <recuadro-component tipo="datoPrevio" >
+            Las igualdades y desigualdades suelen escribirse acerca de expresiones numéricas. Así:
+            <ul id="listaIgualdadesExpresiones">
+                <li><span class='matsExpresion'> \(4 \times 2 < 9 \times 8 \)</span></li>
+                <li><span class='matsExpresion'>\(19-6<80-8 \)</span></li>
+                <li><span class='matsExpresion'>\(80-8=9 \times 8\)</span></li>
+                <li><span class='matsExpresion'>\(9 \times 8 > 19-6\)</span></li>
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Los dos números comparados en una igualdad o desigualdad se llaman <span class='resaltado'>miembros</span> de ella.
+            
+        </recuadro-component>
+        
+
+    </div>
+
+
+
+</body>
+
+</html>
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                afirmacionesSimbolos: [false, false, false, false],
+            }
+        },
+        methods: {
+            toggleAfirmacionSimbolos(index) {
+                console.log("toggling");
+                this.$set(this.afirmacionesSimbolos, index, !this.afirmacionesSimbolos[index]);
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            }
+        }
+    })
+</script>
+<style>
+    h1 {
+        padding-left: 10px;
+    }
+
+    .itemToggleable {
+        cursor: pointer;
+    }
+    #ejemplosModoExpresar .itemEjemplo{
+        width: min(350px, 90%);
+    }
+    #listaIgualdadesExpresiones .matsExpresion{
+        font-size: 35px;
+
+    }
+</style>

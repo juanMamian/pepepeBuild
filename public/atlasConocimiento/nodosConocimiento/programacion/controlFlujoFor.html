@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Control de flujo - for</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La instrucción especial <span class='resaltado'>for</span> señala que un bloque de instrucciones debe ser
+            ejecutado
+            repetidamente mientras se lleva una cuenta. Es llamada un <span class='resaltado'>bucle</span>.
+        </p>
+
+        <recuadro-component tipo='datoPrevio'>
+            Una bucle <span class='resaltado'>for</span> repite instrucciones a medida que lleva una cuenta. Por eso necesita una variable
+            en la cual se almacena el estado de la cuenta.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Un bucle <span class='resaltado'>for</span> para de repetir su bloque de instrucciones cuando el valor de la cuenta supera un límite.
+            Ese límite se fija mediante una expresión.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Cada vez que se repite el bloque de instrucciones de un bucle <span class='resaltado'>for </span>, la cuenta aumenta. Se debe escribir el modo 
+            de cambiar la cuenta.
+        </recuadro-component>
+        
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra un ejemplo de creación de un bucle <span class='resaltado'>for</span> en
+                lenguaje javascript.
+            </template>
+
+            <recuadro-component tipo='datoNuevo'>
+                Se quiere crear un bucle for que indique la repetición de un bloque de instrucciones 10 veces.
+            </recuadro-component>
+
+            <div class='programacionCodigo'>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 1"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>1?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        for
+                    </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 2"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>2?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        (
+                    </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 3"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>3?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        let i = 0;
+                    </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 4"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>4?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        i<10; </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 5"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>5?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        i=i+1
+                    </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 2"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>2?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        )
+                    </span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 6"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>6?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        {
+                    </span>
+                </transition>
+                <br>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step >= 6"
+                        :class="[ejemplo1Step > ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step>6?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        console.log("Repetiré esto otra vez");
+                        <br>
+                        console.log("Muchas veces");
+                        <br>
+                        }
+                    </span>
+                </transition>
+            </div>
+
+            <div class='boton' @click="ejemplo1Step++" v-show="ejemplo1Step < ejemplo1StepFinal">
+                <span v-show="ejemplo1Step===0">Escribir la palabra clave <span class='resaltado'>for</span>
+                </span>
+                <span v-show="ejemplo1Step===1">Preparar un espacio entre paréntesis para configurar la cuenta.
+                </span>
+                <span v-show="ejemplo1Step===2">Crear la variable que lleva la cuenta
+                </span>
+                <span v-show="ejemplo1Step===3">Escribir la condición que limita la cuenta.
+                </span>
+                <span v-show="ejemplo1Step===4">Escribir la instrucción que aumenta la cuenta.
+                </span>
+                <span v-show="ejemplo1Step===5">Escribir entre llaves el bloque de instrucciones que se repetirá.
+                </span>
+            </div>
+
+
+
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo1StepFinal: 6,
+
+                claseFinalEjemplo: '',
+
+            }
+        },
+        computed: {
+        },
+        methods: {
+            reiniciarBloque1() {
+                this.reiniciarEjemplo1();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+        },
+        watch: {
+            ejemplo1Step(step) {
+                if (step === this.ejemplo1StepFinal) {
+                    setTimeout(() => {
+                        this.ejemplo1Step++;
+                    }, 3000);
+
+                }
+
+            }
+        }
+    }).mount("#doc");
+</script>
+<style>
+</style>

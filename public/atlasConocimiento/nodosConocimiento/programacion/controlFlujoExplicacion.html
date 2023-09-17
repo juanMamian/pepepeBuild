@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Control de flujo - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Un programa informático es leido y ejecutado de arriba hacia abajo. Instrucción por instrucción.
+        </p>
+
+        <p>
+        Existen en los lenguajes de programación instrucciones especiales que cambian este comportamiento. Mediante esas instrucciones especiales se puede:
+        </p>
+
+        <ul>
+            <li>
+                Ejecutar instrucciones <span class='resaltado'>condicionalmente</span>. Es decir: si se cumple cierta condición.
+            </li>
+            <li>
+                Repetir algunas instrucciones cierta cantidad de veces.
+            </li>
+            <li>
+                Repetir algunas instrucciones <span class='resaltado'>condicionalmente</span>. Es decir: mientras cierta condición se cumpla.
+            </li>
+        </ul>
+
+        <p>
+         El uso de estas instrucciones especiales cambia el orden en que se leen las instrucciones escritas en un programa. Es decir que son instrucciones
+         de <span class='resaltado'>control de flujo</span>.
+        </p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+
+            }
+        },
+        computed: {
+        },
+    }).mount("#doc");
+</script>
+<style>
+</style>

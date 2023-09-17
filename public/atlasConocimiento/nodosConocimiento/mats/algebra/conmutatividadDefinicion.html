@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Conmutatividad</title>
+</head>
+
+<body>
+
+    <div id="doc">
+        <p>
+            Algunas operaciones aritméticas resultan en el mismo número si se conmutan los números operados.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            De un operacion aritmética que produce el mismo resultado cuando es conmutada, se dice:
+            <ul>
+                <li>
+                    Es una operacion conmutativa.
+                </li>
+                <li>
+                    Es una operación que tiene conmutatividad.
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si una expresión numérica está hecha con una operación conmutativa, entonces es <span class="resaltado">idéntica</span> a una versión alterna con sus numerandos conmutados. 
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        },
+
+    })
+</script>
+
+<style>
+
+</style>

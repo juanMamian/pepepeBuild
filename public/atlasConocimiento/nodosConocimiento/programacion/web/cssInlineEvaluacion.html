@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>CSS Inline - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        Comprendo el lenguaje CSS y su uso inline si:
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Dado un diagrama de elementos con estilo, puedo escribir un documento web correspondiente.
+            </template>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                instruccionEncadenada: null,
+                colorEncadenado: false,
+                anchoEncadenado: false,
+                altoEncadenado: false,
+                atributos: [
+                    {
+                        nombre: "color",
+                        valores: ["black", "red", "blue", "yellow"],
+                        explicacion: "Esta instrucción indica el color del texto que está en el elemento.",
+                    },
+                    {
+                        nombre: "width",
+                        valores: ["20px", "30px", "100px"],
+                        explicacion: "Esta instrucción indica el ancho del elemento en pixeles."
+                    },
+                    {
+                        nombre: "height",
+                        valores: ["15px", "50px", "100px"],
+                        explicacion: "Esta instrucción indica el alto del elemento en pixeles."
+                    }
+                ],
+                atributoSeleccionado: null,
+                valorSeleccionado: null,
+                instruccion: null,
+            }
+        },
+        methods: {
+            escribirInstruccion() {
+                var valor = this.valorSeleccionado;
+                if (this.atributoSeleccionado.nombre === 'color') {
+                    valor = '"' + valor + '"';
+                }
+                this.instruccion = this.atributoSeleccionado.nombre + ' : ' + valor;
+            },
+            encadenarInstruccion(atributo) {
+                if (!this.instruccionEncadenada) {
+                    this.instruccionEncadenada = ""
+                }
+                else {
+                    this.instruccionEncadenada += "; ";
+                }
+
+                if (atributo == "color") {
+                    this.instruccionEncadenada += 'color: "red"';
+                }
+                else if (atributo == 'ancho') {
+                    this.instruccionEncadenada += 'width: 120px';
+                }
+                else if (atributo == 'alto') {
+                    this.instruccionEncadenada += 'height: 70px';
+                }
+
+            },
+            reiniciarEncadenado(){
+                this.colorEncadenado=false;
+                this.anchoEncadenado=false;
+                this.altoEncadenado=false;
+            }
+        },
+        watch: {
+            atributoSeleccionado() {
+                this.valorSeleccionado = null;
+                this.instruccion = null;
+            }
+        }
+    })
+</script>
+
+<style>
+    .documentoWeb {
+        background-color: whitesmoke;
+        margin: 5px 10px;
+    }
+
+    .codigoNuevo {
+        background-color: brown;
+        padding: 2px 1px;
+        border-radius: 2px;
+    }
+
+    .textoPlaceHolderCodigo {
+        color: whitesmoke;
+    }
+
+    select {
+        padding: 7px 15px;
+        margin: 5px 10px;
+    }
+
+    .contenedorInstruccion {
+        display: flex;
+        justify-content: center;
+    }
+
+    .instruccion {
+        margin: 10px auto;
+        text-align: center;
+        border: 2px solid brown;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+
+    .explicacion {
+        text-align: center;
+    }
+</style>

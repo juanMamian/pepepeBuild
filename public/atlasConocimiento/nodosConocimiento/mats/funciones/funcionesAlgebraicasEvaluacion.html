@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Funciones algebraicas - evaluación</title>
+</head>
+<body>
+    <div id="doc">
+    <p>Manejo el tema de funciones algebraicas si: </p>
+
+    <bloque-component tipo="evaluacion">
+        <template #cabecera>        
+        Dada una función, puedo determinar si es una función algebráica o no.
+        </template>
+    </bloque-component>    
+
+    <bloque-component tipo="evaluacion">
+        <template #cabecera>        
+        Dada una función algebraica, puedo aplicarla sobre cualquier número y determinar cuál número es señalado por la función.
+        </template>
+    </bloque-component>
+
+    <bloque-component tipo="evaluacion">
+        <template #cabecera>        
+        Dada una función algebraica puedo determinar el dominio y el rango de la función.
+        </template>
+    </bloque-component>
+</div>
+</body>
+</html>
+
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1Desplegado: false,
+                ejemplo2Desplegado: false,
+                ejemplo3Desplegado: false,
+            }
+        }
+    })
+</script>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Algebrista de primer grado</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Cuando un número está solo en uno de los miembros de una ecuación, se dice que está
+            <span class="resaltado">despejado</span>.
+        </p>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de números despejados.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( a = 4 \times 12 \)
+                    </div>
+                    <recuadro-component tipo="datoNuevo">
+                        La incógnita <span class="resaltado">a</span> está despejada.
+                    </recuadro-component>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 20 - 15 = 5 \)
+                    </div>
+                    <recuadro-component tipo="datoNuevo">
+                        El número <span class="resaltado">5</span> está despejado.
+                    </recuadro-component>
+
+                </div>
+            </div>
+        </bloque-component>
+
+        <p>
+            Es fácil conocer el valor de una incógnita si está despejada, pues entonces la ecuación está afirmando que
+            la incógnita es igual de grande que el
+            otro miembro de la ecuación. Es decir que si se descubre el valor del otro miembro de la ecuación también se
+            descubre el valor de la incógnita.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Descubrir el valor de una incógnita a partir de una ecuación es llamado <span class="resaltado">solucionar
+                la ecuación</span>.
+        </recuadro-component>
+
+        <p>
+            Cuando se tiene una ecuación donde la incógnita no está despejada, muchas veces es posible trasladar
+            operaciones repetidamente hasta lograr que sí lo esté. Esto se llama <span class="resaltado">despejar</span>
+            la incógnita.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Un algebrista básico de primer grado es alguien capaz de despejar una incógnita para descubrir su valor en
+            cualquier
+            ecuación de primer grado básica.
+        </recuadro-component>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .conclusion {
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px 5px;
+        width: min(90%, 650px);
+        background-color: rgb(209, 127, 33);
+        margin: 10px auto;
+    }
+
+    .nota {
+        background-color: rgb(233, 185, 150);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px auto;
+        width: min(650px, 90%);
+    }
+</style>

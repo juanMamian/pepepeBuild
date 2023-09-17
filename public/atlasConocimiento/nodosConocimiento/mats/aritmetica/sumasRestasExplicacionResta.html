@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet" <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Restas - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo='datoPrevio'>
+            Restar significa quitar. Por eso restar números significa quitarle un número a otro número.
+        </recuadro-component>
+
+        <recuadro-component tipo='datoPrevio'>
+            Cuando dos números están restados, se usa la palabra <span class='resaltado'>menos</span> entre ellos.
+        </recuadro-component>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra cómo se usa la palabra menos.
+            </template>
+
+            <recuadro-component tipo='instruccionPointer'>
+                Presiona en cada cuadro para ver otro modo de decirlo.
+            </recuadro-component>
+
+
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo ejemploFormaMenos' ref="ejemploMenos1"
+                    @click="$refs.ejemploMenos1.classList.toggle('mostrandoFormaMenos')">
+                    <div class='formaRestar'>
+                        4 restado con 3
+                    </div>
+                    <div class='formaMenos'>
+                        4 menos 3
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMenos' ref="ejemploMenos2"
+                    @click="$refs.ejemploMenos2.classList.toggle('mostrandoFormaMenos')">
+                    <div class='formaRestar'>
+                        12 restado con 8
+                    </div>
+                    <div class='formaMenos'>
+                        12 menos 8
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMenos' ref="ejemploMenos3"
+                    @click="$refs.ejemploMenos3.classList.toggle('mostrandoFormaMenos')">
+                    <div class='formaRestar'>
+                        20 restado con 1
+                    </div>
+                    <div class='formaMenos'>
+                        20 menos 1
+                    </div>
+                </div>
+                <div class='itemEjemplo ejemploFormaMenos' ref="ejemploMenos4"
+                    @click="$refs.ejemploMenos4.classList.toggle('mostrandoFormaMenos')">
+                    <div class='formaRestar'>
+                        6 restado con 13
+                    </div>
+                    <div class='formaMenos'>
+                        6 menos 13
+                    </div>
+                </div>
+            </div>
+
+        </bloque-component>
+
+
+        <bloque-component tipo='herramientaInteractiva' @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se muestra un número y se puede restar.
+            </template>
+
+            <div class='flexVertical' style="position: relative" ref="contenedorResta">
+
+                <input id='inputNumeroOriginal' type="range" min="0" max="30" v-model="numeroOriginal"
+                    :class="{deshabilitado: numeroRestado !=0 && numeroRestado!=numeroRestar}">
+
+                <div class='texto'>
+                    Este es el <span class='resaltado'> {{numeroOriginal}} {{numeroRestado > 0?'menos ':''}}{{numeroRestado || ''}}</span>.
+                </div>
+                <div class='numeroEnBolitas'>
+                    <transition-group name="travelRight">
+                        <div class='bolitaNumero' v-for="num of Number(numeroOriginal) - Number(numeroRestado)"
+                            :key="'bolita'+num">
+                        </div>
+                    </transition-group>
+                </div>
+
+
+
+                <div class='boton selector' :class="{activado: numeroRestado!=0, deshabilitado: numeroRestado!=0}"
+                    @click="iniciarResta">
+                    restarle {{numeroRestar}}
+                </div>
+
+                <input id='inputNumeroRestar' type="range" min="0" :max="Number(numeroOriginal)" v-model="numeroRestar" :class="{deshabilitado: numeroRestado!=0 && numeroRestado != numeroRestar}" >
+
+
+            </div>
+
+        </bloque-component>
+
+        <p>
+            El símbolo para la resta es <span class='resaltado'>-</span>.
+        </p>
+
+        <bloque-component tipo='ejemplo'>
+            <template #cabecera>
+                En este cuadro se muestra cómo se usa el símbolo de resta.
+            </template>
+
+            <recuadro-component tipo='instruccionPointer'>
+                Presiona en cada cuadro para ver otro modo de escribir una resta.
+            </recuadro-component>
+            <div class='listaEjemplos'>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo1"
+                    @click="$refs.ejemploFormaSimbolo1.classList.toggle('mostrandoFormaSimbolo')">
+                    <div class='formaMenos'>
+                        4 menos 12
+                    </div>
+                    <div class='formaSimbolo'>
+                        4-12
+                    </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo2"
+                    @click="$refs.ejemploFormaSimbolo2.classList.toggle('mostrandoFormaSimbolo')">
+                    <div class='formaMenos'>
+                        0 menos 1
+                    </div>
+                    <div class='formaSimbolo'>
+                        0-1
+                    </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo3"
+                    @click="$refs.ejemploFormaSimbolo3.classList.toggle('mostrandoFormaSimbolo')">
+                    <div class='formaMenos'>
+                        20 menos 100
+                    </div>
+                    <div class='formaSimbolo'>
+                        20-100
+                    </div>
+
+                </div>
+                <div class='itemEjemplo ejemploFormaSimbolo' ref="ejemploFormaSimbolo4"
+                    @click="$refs.ejemploFormaSimbolo4.classList.toggle('mostrandoFormaSimbolo')">
+                    <div class='formaMenos'>
+                        1 menos 1
+                    </div>
+                    <div class='formaSimbolo'>
+                        1-1
+                    </div>
+
+                </div>
+            </div>
+
+        </bloque-component>
+
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+        },
+        data() {
+            return {
+                numeroOriginal: 4,
+                numeroRestar: 3,
+                numeroRestado: 0,
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.numeroOriginal = 4;
+                this.numeroRestar = 3;
+                this.numeroRestado = 0;
+            },
+
+            iniciarResta() {
+                if (this.numeroRestado != 0) {
+                    return;
+                }
+                this.restar();
+            },
+            restar() {
+                if (this.numeroRestado >= this.numeroRestar) {
+                    return;
+                }
+                this.numeroRestado++;
+
+                setTimeout(() => {
+                    this.restar();
+                }, 900);
+            },
+
+        },
+        watch: {
+            numeroOriginal(num) {
+                this.numeroRestado = 0;
+                if(this.numeroRestar > Number(num)){
+                    this.numeroRestar =Number(num);
+                }
+            },
+            numeroRestar() {
+                this.numeroRestado = 0;
+            },
+
+        }
+    }).mount("#doc");
+</script>
+
+<style>
+    .ejemploFormaMenos {
+        width: min(159px, 90%);
+    }
+
+    .ejemploFormaMenos:not(.mostrandoFormaMenos) .formaMenos {
+        display: none;
+    }
+
+    .ejemploFormaMenos:not(.mostrandoFormaMenos) .formaRestar {
+        display: block;
+    }
+
+    .ejemploFormaMenos.mostrandoFormaMenos .formaMenos {
+        display: block;
+    }
+
+    .ejemploFormaMenos.mostrandoFormaMenos .formaRestar {
+        display: none;
+    }
+
+    .bolitaViajera {
+        position: absolute;
+        opacity: 0.6;
+        visibility: hidden;
+    }
+
+    .ejemploFormaSimbolo {
+        width: min(150px, 90%);
+    }
+
+    .ejemploFormaSimbolo:not(.mostrandoFormaSimbolo) .formaMenos {
+        display: block;
+    }
+
+    .ejemploFormaSimbolo:not(.mostrandoFormaSimbolo) .formaSimbolo {
+        display: none;
+    }
+
+    .ejemploFormaSimbolo.mostrandoFormaSimbolo .formaMenos {
+        display: none;
+    }
+
+    .ejemploFormaSimbolo.mostrandoFormaSimbolo .formaSimbolo {
+        display: block;
+    }
+</style>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+    <script id="MathJax-script" async
+    src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Potencias cero y negativas.</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            Ya que multiplicar eleva la potencia de un número, dividir la reduce.
+        </recuadro-component>
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+                En este cuadro se puede seleccionar un número y bajar su potencia aplicando una división.
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Selecciona un número y reduce su potencia.
+
+            </recuadro-component>
+            <input style="display: block; margin: 10px auto;" type="range" v-model="numeroBase" min="0" max="20"
+                id="inputNumeroBase" ref="inputNumeroBase" />
+            <div id="descripcion" v-show="numeroBase || numeroBase==0">
+                {{numeroBase}} en potencia {{potencia}}.
+            </div>
+
+            <transition name="popIn">
+            <div id="expresion" :key="versionExpresion">
+                <span id="enExpresion">{{expresion}}</span>
+                <span id="enValor">{{valorPotencia}}</span>
+            </div>
+        </transition>
+
+            <div id="zonaBotonesPotencia">
+                <div class="boton" @click="potencia--" v-show="numeroBase || numeroBase==0">Bajar potencia</div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroBase: null,
+                potencia: 1,
+                versionExpresion: 0,
+                expresion: null,
+            }
+        },
+        computed: {
+            valorPotencia() {
+                return Math.pow(this.numeroBase, this.potencia);
+            },            
+        },
+        watch: {
+            numeroBase: {
+                handler: function () {
+                    this.potencia = 1;
+                    this.expresion = this.numeroBase;
+                    this.versionExpresion++;
+
+                    this.$nextTick(() => {
+                        MathJax.typeset();
+                    })
+                },
+                immediate: false,
+
+            },
+            potencia: {
+                handler: function () {
+                    var expresionFinal = this.numeroBase;
+                    for (var i = 0; i >= this.potencia; i--) {
+                        expresionFinal =" {"+ expresionFinal+"}" 
+                        if(i<0){
+                            expresionFinal="("+expresionFinal+")";
+                        }
+                        expresionFinal=expresionFinal + " \\over " + this.numeroBase;
+                    }
+
+                    expresionFinal ="\\("+ expresionFinal+" \\)";
+
+                    this.expresion = expresionFinal;
+                    this.versionExpresion++;
+
+                    this.$nextTick(() => {
+                        MathJax.typeset();
+                    })
+                },
+                immediate: false,
+
+            },
+            mounted() {
+                this.numeroBase = 5;
+            }
+        }
+    })
+</script>
+
+<style>
+    .numero {
+        display: flex;
+    }
+
+    #expresion {
+        font-size: 27px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+    }
+
+    #expresion:not(:hover) #enValor{
+        display: none;
+    }
+    #expresion:not(:hover) #enExpresion{
+        display: block;
+    }
+    #expresion:hover #enValor{
+        display: block;
+    }
+    #expresion:hover #enExpresion{
+        display: none;
+    }
+
+    #descripcion {
+        font-size: 23px;
+        text-align: center;
+        color: brown;
+    }
+
+    .numeroCuadrado {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .expresionMultiplicacion {
+        text-align: center;
+        font-size: 27px;
+        color: brown;
+        font-weight: bold;
+    }
+</style>

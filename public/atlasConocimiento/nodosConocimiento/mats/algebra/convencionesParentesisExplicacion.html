@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Convenciones para el no uso de paréntesis</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>Las expresiones numéricas que contienen otras expresiones numéricas pueden resultar confusas debido a la acumulación de paréntesis.
+        </p>
+
+        <p>
+            Se han creado algunas convenciones para escribir expresiones numéricas sin señalarlas con paréntesis.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Las expresiones que participan de una división no necesitan paréntesis pues
+            la línea de la división señala la expresión numérica que está siendo dividida o que divide.
+
+        </recuadro-component>
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran ejemplos de expresiones hechas con una división que pueden ser escritas sin paréntesis.">
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \((4+3) \over 5\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo1transformacion1=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo1transformacion1==true">
+                            \({4+3} \over 5\)
+                        </div>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \((14+2) \over (5-3)\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo1transformacion2=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo1transformacion2==true">
+                            \({14+2} \over {5 - 3}\)
+                        </div>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \(12 \over (5+9)\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo1transformacion3=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo1transformacion3==true">
+                            \(12 \over {5 +9}\)
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Las expresiones que son una división no necesitan ser señaladas con paréntesis para ser
+            usadas en una suma, multiplicacion o resta con otro número.
+        </recuadro-component>
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran expresiones que son una división y se pueden reescribir sin paréntesis.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \(({{4+3} \over 5}) + 5\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo2transformacion1=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo2transformacion1==true">
+                            \( {{4+3} \over 5} + 5 \)
+                        </div>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \( ({ {14+2} \over {5 - 3}} ) \times 2 \)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo2transformacion2=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo2transformacion2==true">
+                            \({{14+2} \over {5 - 3} } \times 2 \)
+                        </div>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \(({12 \over {5 +9}}) -12\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo2transformacion3=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo2transformacion3==true">
+                            \( { 12 \over {5 +9} } -12 \)
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+        
+        <recuadro-component tipo="datoPrevio">
+            Cuando una expresión que es una multiplicación está siendo sumada o restada con otra, se acordó que se puede escribir sin paréntesis.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+             @plegado="reiniciarCuadroEjemplo3"
+            textoCabecera="En este cuadro se muestran expresiones que son multiplicaciones sumadas o restadas con otro número y que, por eso, se pueden escribir sin paréntesis.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \(({4 \times 6}) - 15\)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo3transformacion1=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo3transformacion1==true">
+                            \( {4 \times 6 } - 5 \)
+                        </div>
+                    </transition>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                            \( 6 - {(3 \times 2)} \)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo3transformacion2=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo3transformacion2==true">
+                            \( 6 - {3 \times 2} \)                            
+                        </div>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="expresionOriginal">
+                        \( {(6 \times 5)} -1 \)
+                    </div>
+                    <div class="boton" v-on:click="ejemplo3transformacion3=true">¡Reescribir sin paréntesis!</div>
+                    <transition name="travelTop">
+                        <div class="expresionTransformada" v-show="ejemplo3transformacion3==true">
+                            \( {6 \times 5} -1 \)
+
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1transformacion1: false,
+                ejemplo1transformacion2: false,
+                ejemplo1transformacion3: false,
+
+                ejemplo2transformacion1: false,
+                ejemplo2transformacion2: false,
+                ejemplo2transformacion3: false,
+
+                ejemplo3transformacion1: false,
+                ejemplo3transformacion2: false,
+                ejemplo3transformacion3: false,
+
+            }
+        },
+        methods:{
+            reiniciarCuadroEjemplo3(){
+                this.ejemplo3transformacion1=false;
+                this.ejemplo3transformacion2=false;
+                this.ejemplo3transformacion3=false;
+            }
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 0px;
+    }
+
+    .itemEjemplo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .expresionOriginal {
+        grid-column: 1/2;
+    }
+
+    .expresionTransformada {
+        grid-column: 3/4;
+    }
+</style>

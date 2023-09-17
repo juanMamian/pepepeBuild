@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Igualdades equivalentes - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de cancelación de operaciones si: </p>
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo explicar qué es la cancelación de operaciones.
+            </template>
+        </bloque-component>
+
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada una descripción de una operación aplicada sobre un número puedo escoger la operación que cancelara su efecto.">
+
+            <div class='contenedorFlex' style="gap: 30px">
+                <div class='boton' @click="generarReto2">
+                    Generar una operación
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto2' v-if="operacionReto2" :key="'reto2v'+versionReto2">
+                        {{operacionReto2}}
+                    </div>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier expresión numérica puedo decidir si hay cancelación de operaciones y en caso afirmativo simplificar la expresión.">
+
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='contenedorFlex'>
+                    Selecciona la dificultad
+                    <input type="range" min="1" max="3" v-model="dificultadReto3" id='inputDificultad3'>
+                    {{dificultadReto3}}
+                </div>
+
+            </recuadro-component>
+
+
+            <div class='contenedorFlex' style="gap: 30px">
+                <div class='boton' @click="generarReto3">
+                    Generar una expresión
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto3' v-if="reto3" :key="'reto3v'+versionReto3" class="matsExpresion"
+                        style="font-size: 30px">
+                        \({{reto3.toMathJax()}}\)
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <div id='contenedorBotonesRespuestaReto3' v-if="reto3">
+                        <div class='boton selector' @click="setRespuestaPresenciaCancelacionReto3(true)"
+                            :class="{seleccionado: respuestaPresenciaCancelacionReto3 === true}">
+                            Hay cancelación de operaciones
+                        </div>
+                        <div class='boton selector' @click="setRespuestaPresenciaCancelacionReto3(false)"
+                            :class="{seleccionado: respuestaPresenciaCancelacionReto3 === false}">
+                            No hay cancelación de operaciones
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado' v-if="respuestaPresenciaCancelacionReto3 != null"
+                        :key="'respuestaPresenciaCancelacionReto3v'+versionRespuestaPresenciaCancelacionReto3"
+                        :modo="respuestaPresenciaCancelacionReto3===presenciaCancelacionReto3?'correcto':'incorrecto'">
+                    </recuadro-component>
+                </transition>
+
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+
+    function checkCancelacion(expresion) {
+        if (!expresion?.numero1 || !expresion.numero2 || !expresion.operacion) {
+            return false;
+        }
+        //Ahora sabemos que esta expresion tiene una operacion y dos operandos.
+
+        if (!expresion.numero1.numero1 || !expresion.numero1.numero2 || !expresion.numero1.operacion) {
+            return false;
+        }
+        //ahora se sabe que el número1 tiene una operación y dos operandos.
+
+        if (expresion.numero1.numero2.valor == null || expresion.numero2.valor == null) {
+            return false;
+        }
+        //Ahora se sabe que ambas operaciones tienen magnitud.
+
+        let hayCancelacion = false;
+        if (checkCancelacion(expresion.numero1) || checkCancelacion(expresion.numero2)) {
+            hayCancelacion = true;
+        }
+
+        if (expresion.operacion === ExpresionNumerica.getOperacionOpuesta(expresion.numero1.operacion) && expresion.numero2.valor === expresion.numero1.numero2.valor){
+            hayCancelacion = true;
+        }
+        return hayCancelacion;
+    }
+
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                operacionReto2: null,
+                versionReto2: 0,
+
+                dificultadReto3: 1,
+                reto3: null,
+                versionReto3: 0,
+                presenciaCancelacionReto3: null,
+                respuestaPresenciaCancelacionReto3: null,
+                versionRespuestaPresenciaCancelacionReto3: 0,
+            }
+        },
+        methods: {
+            generarReto2() {
+                const operaciones = ["sumar", "restar entre", "multiplicar por", "dividir entre", "elevar a la", "radicar con índice"];
+                let laOperacion = operaciones[Math.floor(Math.random() * operaciones.length)];
+                laOperacion = laOperacion.charAt(0).toUpperCase() + laOperacion.slice(1);
+
+                const minMagnitud = -50;
+                const maxMagnitud = 50;
+                const rangoMagnitud = maxMagnitud - minMagnitud;
+
+                let laMagnitud = Math.round(Math.random() * rangoMagnitud + minMagnitud);
+
+
+                this.operacionReto2 = laOperacion + " " + laMagnitud;
+                this.versionReto2++;
+            },
+            generarReto3() {
+                this.presenciaCancelacionReto3 = null;
+                this.respuestaPresenciaCancelacionReto3 = null;
+
+                let laExpresion = new ExpresionNumerica();
+                laExpresion.fillExpresion({keepInteger: true});
+
+                let umbralCancelacion=0.5/this.dificultadReto3;
+
+                for (let i = 0; i < Number(this.dificultadReto3); i++) {
+                    laExpresion = new ExpresionNumerica({
+                        numero1: laExpresion,
+                    });
+
+                    let generarCancelacion = Math.random() < umbralCancelacion;
+                    if (generarCancelacion) {
+                        umbralCancelacion=umbralCancelacion/2;
+                        console.log("Insertando cancelación");
+                        laExpresion.operacion = ExpresionNumerica.getOperacionOpuesta(laExpresion.numero1.operacion);
+                        laExpresion.numero2 = new ExpresionNumerica({valor: laExpresion.numero1.numero2.valor});
+                        console.log("quedo: ");
+                        laExpresion.logToConsole();
+                    }
+                    laExpresion.fillExpresion({keepInteger: true});
+
+
+
+                }
+                this.presenciaCancelacionReto3 = checkCancelacion(laExpresion);
+                this.reto3 = laExpresion;
+                this.versionReto3++;
+            },
+            setRespuestaPresenciaCancelacionReto3(respuesta) {
+                console.log("Setting respuestaCancelacion a " + respuesta);
+                this.respuestaPresenciaCancelacionReto3 = respuesta;
+                this.versionRespuestaPresenciaCancelacionReto3++;
+            }
+
+        },
+        watch: {
+            versionReto3() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+        }
+
+
+    }).mount("#doc");
+</script>
+<style>
+    #contenedorBotonesRespuestaReto3 {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+</style>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Ecuaciones inecuaciones</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            <ul style="line-height: 60px;">
+                <li>
+                    Algunas igualdades son llamadas <span class="resaltado">ecuaciones</span>
+                </li>
+                <li>
+
+                    Algunas desigualdades son llamadas <span class="resaltado">inecuaciones</span>
+                </li>
+
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">Cuando una igualdad o una desigualdad involucra expresiones algebraicas se
+            dice que es una <span class="resaltado">Ecuación</span> o una <span class="resaltado">Inecuación</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro hay ejemplos de ecuaciones e inecuaciones.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">\( {3 \times a + 5} = {40 \over 8 }\)</div>
+                <div class="itemEjemplo">\( x \times 2 > 13 \times 3\)</div>
+                <div class="itemEjemplo">\({12 \over 2}< {y +12} \)</div>
+                </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">En una ecuación o inecuación los dos números comparados 
+            son llamados <span class="resaltado">miembros</span> de
+            la ecuación.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se ven algunas ecuaciones e inecuaciones y se puede ver los miembros.">
+            <recuadro-component tipo="instruccionPointer">Mueve el cursor o presiona en las ecuaciones e inecuaciones para
+                ver cuáles son los miembros en cada una.
+            </recuadro-component>
+
+            <ul style="line-height: 60px;">
+                <li>
+                    <span class="palabraCambiante">
+                        <span class="primaria">\({3 \times a + 5}\)</span>
+                        <span class="secundaria resaltado">Miembro</span>
+                    </span>
+
+                    <span>
+                        \( = \)
+                    </span>
+
+                    <span class="palabraCambiante">
+                        <span class="primaria">\({40 \over 8 }\)</span>
+                        <span class="secundaria resaltado">Miembro</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="palabraCambiante">
+                        <span class="primaria">\(x \times 2\)</span>
+                        <span class="secundaria resaltado">Miembro</span>
+                    </span>
+
+                    <span>
+                        \( > \)
+                    </span>
+
+                    <span class="palabraCambiante">
+                        <span class="primaria">\(13 \times 3\)</span>
+                        <span class="secundaria resaltado">Miembro</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="palabraCambiante">
+                        <span class="primaria">\(12 \over 2\)</span>
+                        <span class="secundaria resaltado">Miembro</span>
+                    </span>
+
+                    <span>
+                        \( < \) </span>
+
+                            <span class="palabraCambiante">
+                                <span class="primaria">\(y +12\)</span>
+                                <span class="secundaria resaltado">Miembro</span>
+                            </span>
+                </li>
+            </ul>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },
+
+    })
+</script>
+<style>
+    .palabraCambiante {
+        padding: 10px;
+    }
+
+    .palabraCambiante>.primaria {
+        display: inline;
+        user-select: none;
+    }
+
+    .palabraCambiante:hover>.primaria {
+        display: none;
+    }
+
+    .palabraCambiante>.secundaria {
+        display: none;
+        user-select: none;
+    }
+
+    .palabraCambiante:hover>.secundaria {
+        display: inline;
+    }
+
+    .secundaria {
+        font-size: 20px;
+    }
+</style>

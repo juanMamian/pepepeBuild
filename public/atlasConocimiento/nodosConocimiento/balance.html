@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Estructura de un sistema arduino</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <div id="selectoresIngredientes">
+            <div class="selectorIngrediente" v-for="ingrediente of ingredientes">
+                <div class="nombreIngrediente">
+                    {{ingrediente.nombre}}
+                </div>
+                <input type="range" v-model="ingrediente.cantidad">
+                <div class="porcentajeIngrediente">
+                    {{ingrediente.cantidad}}
+                </div>
+            </div>
+        </div>
+
+        <div id="resultadoMezcla">
+            <div class="marcador" v-for="resultado of resultados">
+                <div class="tituloMarcador">
+                    {{resultado.nombre}}
+                </div>
+                <span>{{(resultado.cantidad*100/cantidadTotal).toFixed(2)}}</span>
+            </div>
+        </div>
+        
+
+        
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    const porcentajeProm=33;
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoInfo: null,
+                ingredientes:[
+                    {
+                        nombre: "maiz",
+                        proteina:8,
+                        fibra: 6,
+                        energia: 2600,    
+                        cantidad: 100,                    
+                    },
+                    {
+                        nombre: "ramio",
+                        proteina: 20,
+                        fibra: 16,
+                        energia: 500,
+                        cantidad: 100,
+                    },
+                    {
+                        nombre: "cascarilla de arroz",
+                        proteina: 11,
+                        fibra: 16,
+                        energia: 800,
+                        cantidad: 100,
+                    }
+                ],               
+            }
+        },
+        computed:{            
+            resultados(){
+                return [
+                    {
+                        nombre: "Fibra",
+                        cantidad: this.ingredientes.reduce((acc, ing)=>acc+(ing.cantidad*ing.fibra/100), 0 ),
+                    },
+                    {
+                        nombre: "Proteina",
+                        cantidad: this.ingredientes.reduce((acc, ing)=>acc+(ing.cantidad*ing.proteina/100), 0 ),
+                    },
+                    {
+                        nombre: "Energía",
+                        cantidad: this.ingredientes.reduce((acc, ing)=>acc+(ing.cantidad*ing.energia/100), 0 ),
+                    }
+                ]   
+            },
+            cantidadTotal(){
+                return this.ingredientes.reduce((acc, ing)=>acc+Number(ing.cantidad), 0);
+            }
+        }
+    })
+</script>
+
+<style>
+    #doc{
+        display: flex;
+
+    }
+
+    #selectoresIngredientes{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .selectorIngrediente{
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .marcador{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 10px;
+        margin: 10px 10px ;
+        border-radius: 10px;
+        background-color: rgba(128, 128, 128, 0.253);
+    }
+
+    .tituloMarcador{
+        font-size: 14px;
+    }
+</style>

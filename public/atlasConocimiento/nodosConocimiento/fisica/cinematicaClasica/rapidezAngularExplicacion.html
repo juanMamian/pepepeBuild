@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/funciones/miscelanea.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Rapidez</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La rapidez angular describe el comportamiento de cuerpos en rotación.
+        </p>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Al expresar la rapidez angular de un cuerpo, se involucra la <span class="resaltado">distancia
+                angular</span> recorrida y el
+            <span class="resaltado">tiempo</span> transcurrido.
+        </recuadro-component>
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+                En este cuadro se puede realizar una rotación y se expresa su rapidez.
+            </template>
+
+            <div class="zonaInteraccion" ref="zonaInteraccion">
+                <div id="zonaTiempo">
+                    <img src="https://pe-pe-pe.herokuapp.com/public/media/iconos/clock.svg"
+                        style="height: 12px; margin: 0px 10px; opacity: 0.85;" alt="Tiempo">
+                    {{segundosTranscurridos
+                    <10?'0'+segundosTranscurridos:segundosTranscurridos}}:{{centesimasTranscurridos<10?'0'+centesimasTranscurridos:centesimasTranscurridos}}
+                        </div>
+                        <div id="cuerpo" ref="cuerpo" @click.stop="setRecorrido" :style="[{transform: 'translate(-50%, -50%) rotate('+rotacion+'rad)'}]">
+                            <div id="signalRotacion"></div>
+                        </div>
+                        <div class="marcadorRadian">
+
+                        </div>
+                </div>
+
+                <transition name="popIn">
+                    <recuadro-component id="anuncioResultado" ref="anuncioResultado" v-show="anuncioResultado"
+                        tipo="datoNuevo">
+                        <p style="text-align: center; color: rgb(179, 81, 81);">Rapidez </p>
+                        {{anuncioResultado}}
+                    </recuadro-component>
+                </transition>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                movimientoHabilitado: true,            
+
+                duracionRecorrido: 0,
+                rotacion:0,
+
+                anuncioResultado: null,
+
+                millisInicioRecorrido: Date.now(),
+                tiempoTranscurrido: 0,
+                radianesRecorridos: 0,
+                stepCronometro: 60,
+            }
+        },
+        methods: {
+            setRecorrido(e) {
+                if (!this.movimientoHabilitado) return
+
+                this.anuncioResultado = null;
+                this.tiempoTranscurrido = 0;
+
+                this.movimientoHabilitado = false;
+
+                const radsRecorridos = Math.round((Math.random()+1)*30);
+                this.radianesRecorridos=radsRecorridos;
+                const nuevaRotacion=this.rotacion+radsRecorridos;
+
+                const duracion = ((Math.random() + 1) * 5000);
+                this.duracionRecorrido = Math.round(duracion / 1000);                               
+
+                this.$refs.cuerpo.animate([{ transform: 'translate(-50%, -50%) rotate('+this.rotacion+'rad)' }, { transform: 'translate(-50%, -50%) rotate('+nuevaRotacion+'rad)' }], { duration: duracion });
+
+                this.millisInicioRecorrido = Date.now();
+                this.contarTiempo();
+
+                setTimeout(() => {
+                    this.rotacion=nuevaRotacion;
+                    this.tiempoTranscurrido = this.duracionRecorrido * 1000;
+                    this.anunciarResultado();
+                    this.movimientoHabilitado = true;
+
+                }, duracion);
+
+            },
+            contarTiempo() {
+
+                if (this.movimientoHabilitado) return;
+                console.log("Tiempo");
+                this.tiempoTranscurrido = (Date.now() - this.millisInicioRecorrido);
+
+                setTimeout(() => {
+                    this.contarTiempo()
+                }, this.stepCronometro);
+            },
+            anunciarResultado() {
+                this.anuncioResultado = this.radianesRecorridos + " radianes recorridos en " + this.duracionRecorrido + " segundos";
+
+                this.$nextTick(() => {
+                    document.getElementById("anuncioResultado").scrollIntoView({ behavior: "smooth" });
+                })
+            }
+        },
+        computed: {
+            centesimasTranscurridos() {
+                return Math.floor(this.tiempoTranscurrido % 1000 / 10);
+            },
+            segundosTranscurridos() {
+                return Math.floor(this.tiempoTranscurrido / 1000);
+            }
+        }
+    })
+</script>
+
+<style>
+    .zonaInteraccion {
+        position: relative;
+        height: 250px;
+    }
+
+    #cuerpo {
+        width: 115px;
+        height: 115px;
+        background-color: brown;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+    }
+
+    .marcadorRadian{
+        width: 112px;
+        height: 112px;
+        border-top: 2px solid black;
+        border-radius: 50%;
+        border-top-width:50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    #signalRotacion{
+        width: 2px;
+        height: 50%;
+        background-color: rgb(230, 186, 45);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        transform-origin: center center;
+    }
+
+    .unidadRecorrido {
+        height: 3px;
+        width: 18px;
+        margin-right: 2px;
+        flex-shrink: 0;
+        background-color: brown;
+
+    }
+
+    #zonaTiempo {
+        color: rgb(75, 75, 75);
+        font-size: 19px;
+        text-align: center;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+    }
+</style>

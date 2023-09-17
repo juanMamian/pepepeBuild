@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Multiplicador decente - evaluación</title>
+</head>
+
+<body>
+
+    <div id="doc">
+        <p>Soy un calculista decente si: </p>
+
+        <!-- Suma -->
+        <bloque-component tipo="evaluacion" textoCabecera="Puedo calcular cualquier suma cotidiana entre números.">
+            <div class="contenedorFlex">
+
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad {{dificultadSuma}}
+                    </span>
+
+                    <input type="range" ref="inputDificultadSuma" id="inputDificultadSuma" v-model="dificultadSuma"
+                        min="1" max="3">
+                </div>
+
+                <div class="boton" style="margin-top: 40px;" @click="generarSuma"
+                    :class="{deshabilitado:estadoRespuestaSuma!='correcto' && expresionSuma }">
+                    {{estadoRespuestaSuma=='correcto'?'¡Generar una nueva suma':'¡Generar una suma!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;" :key="versionExpresionSuma"
+                        v-show="expresionSuma">
+                        {{expresionSuma}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionSuma">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaSuma=='correcto'}"
+                        v-model="inputResultadoSuma" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarSuma" :class="{deshabilitado: !inputResultadoSuma}"
+                        v-show="estadoRespuestaSuma!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaSuma" :key="versionInputResultadoSuma">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaSuma=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaSuma=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- Resta -->
+        <bloque-component tipo="evaluacion" textoCabecera="Puedo calcular cualquier resta cotidiana entre números.">
+            <div class="contenedorFlex">
+
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad {{dificultadResta}}
+                    </span>
+
+                    <input type="range" ref="inputDificultadResta" id="inputDificultadResta" v-model="dificultadResta"
+                        min="1" max="3">
+                </div>
+
+                <div class="boton" style="margin-top: 40px;" @click="generarResta"
+                    :class="{deshabilitado:estadoRespuestaResta!='correcto' && expresionResta }">
+                    {{estadoRespuestaResta=='correcto'?'¡Generar una nueva resta':'¡Generar una resta!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;" :key="versionExpresionResta"
+                        v-show="expresionResta">
+                        {{expresionResta}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionResta">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaResta=='correcto'}"
+                        v-model="inputResultadoResta" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarResta" :class="{deshabilitado: !inputResultadoResta}"
+                        v-show="estadoRespuestaResta!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaResta" :key="versionInputResultadoResta">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaResta=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaResta=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- Multiplicación -->
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo calcular cualquier multiplicación cotidiana entre números.">
+            <div class="contenedorFlex">
+
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad {{dificultadMultiplicacion}}
+                    </span>
+
+                    <input type="range" ref="inputDificultadMultiplicacion" id="inputDificultadMultiplicacion"
+                        v-model="dificultadMultiplicacion" min="1" max="4">
+                </div>
+
+                <div class="boton" style="margin-top: 40px;" @click="generarMultiplicacion"
+                    :class="{deshabilitado:estadoRespuestaMultiplicacion!='correcto' && expresionMultiplicacion }">
+                    {{estadoRespuestaMultiplicacion=='correcto'?'¡Generar una nueva multiplicación':'¡Generar una multiplicación!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionMultiplicacion" v-show="expresionMultiplicacion">
+                        {{expresionMultiplicacion}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionMultiplicacion">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaMultiplicacion=='correcto'}"
+                        v-model="inputResultadoMultiplicacion" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarMultiplicacion"
+                        :class="{deshabilitado: !inputResultadoMultiplicacion}"
+                        v-show="estadoRespuestaMultiplicacion!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaMultiplicacion"
+                        :key="versionInputResultadoMultiplicacion">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaMultiplicacion=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaMultiplicacion=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+        <!-- División -->
+        <bloque-component tipo="evaluacion" textoCabecera="Puedo calcular cualquier división cotidiana entre números.">
+            <div class="contenedorFlex">
+
+                <div class="bloqueDificultad">
+                    <span class="descripcion">
+                        Dificultad: {{dificultadDivision}}
+                    </span>
+
+                    <input type="range" ref="inputDificultadDivision" id="inputDificultadDivision"
+                        v-model="dificultadDivision" min="1" max="5">
+                </div>
+
+                <div class="boton" style="margin-top: 40px;" @click="generarDivision"
+                    :class="{deshabilitado:estadoRespuestaDivision!='correcto' && expresionDivision }">
+                    {{estadoRespuestaDivision=='correcto'?'¡Generar una nueva división':'¡Generar una división!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionDivision" v-show="expresionDivision">
+                        {{expresionDivision}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionDivision">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaDivision=='correcto'}"
+                        v-model="inputResultadoDivision" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarDivision" :class="{deshabilitado: !inputResultadoDivision}"
+                        v-show="estadoRespuestaDivision!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaDivision"
+                        :key="versionInputResultadoDivision">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaDivision=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaDivision=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                // Suma
+                versionExpresionSuma: 0,
+                expresionSuma: null,
+
+                dificultadSuma: 1,
+                minMultiplicando: 1,
+                maxMultiplicando: 10,
+                minMultiplicador: 1,
+                maxMultiplicador: 10,
+
+                multiplicando: 1,
+                multiplicador: 1,
+
+                estadoRespuestaSuma: null,
+                inputResultadoSuma: null,
+                versionInputResultadoSuma: 0,
+
+                // Resta
+                versionExpresionResta: 0,
+                expresionResta: null,
+
+                dificultadResta: 1,
+                minMultiplicando: 1,
+                maxMultiplicando: 10,
+                minMultiplicador: 1,
+                maxMultiplicador: 10,
+
+                multiplicando: 1,
+                multiplicador: 1,
+
+                estadoRespuestaResta: null,
+                inputResultadoResta: null,
+                versionInputResultadoResta: 0,
+
+                // Multiplicacion
+                versionExpresionMultiplicacion: 0,
+                expresionMultiplicacion: null,
+
+                dificultadMultiplicacion: 1,
+                minMultiplicando: 1,
+                maxMultiplicando: 10,
+                minMultiplicador: 1,
+                maxMultiplicador: 10,
+
+                multiplicando: 1,
+                multiplicador: 1,
+
+                estadoRespuestaMultiplicacion: null,
+                inputResultadoMultiplicacion: null,
+                versionInputResultadoMultiplicacion: 0,
+
+                // División
+                versionExpresionDivision: 0,
+                expresionDivision: null,
+
+                dificultadDivision: 1,
+                minNumerador: 1,
+                maxNumerador: 10,
+                minDenominador: 1,
+                maxDenominador: 10,
+
+                numerador: 1,
+                denominador: 1,
+
+                estadoRespuestaDivision: null,
+                inputResultadoDivision: null,
+                versionInputResultadoDivision: 0,
+
+            }
+        },
+        methods: {
+            generarMultiplicacion() {
+                //Nivel 1: Multiplicaciones entre un múltiplo de diez y otro número entre 8 y 15.
+                //Nivel 2: Multiplicaciones entre un multiplo de cien con múltiplo de diez y otro número entre 5 y 25.
+                //Nivel 3: Multiplicaciones entre un número entre 300 y 20000 y un número entre 11 y 45.
+                //Nivel 4: Multiplicaciones entre un número cualquiera entre 300 y 200000 y un multiplo de cien y diez. 
+
+
+                if (Number(this.dificultadMultiplicacion) === 1) {
+                    let factorMultiplicando = Math.round(((Math.random() * 8) + 1));
+
+
+                    this.multiplicando = factorMultiplicando * 10;
+
+                    this.minMultiplicador = 8;
+                    this.maxMultiplicador = 15;
+
+                    this.multiplicador = this.minMultiplicador + Math.round(Math.random() * (this.maxMultiplicador - this.minMultiplicador));
+
+                }
+                else if (Number(this.dificultadMultiplicacion) === 2) {
+                    let factorCentenaMultiplicando = Math.round(Math.random() * 10);
+                    let centenaMultiplicando = factorCentenaMultiplicando * 100;
+
+                    let factorDecenaMultiplicando = Math.round(Math.random() * 10);
+                    let decenaMultiplicando = factorCentenaMultiplicando * 10;
+
+                    this.multiplicando = centenaMultiplicando + decenaMultiplicando;
+
+                    this.minMultiplicador = 5;
+                    this.maxMultiplicador = 25;
+
+                    this.multiplicador = this.minMultiplicador + Math.round(Math.random() * (this.maxMultiplicador - this.minMultiplicador));
+                }
+                else if (Number(this.dificultadMultiplicacion) === 3) {
+                    this.minMultiplicando = 300;
+                    this.maxMultiplicando = 2000;
+
+                    this.multiplicando = this.minMultiplicando + Math.round(Math.random() * (this.maxMultiplicando - this.minMultiplicando));
+
+                    this.minMultiplicador = 11;
+                    this.maxMultiplicador = 45;
+
+                    this.multiplicador = this.minMultiplicador + Math.round(Math.random() * (this.maxMultiplicador - this.minMultiplicador));
+
+                }
+                else if (Number(this.dificultadMultiplicacion) === 4) {
+                    this.minMultiplicando = 300;
+                    this.maxMultiplicando = 20000;
+
+                    this.multiplicando = this.minMultiplicando + Math.round(Math.random() * (this.maxMultiplicando - this.minMultiplicando));
+
+                    let factorCentenaMultiplicador = Math.round(Math.random() * 10);
+                    let centenaMultiplicador = factorCentenaMultiplicador * 100;
+
+                    let factorDecenaMultiplicador = Math.round(Math.random() * 10);
+                    let decenaMultiplicador = factorCentenaMultiplicador * 10;
+
+                    this.multiplicador = centenaMultiplicador + decenaMultiplicador;
+
+
+                }
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+                if (this.minMultiplicando >= this.maxMultiplicando || this.minMultiplicador >= this.maxMultiplicador) {
+                    console.log("Rango no válido");
+                    return;
+                }
+
+                this.expresionMultiplicacion = `\\(${this.multiplicando} \\times ${this.multiplicador} \\)`;
+
+                this.inputResultadoMultiplicacion = null;
+                this.estadoRespuestaMultiplicacion = null;
+
+                this.versionExpresionMultiplicacion++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarMultiplicacion() {
+                var respuesta = this.multiplicando * this.multiplicador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoMultiplicacion}`)
+                if (this.inputResultadoMultiplicacion == respuesta) {
+                    this.estadoRespuestaMultiplicacion = "correcto";
+                }
+                else {
+                    this.estadoRespuestaMultiplicacion = "incorrecto";
+                }
+                this.versionInputResultadoMultiplicacion++;
+            },
+            generarDivision() {
+                //Nivel 1: Divisiones de un número hecho de centenas y decenas y un número entre 4 y 9 con resultado entero.
+                //Nivel 2: Divisiones de un número hecho de centenas y decenas y un número entre 4 y 9 con resultado entero y medio o entero y tercio.
+                //Nivel 3: Divisiones de un número hecho de centenas y decenas que dá un número entero o entero y medio entre 12 y 80.
+                //Nivel 4: Divisiones de un número cualquiera entre 300 y 5000 y un número entre 12 y 35 que da un número entero o entero y medio.
+                //Nivel 5: Divisiones de un número cualquiera entre 3000 y 200000 y un número entre 120 y 700. que da entero o entero y medio o entero y tercio
+
+                console.log(`Dificultad para la división: ${this.dificultadDivision}`)
+                if (Number(this.dificultadDivision) === 1) {
+                    let factorCentenaNumerador = Math.round(Math.random() * 10);
+                    let centenaNumerador = factorCentenaNumerador * 100;
+
+                    let factorDecenaNumerador = Math.round(Math.random() * 10);
+                    let decenaNumerador = factorCentenaNumerador * 10;
+
+                    this.numerador = centenaNumerador + decenaNumerador;
+
+                    this.minDenominador = 4;
+                    this.maxDenominador = 9;
+
+                    let divisores = [];
+                    let posibleDivisor = this.minDenominador;
+                    while ((posibleDivisor < this.maxDenominador || divisores.length < 1)) {
+                        if (this.numerador % posibleDivisor === 0) {
+                            divisores.push(posibleDivisor);
+                        }
+
+                        posibleDivisor++;
+                    }
+
+                    let indexDivisor = Math.floor(Math.random() * divisores.length);
+                    let elDivisor = divisores[indexDivisor];
+
+                    this.denominador = elDivisor;
+
+                }
+                else if (Number(this.dificultadDivision) === 2) {
+                    let factorCentenaNumerador = Math.round(Math.random() * 10);
+                    let centenaNumerador = factorCentenaNumerador * 100;
+
+                    let factorDecenaNumerador = Math.round(Math.random() * 10);
+                    let decenaNumerador = factorCentenaNumerador * 10;
+
+                    this.numerador = centenaNumerador + decenaNumerador;
+
+                    this.minDenominador = 4;
+                    this.maxDenominador = 9;
+
+                    let divisores = [];
+                    let posibleDivisor = this.minDenominador;
+                    while ((posibleDivisor < this.maxDenominador || divisores.length < 1)) {
+                        let parteDecimal = (this.numerador / posibleDivisor) - Math.floor(this.numerador / posibleDivisor)
+                        if (parteDecimal === 0 || parteDecimal === 0.5 || parteDecimal === (0.25)) {
+                            divisores.push(posibleDivisor);
+                        }
+
+                        posibleDivisor++;
+                    }
+
+                    let indexDivisor = Math.floor(Math.random() * divisores.length);
+                    let elDivisor = divisores[indexDivisor];
+
+                    this.denominador = elDivisor;
+                }
+                else if (Number(this.dificultadDivision) === 3) {
+                    let factorCentenaNumerador = 4 + Math.round(Math.random() * 10);
+                    let centenaNumerador = factorCentenaNumerador * 100;
+
+                    let factorDecenaNumerador = Math.round(Math.random() * 10);
+                    let decenaNumerador = factorCentenaNumerador * 10;
+
+                    this.numerador = centenaNumerador + decenaNumerador;
+
+                    this.minDenominador = Math.round(this.numerador / 80);
+                    this.maxDenominador = Math.round(this.numerador / 12);
+
+                    let divisores = [];
+                    let posibleDivisor = this.minDenominador;
+                    while ((posibleDivisor < this.maxDenominador || divisores.length < 1)) {
+                        let parteDecimal = (this.numerador / posibleDivisor) - Math.floor(this.numerador / posibleDivisor)
+                        if (parteDecimal === 0 || parteDecimal === 0.5 || parteDecimal === (0.25)) {
+                            divisores.push(posibleDivisor);
+                        }
+
+                        posibleDivisor++;
+                    }
+
+                    let indexDivisor = Math.floor(Math.random() * divisores.length);
+                    let elDivisor = divisores[indexDivisor];
+
+                    this.denominador = elDivisor;
+                }
+                else if (Number(this.dificultadDivision) === 4) {
+                    this.minNumerador = 300;
+                    this.maxNumerador = 5000;
+
+                    this.numerador = this.minNumerador + Math.round((Math.random() * (this.maxNumerador - this.minNumerador)));
+
+                    console.log(`Escogido como numerador ${this.numerador}`);
+                    this.minDenominador = 12;
+                    this.maxDenominador = 35;
+
+                    let divisores = [];
+                    let posibleDivisor = this.minDenominador;
+                    let guarda = 0;
+                    while ((posibleDivisor < this.maxDenominador || divisores.length < 1) && guarda < 5000) {
+                        let parteDecimal = (this.numerador / posibleDivisor) - Math.floor(this.numerador / posibleDivisor)
+                        if (parteDecimal === 0 || parteDecimal === 0.5 || parteDecimal === (0.25)) {
+                            divisores.push(posibleDivisor);
+                            console.log("Puede ser divisor");
+                        }
+                        console.log("posible divisor: " + posibleDivisor);
+                        posibleDivisor++;
+                        guarda++;
+                    }
+                    if (divisores.length < 1) {
+                        divisores = [this.numerador];
+                    }
+
+                    let indexDivisor = Math.floor(Math.random() * divisores.length);
+                    let elDivisor = divisores[indexDivisor];
+
+                    this.denominador = elDivisor;
+                }
+                else if (Number(this.dificultadDivision) === 5) {
+                    this.minNumerador = 3000;
+                    this.maxNumerador = 200000;
+
+                    this.numerador = this.minNumerador + Math.round((Math.random() * (this.maxNumerador - this.minNumerador)));
+
+                    console.log(`Escogido como numerador ${this.numerador}`);
+                    this.minDenominador = 120;
+                    this.maxDenominador = 700;
+
+                    let divisores = [];
+                    let posibleDivisor = this.minDenominador;
+                    let guarda = 0;
+                    while ((posibleDivisor < this.maxDenominador || divisores.length < 1) && guarda < 5000) {
+                        let parteDecimal = (this.numerador / posibleDivisor) - Math.floor(this.numerador / posibleDivisor)
+                        if (parteDecimal === 0 || parteDecimal === 0.5 || parteDecimal === (0.25)) {
+                            divisores.push(posibleDivisor);
+                            console.log("Puede ser divisor");
+                        }
+                        console.log("posible divisor: " + posibleDivisor);
+                        posibleDivisor++;
+                        guarda++;
+                    }
+                    if (divisores.length < 1) {
+                        divisores = [this.numerador];
+                    }
+
+                    let indexDivisor = Math.floor(Math.random() * divisores.length);
+                    let elDivisor = divisores[indexDivisor];
+
+                    this.denominador = elDivisor;
+                }
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+                if (this.minMultiplicando >= this.maxMultiplicando || this.minMultiplicador >= this.maxMultiplicador) {
+                    console.log("Rango no válido");
+                    return;
+                }
+
+                this.expresionDivision = `\\(${this.numerador} \\over ${this.denominador} \\)`;
+
+                this.inputResultadoDivision = null;
+                this.estadoRespuestaDivision = null;
+
+                this.versionExpresionDivision++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarDivision() {
+                var respuesta = this.numerador / this.denominador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoDivision}`)
+                if (this.inputResultadoDivision == respuesta) {
+                    this.estadoRespuestaDivision = "correcto";
+                }
+                else {
+                    this.estadoRespuestaDivision = "incorrecto";
+                }
+                this.versionInputResultadoDivision++;
+            },
+            generarSuma() {
+
+                if (Number(this.dificultadSuma) === 1) {
+                    let factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumando += ordenMagnitud * factor;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumador += ordenMagnitud * factor;
+                    }
+
+                }
+                else if (Number(this.dificultadSuma) === 2) {
+                    let factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumando += ordenMagnitud * factor;
+                    }
+
+                    let parteDecimal = Math.round(Math.random() * 10) / 10;
+                    let probabilidadDecimal = 0.5;
+                    let rollDiceDecimal = Math.random();
+                    let conDecimal = rollDiceDecimal < probabilidadDecimal;
+                    console.log(`Parte decimal: ${parteDecimal}, rollDice: ${rollDiceDecimal}`);
+                    if (conDecimal) {
+                        this.sumando += parteDecimal;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumador += ordenMagnitud * factor;
+                    }
+
+                    parteDecimal = Math.round(Math.random() * 10) / 10;
+                    probabilidadDecimal = 0.5;
+                    rollDiceDecimal = Math.random();
+                    conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.sumador += parteDecimal;
+                    }
+
+
+                }
+                else if (Number(this.dificultadSuma) === 3) {
+
+                    let factores = [Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumando += ordenMagnitud * factor;
+                    }
+
+                    let parteDecimal = Math.round(Math.random() * 10) / 10;
+                    let probabilidadDecimal = 0.5;
+                    let rollDiceDecimal = Math.random();
+                    let conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.sumando += parteDecimal;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.sumador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.sumador += ordenMagnitud * factor;
+                    }
+
+                    parteDecimal = Math.round(Math.random() * 10) / 10;
+                    probabilidadDecimal = 0.5;
+                    rollDiceDecimal = Math.random();
+                    conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.sumando += parteDecimal;
+                    }
+
+
+                }
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+                if (this.minSumando >= this.maxSumando || this.minSumador >= this.maxSumador) {
+                    console.log("Rango no válido");
+                    return;
+                }
+
+                this.expresionSuma = `\\(${this.sumando} + ${this.sumador} \\)`;
+
+                this.inputResultadoSuma = null;
+                this.estadoRespuestaSuma = null;
+
+                this.versionExpresionSuma++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarSuma() {
+                var respuesta = Number((this.sumando + this.sumador).toFixed(5));
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoSuma}`)
+                if (this.inputResultadoSuma == respuesta) {
+                    this.estadoRespuestaSuma = "correcto";
+                }
+                else {
+                    this.estadoRespuestaSuma = "incorrecto";
+                }
+                this.versionInputResultadoSuma++;
+            },
+            generarResta() {
+                if (Number(this.dificultadResta) === 1) {
+                    let factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restando += ordenMagnitud * factor;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restador += ordenMagnitud * factor;
+                    }
+
+                }
+                else if (Number(this.dificultadResta) === 2) {
+                    let factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restando += ordenMagnitud * factor;
+                    }
+
+                    let parteDecimal = Math.round(Math.random() * 10) / 10;
+                    let probabilidadDecimal = 0.5;
+                    let rollDiceDecimal = Math.random();
+                    let conDecimal = rollDiceDecimal < probabilidadDecimal;
+                    console.log(`Parte decimal: ${parteDecimal}, rollDice: ${rollDiceDecimal}`);
+                    if (conDecimal) {
+                        this.restando += parteDecimal;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restador += ordenMagnitud * factor;
+                    }
+
+                    parteDecimal = Math.round(Math.random() * 10) / 10;
+                    probabilidadDecimal = 0.5;
+                    rollDiceDecimal = Math.random();
+                    conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.restador += parteDecimal;
+                    }
+
+
+                }
+                else if (Number(this.dificultadResta) === 3) {
+
+                    let factores = [Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restando = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restando += ordenMagnitud * factor;
+                    }
+
+                    let parteDecimal = Math.round(Math.random() * 10) / 10;
+                    let probabilidadDecimal = 0.5;
+                    let rollDiceDecimal = Math.random();
+                    let conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.restando += parteDecimal;
+                    }
+
+                    factores = [0, Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10), Math.round(Math.random() * 10)];
+
+                    this.restador = 0;
+                    for (var i = 0; i < factores.length; i++) {
+                        let ordenMagnitud = Math.pow(10, i);
+                        let factor = factores[i];
+                        this.restador += ordenMagnitud * factor;
+                    }
+
+                    parteDecimal = Math.round(Math.random() * 10) / 10;
+                    probabilidadDecimal = 0.5;
+                    rollDiceDecimal = Math.random();
+                    conDecimal = rollDiceDecimal < probabilidadDecimal;
+
+                    if (conDecimal) {
+                        this.restando += parteDecimal;
+                    }
+
+                }
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+                if (this.restador > this.restando) {
+                    let temp = this.restador;
+                    this.restador = this.restando;
+                    this.restando = temp;
+                }
+
+                this.expresionResta = `\\(${this.restando} - ${this.restador} \\)`;
+
+                this.inputResultadoResta = null;
+                this.estadoRespuestaResta = null;
+
+                this.versionExpresionResta++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarResta() {
+                var respuesta = Number((this.restando - this.restador).toFixed(4));
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoResta}`)
+                if (this.inputResultadoResta == respuesta) {
+                    this.estadoRespuestaResta = "correcto";
+                }
+                else {
+                    this.estadoRespuestaResta = "incorrecto";
+                }
+                this.versionInputResultadoResta++;
+            },
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    input {
+        padding: 5px 5px;
+        font-size: 17px;
+    }
+
+    .contenedorFlex {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(600px, 90%);
+    }
+
+    .resaltado {
+        padding: 2px 3px;
+        border-radius: 2px;
+    }
+
+    .bloqueRango {
+        display: flex;
+        margin: 10px 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .limiteRango {
+        max-width: 70px;
+        margin: 0px 10px;
+    }
+</style>

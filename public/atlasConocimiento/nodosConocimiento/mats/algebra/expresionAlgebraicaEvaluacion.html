@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Expresión algebraica - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de expresión algebraica si: </p>
+
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier expresión numérica puedo decidir si se trata de una expresión algebraica o no y, en caso afirmativo, puedo reescribirla usando la notación adecuada.">
+
+            <div class='flexVertical'>
+                <div class='boton' @click="generarReto1">
+                    Generar expresión
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto1' v-if="reto1" :key="'reto1v' + versionReto1" class="matsExpresion" style="font-size: 30px">
+                        \({{reto1.toMathJax()}}\)
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <div id='contenedorBotonesRespuestaReto1' v-if="reto1">
+                        <div class='boton selector' :class="{seleccionado: respuestaReto1===true}"
+                            @click="setRespuestaReto1(true)">
+                            Es una expresión algebraica.
+                        </div>
+                        <div class='boton selector' :class="{seleccionado: respuestaReto1===false}"
+                            @click="setRespuestaReto1(false)">
+                            No es una expresión algebraica.
+                        </div>
+                    </div>
+                </transition>
+
+                <transition name="popIn">
+                    <recuadro-component tipo='infoResultado' v-if="respuestaReto1!=null && algebraicaReto1!=null"
+                        :key="'infoResultadoReto1v' + versionRespuestaReto1"
+                        :modo="respuestaReto1===algebraicaReto1?'correcto': 'incorrecto'">
+
+                    </recuadro-component>
+
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                reto1: null,
+                versionReto1: 0,
+                algebraicaReto1: null,
+                respuestaReto1: null,
+                versionRespuestaReto1: 0,
+            }
+        },
+        methods: {
+            reiniciarReto1() {
+                this.reto1 = null;
+                this.algebraicaReto1 = null;
+                this.respuestaReto1 = null;
+            },
+
+            generarReto1() {
+                this.reiniciarReto1();
+                let laExpresion = new ExpresionNumerica();
+                laExpresion.fillExpresion({keepInteger: true});
+                laExpresion.reexpresionar(Math.ceil(Math.random() * 2), {keepInteger: true});
+                this.algebraicaReto1=false;
+                if (Math.random() < 0.6) {
+                    laExpresion.incognitarRandomNumero();
+                    this.algebraicaReto1=true;
+                }
+                this.reto1 = laExpresion;
+                this.versionReto1++;
+            },
+            setRespuestaReto1(res){
+                this.respuestaReto1=res;
+                this.versionRespuestaReto1++;
+            },
+            
+
+        },
+        watch:{
+            versionReto1(){
+                this.$nextTick(()=>{
+                    MathJax.typeset();
+                });
+            },
+            
+        }
+    }).mount("#doc");
+</script>

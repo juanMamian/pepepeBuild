@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Javascript básico - Apariencia de elementos</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        Una instrucción fundamental consiste en cambiar la apariencia de un elemento.
+
+        <recuadro-component tipo="datoPrevio">
+            Para cambiar la apariencia de un elemento se cambia el valor de sus propiedades de estilo.
+        </recuadro-component>
+
+        <p>
+            Una instruccion javascript que cambia la apariencia de un elemento, inicia con una <span class="resaltado">referencia</span> a dicho elemento.
+        </p>        
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+                <span class="programacionCodigoActual">document.querySelector("#boton1")</span>                
+            </div>
+
+            <div class="programacionDescripcionCodigo">
+                Se ha referenciado a un elemento cuya id es <span class="programacionNombreObjeto">boton1</span>.
+            </div>
+        </div>
+
+        Una vez que se ha escrito una referencia a un elemento, se accede a su propiedad "style" y, dentro de ella
+        se accede a alguna de las propiedades de estilo.
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+               <span class="programacionCodigoPrevio"> document.querySelector("#boton1")</span><span class="programacionCodigoActual">.style.width</span>
+            </div>
+            <div class="programacionDescripcionCodigo">
+                Se ha accedido a la propiedad <span class="programacionNombreObjeto">style</span> del elemento y, dentro de ella, se ha accedido a la propiedad <span class="programacionNombreObjeto">width</span> del elemento referenciado.
+            </div>
+        </div>
+
+        <p>
+            Tras acceder a una propiedad de estilo, se puede escribir el operador de asignación <span class="resaltado">=</span>
+            y, enseguida, el nuevo valor para ser asignado.
+        </p>
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+              <span class="programacionCodigoPrevio">  document.querySelector("#boton1").style.width</span> <span class="programacionCodigoActual"> = "400px"</span>
+            </div>
+
+            <div class="programacionDescripcionCodigo">
+                Se ha asignado el valor <span class="resaltado">400px</span> a la propiedad <span class="programacionNombreObjeto">width</span> 
+                en la propiedad <span class="programacionNombreObjeto">style</span> del elemento con id "boton1".
+            </div>
+        </div>               
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+            }
+        }
+    })
+</script>
+
+<style>
+    
+</style>

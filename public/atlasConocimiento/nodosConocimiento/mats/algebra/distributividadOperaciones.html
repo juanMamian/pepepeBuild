@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Distributividad</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando se aplica una multiplicación sobre una expresión numérica hecha mediante una suma, el efecto de la
+            multiplicación se
+            distribuye en los dos números sumados.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se pueden ver representaciones de multiplicaciones aplicadas sobre sumas.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo ejemploRepresentacion">
+                    <div class="expresion" v-show="cuadro1Ejemplo1Multiplicador===1">\( 3 +5 \)</div>
+                    <div class="expresion" v-show="cuadro1Ejemplo1Multiplicador===3">\( (3 +5) \times 3 \)</div>
+                    <div class="representacion">
+                        <div class="representacionSuma" v-for="repeticion of cuadro1Ejemplo1Multiplicador"
+                            :key="'repeticionEjemplo1'+repeticion">
+                            <div class="numeroBolitas">
+                                <div class="bolita" style="background-color: cadetblue;" v-for="num of 3">
+
+                                </div>
+                            </div>
+                            <div class="numeroBolitas">
+                                <div class="bolita" v-for="num of 5">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="boton" v-show="cuadro1Ejemplo1Multiplicador===1"
+                        @click="cuadro1Ejemplo1Multiplicador=3">
+                        Aplicar una multiplicación por 3
+                    </div>
+                    <div class="boton" v-show="cuadro1Ejemplo1Multiplicador===3"
+                        @click="cuadro1Ejemplo1Multiplicador=1">
+                        Deshacer
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo1Multiplicador===3" tipo="descubrimiento">
+                            ¡La multiplicación por 3 afectó a la expresión numérica completa!
+                        </recuadro-component>
+                    </transition>
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo1Multiplicador===3" tipo="descubrimiento">
+                            ¡La multiplicación por 3 afectó al 3 y al 5!
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo ejemploRepresentacion">
+                    <div class="expresion" v-show="cuadro1Ejemplo2Multiplicador===1">\( 6 +1 \)</div>
+                    <div class="expresion" v-show="cuadro1Ejemplo2Multiplicador===4">\( (6 +1) \times 4 \)</div>
+                    <div class="representacion">
+                        <div class="representacionSuma" v-for="repeticion of cuadro1Ejemplo2Multiplicador"
+                            :key="'repeticionEjemplo1'+repeticion">
+                            <div class="numeroBolitas">
+                                <div class="bolita" style="background-color: cadetblue;" v-for="num of 6">
+
+                                </div>
+                            </div>
+                            <div class="numeroBolitas">
+                                <div class="bolita" v-for="num of 1">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="boton" v-show="cuadro1Ejemplo2Multiplicador===1"
+                        @click="cuadro1Ejemplo2Multiplicador=4">
+                        Aplicar una multiplicación por 4
+                    </div>
+                    <div class="boton" v-show="cuadro1Ejemplo2Multiplicador===4"
+                        @click="cuadro1Ejemplo2Multiplicador=1">
+                        Deshacer
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo2Multiplicador===4" tipo="descubrimiento">
+                            ¡La multiplicación por 4 afectó a la expresión numérica completa!
+                        </recuadro-component>
+                    </transition>
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo2Multiplicador===4" tipo="descubrimiento">
+                            ¡La multiplicación por 4 afectó al 6 y al 1!
+                        </recuadro-component>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo ejemploRepresentacion">
+                    <div class="expresion" v-show="cuadro1Ejemplo3Multiplicador===1">\( 3 +2 \)</div>
+                    <div class="expresion" v-show="cuadro1Ejemplo3Multiplicador===5">\( (3 +2) \times 5 \)</div>
+                    <div class="representacion">
+                        <div class="representacionSuma" v-for="repeticion of cuadro1Ejemplo3Multiplicador"
+                            :key="'repeticionEjemplo3'+repeticion">
+                            <div class="numeroBolitas">
+                                <div class="bolita" style="background-color: cadetblue;" v-for="num of 3">
+
+                                </div>
+                            </div>
+                            <div class="numeroBolitas">
+                                <div class="bolita" v-for="num of 2">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="boton" v-show="cuadro1Ejemplo3Multiplicador===1"
+                        @click="cuadro1Ejemplo3Multiplicador=5">
+                        Aplicar una multiplicación por 5
+                    </div>
+                    <div class="boton" v-show="cuadro1Ejemplo3Multiplicador===5"
+                        @click="cuadro1Ejemplo3Multiplicador=1">
+                        Deshacer
+                    </div>
+
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo3Multiplicador===5" tipo="descubrimiento">
+                            ¡La multiplicación por 5 afectó a la expresión numérica completa!
+                        </recuadro-component>
+                    </transition>
+                    <transition name="fade">
+                        <recuadro-component v-show="cuadro1Ejemplo3Multiplicador===5" tipo="descubrimiento">
+                            ¡La multiplicación por 5 afectó al 3 y al 2!
+                        </recuadro-component>
+                    </transition>
+                </div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo">
+            Por lo tanto, se dice que la multiplicación es distributiva sobre la suma.
+        </recuadro-component>
+
+        <p>Por eso:</p>
+        <recuadro-component tipo="datoPrevio">
+            Cuando se tiene una expresión numérica hecha de una suma, aplicar una multiplicación sobre toda la expresión
+            es equivalente a aplicarla distribuidamente sobre los números sumados.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se ven ejemplos de construcción de números aplicando multiplicación sobre una expresión o sobre los números que la forman.">
+            <div class="listaEjemplos">
+
+                <div class="itemEjemplo itemEjemploConstruccionDoble"
+                    style="flex-direction: column; align-items: center;">
+                    <div class="expresion">
+                        <span v-show="cuadro2ejemplo1multiplicadorGeneral!=1">\( (3+6) \times 2 \)</span>
+                        <span v-show="cuadro2ejemplo1multiplicadorGeneral===1">
+                            <span v-show="cuadro2ejemplo1multiplicadorDistribuido1===1" class="primerNumero">\( 3 \)
+                            </span><span v-show="cuadro2ejemplo1multiplicadorDistribuido1!=1" class="primerNumero">\(3
+                                \times 2\)</span> \( + \)
+                            <span v-show="cuadro2ejemplo1multiplicadorDistribuido2===1" class="segundoNumero">\( 6 \)
+                            </span><span v-show="cuadro2ejemplo1multiplicadorDistribuido2!=1" class="segundoNumero">\(6
+                                \times 2\)</span>
+                        </span>
+                    </div>
+                    <transition-group name="popIn">
+                        <div class="representacionSuma" ref="cuadro2ejemplo1sumas"
+                            v-for="repeticion of cuadro2ejemplo1multiplicadorGeneral"
+                            :key="'cuadro2ejemplo1suma'+repeticion">
+                            <div class="contenedorNumeroFilas">
+                                <transition-group name="popIn">
+                                    <div class="numeroBolitas" ref="cuadro2ejemplo1sumandos1"
+                                        v-for="multiplicador1 of cuadro2ejemplo1multiplicadorDistribuido1"
+                                        :key="'fila1'+multiplicador1">
+                                        <div class="bolita" v-for="num of 3" style="background-color: chocolate;"></div>
+                                    </div>
+                                </transition-group>
+                            </div>
+                            <div class="contenedorNumeroFilas">
+                                <transition-group name="popIn">
+
+                                    <div class="numeroBolitas" ref="cuadro2ejemplo1sumandos2"
+                                        v-for="multiplicador2 of cuadro2ejemplo1multiplicadorDistribuido2"
+                                        :key="'fila2'+multiplicador2">
+                                        <div class="bolita" v-for="num of 6" style="background-color: blue;"></div>
+                                    </div>
+                                </transition-group>
+                            </div>
+                        </div>
+                    </transition-group>
+                    <div class="boton"
+                        :class="{deshabilitado: cuadro2ejemplo1multiplicadorDistribuido1!=1 || cuadro2ejemplo1multiplicadorDistribuido2!=1 || cuadro2ejemplo1multiplicadorGeneral!=1, marcado: cuadro2ejemplo1multiplicadorGeneral!=1}"
+                        @click="setCuadro2ejemplo1multiplicadorGeneral(2)">
+                        Multiplicar por 2 toda la expresión
+                    </div>
+                    <div class="opcionesOperacionExterna">
+                        <div class="boton" @click="setCuadro2ejemplo1multiplicadorDistribuido1(2)"
+                            :class="{deshabilitado: cuadro2ejemplo1multiplicadorGeneral!=1 || cuadro2ejemplo1multiplicadorDistribuido1!=1, marcado: cuadro2ejemplo1multiplicadorDistribuido1!=1}">
+                            Multiplicar el primer número por 2
+                        </div>
+
+                        <div class="boton" @click="setCuadro2ejemplo1multiplicadorDistribuido2(2)"
+                            :class="{deshabilitado: cuadro2ejemplo1multiplicadorGeneral!=1 || cuadro2ejemplo1multiplicadorDistribuido2!=1, marcado: cuadro2ejemplo1multiplicadorDistribuido2!=1}">
+                            Multiplicar el segundo número por 2
+                        </div>
+                    </div>
+
+                    <div class="boton"
+                        @click="cuadro2ejemplo1multiplicadorGeneral=1; cuadro2ejemplo1multiplicadorDistribuido1=1; cuadro2ejemplo1multiplicadorDistribuido2=1">
+                        Reiniciar
+                    </div>
+                </div>
+
+                <div class="itemEjemplo itemEjemploConstruccionDoble"
+                    style="flex-direction: column; align-items: center;">
+                    <div class="expresion">
+                        <span v-show="cuadro2ejemplo2multiplicadorGeneral!=1">\( (4+2) \times 4 \)</span>
+                        <span v-show="cuadro2ejemplo2multiplicadorGeneral===1">
+                            <span v-show="cuadro2ejemplo2multiplicadorDistribuido1===1" class="primerNumero">\( 4 \)
+                            </span><span v-show="cuadro2ejemplo2multiplicadorDistribuido1!=1" class="primerNumero">\(4
+                                \times 4\)</span> \( + \)
+                            <span v-show="cuadro2ejemplo2multiplicadorDistribuido2===1" class="segundoNumero">\( 2 \)
+                            </span><span v-show="cuadro2ejemplo2multiplicadorDistribuido2!=1" class="segundoNumero">\(2
+                                \times 4\)</span>
+                        </span>
+                    </div>
+                    <transition-group name="popIn">
+                        <div class="representacionSuma" ref="cuadro2ejemplo2sumas"
+                            v-for="repeticion of cuadro2ejemplo2multiplicadorGeneral"
+                            :key="'cuadro2ejemplo2suma'+repeticion">
+                            <div class="contenedorNumeroFilas">
+                                <transition-group name="popIn">
+                                    <div class="numeroBolitas" ref="cuadro2ejemplo2sumandos1"
+                                        v-for="multiplicador1 of cuadro2ejemplo2multiplicadorDistribuido1"
+                                        :key="'fila1'+multiplicador1">
+                                        <div class="bolita" v-for="num of 4" style="background-color: chocolate;"></div>
+                                    </div>
+                                </transition-group>
+                            </div>
+                            <div class="contenedorNumeroFilas">
+                                <transition-group name="popIn">
+
+                                    <div class="numeroBolitas" ref="cuadro2ejemplo2sumandos2"
+                                        v-for="multiplicador2 of cuadro2ejemplo2multiplicadorDistribuido2"
+                                        :key="'fila2'+multiplicador2">
+                                        <div class="bolita" v-for="num of 2" style="background-color: blue;"></div>
+                                    </div>
+                                </transition-group>
+                            </div>
+                        </div>
+                    </transition-group>
+                    <div class="boton"
+                        :class="{deshabilitado: cuadro2ejemplo2multiplicadorDistribuido1!=1 || cuadro2ejemplo2multiplicadorDistribuido2!=1 || cuadro2ejemplo2multiplicadorGeneral!=1, marcado: cuadro2ejemplo2multiplicadorGeneral!=1}"
+                        @click="setCuadro2ejemplo2multiplicadorGeneral(4)">
+                        Multiplicar por 4 toda la expresión
+                    </div>
+                    <div class="opcionesOperacionExterna">
+                        <div class="boton" @click="setCuadro2ejemplo2multiplicadorDistribuido1(4)"
+                            :class="{deshabilitado: cuadro2ejemplo2multiplicadorGeneral!=1 || cuadro2ejemplo2multiplicadorDistribuido1!=1, marcado: cuadro2ejemplo2multiplicadorDistribuido1!=1}">
+                            Multiplicar el primer número por 4
+                        </div>
+
+                        <div class="boton" @click="setCuadro2ejemplo2multiplicadorDistribuido2(4)"
+                            :class="{deshabilitado: cuadro2ejemplo2multiplicadorGeneral!=1 || cuadro2ejemplo2multiplicadorDistribuido2!=1, marcado: cuadro2ejemplo2multiplicadorDistribuido2!=1}">
+                            Multiplicar el segundo número por 4
+                        </div>
+                    </div>
+
+                    <div class="boton"
+                        @click="cuadro2ejemplo2multiplicadorGeneral=1; cuadro2ejemplo2multiplicadorDistribuido1=1; cuadro2ejemplo2multiplicadorDistribuido2=1">
+                        Reiniciar
+                    </div>
+                </div>
+
+
+
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo">
+            La multiplicación es distributiva sobre la suma.
+        </recuadro-component>
+
+        <hr>
+
+
+        <recuadro-component tipo="datoNuevo">
+            La multiplicación es distributiva sobre la resta.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La división es distributiva sobre la suma.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La división es distributiva sobre la resta.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La potencia es distributiva sobre la multiplicación.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La potencia es distributiva sobre la división.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La radicación es distributiva sobre la multiplicación.
+        </recuadro-component>
+        <recuadro-component tipo="datoNuevo">
+            La radicación es distributiva sobre la división.
+        </recuadro-component>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                cuadro1Ejemplo1Multiplicador: 1,
+                cuadro1Ejemplo2Multiplicador: 1,
+                cuadro1Ejemplo3Multiplicador: 1,
+
+                cuadro2ejemplo1multiplicadorGeneral: 1,
+                cuadro2ejemplo1multiplicadorDistribuido1: 1,
+                cuadro2ejemplo1multiplicadorDistribuido2: 1,
+
+                cuadro2ejemplo2multiplicadorGeneral: 1,
+                cuadro2ejemplo2multiplicadorDistribuido1: 1,
+                cuadro2ejemplo2multiplicadorDistribuido2: 1,
+            }
+        },
+        methods: {
+            setCuadro2ejemplo1multiplicadorGeneral(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo1multiplicadorGeneral) {
+                    this.cuadro2ejemplo1multiplicadorGeneral = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo1sumas[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo1multiplicadorGeneral + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo1multiplicadorGeneral++;
+                    }, 200 * (rep - 1));
+                }
+            },
+            setCuadro2ejemplo1multiplicadorDistribuido1(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo1multiplicadorDistribuido1) {
+                    this.cuadro2ejemplo1multiplicadorDistribuido1 = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo1sumandos1[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo1multiplicadorDistribuido1 + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo1multiplicadorDistribuido1++;
+                    }, 200 * (rep - 1));
+                }
+            },
+            setCuadro2ejemplo1multiplicadorDistribuido2(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo1multiplicadorDistribuido2) {
+                    this.cuadro2ejemplo1multiplicadorDistribuido2 = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo1sumandos2[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo1multiplicadorDistribuido2 + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo1multiplicadorDistribuido2++;
+                    }, 200 * (rep - 1));
+                }
+            },
+
+
+            setCuadro2ejemplo2multiplicadorGeneral(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo2multiplicadorGeneral) {
+                    this.cuadro2ejemplo2multiplicadorGeneral = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo2sumas[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo2multiplicadorGeneral + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo2multiplicadorGeneral++;
+                    }, 200 * (rep - 1));
+                }
+            },
+            setCuadro2ejemplo2multiplicadorDistribuido1(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo2multiplicadorDistribuido1) {
+                    this.cuadro2ejemplo2multiplicadorDistribuido1 = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo2sumandos1[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo2multiplicadorDistribuido1 + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo2multiplicadorDistribuido1++;
+                    }, 200 * (rep - 1));
+                }
+            },
+            setCuadro2ejemplo2multiplicadorDistribuido2(valor) {
+                console.log("Multiplicando por " + valor);
+                if (valor <= this.cuadro2ejemplo2multiplicadorDistribuido2) {
+                    this.cuadro2ejemplo2multiplicadorDistribuido2 = valor
+                    return;
+                }
+
+                this.$refs.cuadro2ejemplo2sumandos2[0].animate([
+                    {transform: 'scale(1)'},
+                    {transform: 'scale(1.1)'},
+                    {transform: 'scale(1)'}
+                ],
+                    {
+                        duration: 300,
+                        iterations: 1
+                    });
+
+                for (var rep = (this.cuadro2ejemplo2multiplicadorDistribuido2 + 1); rep <= valor; rep++) {
+                    setTimeout(() => {
+                        this.cuadro2ejemplo2multiplicadorDistribuido2++;
+                    }, 200 * (rep - 1));
+                }
+            },
+
+        },
+        watch: {
+
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 10px 0px;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        background-color: transparent;
+        opacity: 0;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all 0.8s;
+    }
+
+
+
+    ul {
+        font-size: 35px;
+    }
+
+    .itemEjemplo {
+        display: flex;
+        width: min(300px, 90vw);
+    }
+
+    .numeroBolitas {
+        display: flex;
+
+    }
+
+    .bolita {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin: 10px 5px;
+        background-color: brown;
+        position: relative;
+    }
+
+    .ejemploRepresentacion {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .itemEjemploConstruccionDoble {
+        width: min(600px, 90vw);
+    }
+
+    .representacionSuma {
+        display: flex;
+        position: relative;
+    }
+
+    .opcionesOperacionExterna {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .opcionesOperacionExterna .boton {
+        margin: 0px 10px;
+    }
+
+    .boton.marcado {
+        opacity: 1;
+        background-color: var(--paletaPrevio);
+    }
+
+    .primerNumero {
+        color: chocolate;
+    }
+
+    .segundoNumero {
+        color: blue;
+    }
+</style>

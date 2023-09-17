@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Traslado de operaciones - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Frecuentemente es útil deducir (des)igualdades de manera tal que aparezcan operaciones canceladas.
+        </p>
+
+        <p>
+            Si en la nueva (des)igualdad se simplifica la expresión que contiene la cancelación, se obtiene una
+            (des)igualdad en donde ahora
+            uno de los miembros ha perdido una operación mientras que el otro tiene una operación nueva.
+        </p>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de deducción de igualdades en donde aparece una cancelación de
+                operaciones.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo anchoMediano">
+                    <div class="matsExpresion">
+                        \( 13 + 5 = 18 \)
+                    </div>
+
+                    <div class="boton" @click="ejemplo1Step=1" :class="{deshabilitado: ejemplo1Step!=0}">
+                        Deducir igualdad
+                    </div>
+
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo1Step>=1">
+                            \( 13 + 5 - 5 = 18 - 5 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step">
+                            Hay una cancelación de operaciones en el miembro de la izquierda.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=2" v-show="ejemplo1Step>=1"
+                            :class="{deshabilitado: ejemplo1Step!=1}">
+                            Simplificar la expresión <span class="resaltado">\( 13+5-5 \)</span>
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo1Step>=2">
+                            \( 13 = 18 - 5 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step>=2">
+                            Esta expresión es semejante a la original pero el miembro de la izquierda ha perdido una
+                            operación
+                            y el miembro de la derecha ha ganado una operación.
+                        </recuadro-component>
+                    </transition>
+
+
+                </div>
+
+                <div class="itemEjemplo anchoMediano">
+                    <div class="matsExpresion">
+                        \( {128 \over 2} = {8 ^ 2} \)
+                    </div>
+
+                    <div class="boton" @click="ejemplo2Step=1" :class="{deshabilitado: ejemplo2Step!=0}">
+                        Deducir igualdad
+                    </div>
+
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo2Step>=1">
+                            \( \sqrt[2]{128 \over 2} = { \sqrt[2]{8 ^ 2}} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo2Step">
+                            Hay una cancelación de operaciones en el miembro de la derecha.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo2Step=2" v-show="ejemplo2Step>=1"
+                            :class="{deshabilitado: ejemplo2Step!=1}">
+                            Simplificar la expresión <span class="">\(\sqrt[2]{8 ^ 2} \)</span>
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo2Step>=2">
+                            \( \sqrt[2]{128 \over 2} = 8 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo2Step>=2">
+                            Esta expresión es semejante a la original pero el miembro de la izquierda ha perdido una
+                            operación
+                            y el miembro de la derecha ha ganado una operación.
+                        </recuadro-component>
+                    </transition>
+
+                </div>
+                <div class="itemEjemplo anchoMediano">
+                    <div class="matsExpresion">
+                        \( { 7 \times 3} > \sqrt[2]{25 } \)
+                    </div>
+
+                    <div class="boton" @click="ejemplo3Step=1" :class="{deshabilitado: ejemplo3Step!=0}">
+                        Deducir desigualdad
+                    </div>
+
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo3Step>=1">
+                            \( {{ 7 \times 3} \over 3 } > { \sqrt[2]{25} \over 3} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo3Step">
+                            Hay una cancelación de operaciones en el miembro de la izquierda.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo3Step=2" v-show="ejemplo3Step>=1"
+                            :class="{deshabilitado: ejemplo3Step!=1}">
+                            Simplificar la expresión <span class="">\({ 7 \times 3} \over 3 \)</span>
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo3Step>=2">
+                            \( { 7 } > { \sqrt[2]{25} \over 3} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="ejemplo3Step>=2">
+                            Esta expresión es semejante a la original pero el miembro de la izquierda ha perdido una
+                            operación
+                            y el miembro de la derecha ha ganado una operación.
+                        </recuadro-component>
+                    </transition>
+
+                </div>
+
+
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Ya que tras este procedimiento se obtiene una (des)igualdad donde uno de los miembros tiene una operación
+            más que antes y el otro tiene una operación menos que antes,
+            esto es un <span class="resaltado">traslado</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoNuevo">
+            Al hacer un traslado, en la nueva (des)igualdad la operación que ya no está en uno de los miembros y la que
+            ha aparecido en el otro son operaciones contrarias de la misma magnitud.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo2Step: 0,
+                ejemplo3Step: 0,
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.reiniciarEjemplo1();
+                this.reiniciarEjemplo2();
+                this.reiniciarEjemplo3();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+            reiniciarEjemplo2() {
+                this.ejemplo2Step = 0;
+            },
+            reiniciarEjemplo3() {
+                this.ejemplo2Step = 0;
+            }
+        },
+
+    })
+</script>

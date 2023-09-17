@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Fricción</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Cuando se intenta arrastrar un cuerpo sobre una superficie, experimenta una resistencia al movimiento
+            .
+        </p>
+
+        <p>
+            Este fenómeno se describe mediante el concepto de <span class="resultado">fricción</span> así:
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando un cuerpo que se encuentra sobre una superficie es empujado por una fuerza, experimenta
+            una fuerza que se opone al movimiento llamada <span class="resaltado">fuerza de fricción</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La fuerza de fricción iguala la magnitud de la fuerza que empuja al cuerpo.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La fuerza de fricción tiene una magnitud máxima
+        </recuadro-component>       
+
+        <recuadro-component tipo="datoPrevio">
+            La magnitud máxima de la fuerza de fricción es más pequeña cuando el cuerpo está en movimiento sobre la superficie.
+        </recuadro-component>
+
+        <bloque-component tipo="herramientaInteractiva" @desplegado="reiniciar(); mostrandoMovimientoCuerpo=true"
+            @plegado="mostrandoMovimientoCuerpo=false">
+            <template #cabecera>
+                En este cuadro se puede ver la máxima fuerza de fricción que puede experimentar un cuerpo que se encuentra sobre una superficie y
+                se puede aplicar cada vez más fuerza sobre el cuerpo hasta superar el máximo valor de la fuerza de
+                fricción.
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Presiona en los botones para subir o bajar la intensidad de fuerza aplicada sobre el cuerpo.
+            </recuadro-component>
+            <div id="zonaControlFuerza">
+                <div class="boton" @click="fuerzaAplicada=fuerzaAplicada>0?fuerzaAplicada-0.5:fuerzaAplicada">-</div>
+                <div class="boton" @click="fuerzaAplicada=fuerzaAplicada<100?fuerzaAplicada+0.5:fuerzaAplicada">+</div>
+            </div>
+            <div id="zonaInteraccion">
+                <div id="cuerpo" :style="[{left: 'calc(50% + '+posCuerpo+'px)'}]">
+                    <div class="fuerza" id="fuerzaAplicada" @click.stop="mostrandoInfoFuerzaAplicada=true;"
+                        :style="[{width: (fuerzaAplicada*30)+'px', visibility: fuerzaAplicada>0?'visible':'hidden'}]">
+                        <div class="flechaVector"></div>
+                    </div>
+
+
+                    <div class="fuerza" id="fuerzaFriccionMaxima" @click.stop="mostrandoInfoFuerzaFriccionMaxima=true;"
+                        :style="[{width: (fuerzaFriccionMaxima*30)+'px'}]">
+                        <div class="flechaVector"></div>
+                    </div>
+                    <div class="fuerza" id="fuerzaFriccion" @click.stop="mostrandoInfoFuerzaFriccion=true;"
+                        :style="[{width: (fuerzaFriccion*30)+'px', visibility: fuerzaFriccion>0?'visible':'hidden'}]">
+                        <div class="flechaVector"></div>
+                    </div>
+                </div>
+                <div id="superficie"></div>
+
+            </div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La magnitud máxima de la fuerza de fricción depende de:
+
+            <ul>
+                <li>
+                    Los materiales usados.
+                </li>
+                <li>
+                    La Fuerza Normal ejercida por la superficie sobre el cuerpo.
+                </li>
+            </ul>
+        </recuadro-component>
+
+       
+
+        <div class="fondoGris" v-show="mostrandoInfoFuerzaFriccionMaxima"
+            @click="mostrandoInfoFuerzaFriccionMaxima=false">
+            <recuadro-component tipo="datoPrevio" class="cuadroTooltip">
+                Magnitud máxima que puede alcanzar la fuerza de fricción.
+            </recuadro-component>
+        </div>
+
+        <div class="fondoGris" v-show="mostrandoInfoFuerzaFriccion" @click="mostrandoInfoFuerzaFriccion=false">
+            <recuadro-component tipo="datoPrevio" class="cuadroTooltip">
+                Fuerza de fricción que experimenta el cuerpo debido al contacto con la superficie.
+            </recuadro-component>
+        </div>
+
+        <div class="fondoGris" v-show="mostrandoInfoFuerzaAplicada" @click="mostrandoInfoFuerzaAplicada=false">
+            <recuadro-component tipo="datoPrevio" class="cuadroTooltip">
+                Fuerza externa aplicada sobre el cuerpo.
+            </recuadro-component>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    const radToDeg = function (rad) {
+        return Math.round((rad * 180) / Math.PI);
+    }
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numMaterialCuerpo: 0,
+                numMaterialSuperficie: 1,
+
+                materiales: ["Neumático", "Concreto mojado", "Concreto seco"],
+                fuerzaAplicada: 0,
+                estadoFriccion: 0,
+                masaCuerpo: 4,
+                rotacionSuperificie: 0,
+                posCuerpo: 0,
+
+                mostrandoInfoFuerzaFriccionMaxima: false,
+                mostrandoInfoFuerzaFriccion: false,
+                mostrandoInfoFuerzaAplicada: false,
+
+                mostrandoMovimientoCuerpo: false,
+            }
+        },
+        computed: {
+            materialCuerpo() {
+                return this.materiales[this.numMaterialCuerpo];
+            },
+            materialSuperficie() {
+                return this.materiales[this.numMaterialSuperficie];
+            },
+            coeficienteFriccionEstatica() {
+                if (this.numMaterialCuerpo === 0 && this.numMaterialSuperficie === 1) return 0.7;
+                if (this.numMaterialCuerpo === 0 && this.numMaterialSuperficie === 2) return 1;
+
+                return null;
+            },
+            coeficienteFriccionCinetica() {
+                if (this.numMaterialCuerpo === 0 && this.numMaterialSuperficie === 1) return 0.5;
+                if (this.numMaterialCuerpo === 0 && this.numMaterialSuperficie === 2) return 0.75;
+
+                return null;
+            },
+            fuerzaNormal() {
+                return Math.abs(this.masaCuerpo * Math.cos(this.rotacionSuperificie));
+            },
+            fuerzaFriccionMaxima() {
+                const coeficiente = this.estadoFriccion === 0 ? this.coeficienteFriccionEstatica : this.coeficienteFriccionCinetica;
+                return coeficiente * this.fuerzaNormal;
+            },
+            fuerzaFriccion() {
+                var friccion = this.fuerzaAplicada;
+                if (friccion > this.fuerzaFriccionMaxima) friccion = this.fuerzaFriccionMaxima;
+                return friccion;
+            }
+        },
+        methods: {
+            moverCuerpo() {
+                console.log("Moviendo cuerpo");
+                var fuerzaResultante = this.fuerzaAplicada - this.fuerzaFriccion;
+                if (fuerzaResultante > 0) {
+                    this.estadoFriccion=1;
+                    this.posCuerpo = this.posCuerpo + Math.round(fuerzaResultante * 3);
+                }
+                else{
+                    this.estadoFriccion=0;
+                }
+
+                this.$nextTick(() => {
+                    if (this.mostrandoMovimientoCuerpo) {
+                        setTimeout(() => {
+                            this.moverCuerpo();
+                        }, 500);
+                    }
+                });
+
+            },
+            reiniciar() {
+                this.fuerzaAplicada = 0;
+                this.posCuerpo = 0;
+                this.moverCuerpo();
+            }
+        },
+
+
+    })
+</script>
+
+<style>
+    #zonaInteraccion {
+        position: relative;
+        overflow: hidden;
+        min-height: 200px;
+    }
+
+    #superficie {
+        height: 3px;
+        width: 300px;
+        background-color: rgb(255, 81, 0);
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #cuerpo {
+        height: 40px;
+        width: 60px;
+        background-color: coral;
+        position: absolute;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: left 500ms;
+        transition-timing-function: linear;
+    }
+
+    .fuerza {
+        width: 100px;
+        height: 3px;
+        background-color: black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%);
+        transform-origin: left center;
+        transition: width 1s;
+    }
+
+    .flechaVector {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 1px;
+        height: 1px;
+        border: 4px solid transparent;
+        border-left-color: black;
+        transform: translateY(-50%);
+        transform-origin: center center;
+    }
+
+    #fuerzaFriccionMaxima {
+        opacity: 0.5;
+        transform: translateY(-50%) rotate(180deg);
+        background-color: blue;
+
+    }
+
+    #fuerzaFriccion {
+        background-color: blue;
+        transform: translateY(-50%) rotate(180deg);
+
+    }
+
+    #fuerzaAplicada {
+        background-color: red;
+    }
+
+
+    #zonaControlFuerza {
+        display: flex;
+        gap: 20px;
+    }
+
+    #zonaControlFuerza .boton {
+        width: 30px;
+        height: 30px;
+    }
+
+    .cuadroTooltip {
+        background-color: rgba(0, 0, 0, 0.233);
+    }
+</style>

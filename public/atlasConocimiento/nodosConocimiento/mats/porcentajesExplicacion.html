@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Porcentajes</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">Los porcentajes sirven para señalar una parte de algún objeto
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">Los porcentajes resultan de imaginar que un objecto se separa en <span
+                class='resaltado'>100 partes iguales</span>.</recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            @desplegado="inicializarNumero1"
+            textoCabecera="En el siguiente cuadro se puede escoger un número, dividirlo en 100 fracciones y seleccionar alguna cantidad de ellas.">
+            <recuadro-component tipo="instruccionPointer">
+                Selecciona un número
+                <input style="display: block; width: 100%;" type="range" min="50" max="200" step="50" value="50"
+                    id="selectorNumero1" v-model="numero1">
+                {{numero1}}
+            </recuadro-component>
+            <div id="contenedorNumero1" ref="contenedorNumero1">
+                <div id="numero1" class="numeroEnBolitas" ref="numero1" :style="[estiloGridNumero1, estiloNumero1]">
+                    <div class="bolita" v-for="numero of parseInt(numero1)" :key="'bolita'+numero">
+                        <div class="etiquetaBolita">
+                            {{numero}}
+                        </div>
+                    </div>
+                    <div v-show="mostrandoPorcentajesNumero1" class="overlayPorcentajes" id="overlayPorcentajesNumero1"
+                    :style="[configGridPorcentajesNumero1, estiloNumero1]">
+                    <div class="porciento" v-for="numero in parseInt(porcientosSeleccionadosNumero1)"
+                        :key="'porcentaje'+numero"></div>
+                    <div class="porcientoNoUsado" v-for="numero in (100-parseInt(porcientosSeleccionadosNumero1))"
+                        :key="'porcentajeNoUsado'+numero"></div>
+                </div>
+                </div>
+
+                
+            </div>
+
+            <div class="boton" id="bRomperNumero1" v-show="!mostrandoPorcentajesNumero1"
+                v-on:click="mostrarPorcentajesNumero1()">¡Imaginar que este número se divide en 100 porciones!</div>
+            <p v-show="mostrandoPorcentajesNumero1">Estás viendo  <span
+                    class="resaltado" style="background-color: cadetblue;"> {{porcientosSeleccionadosNumero1}} por ciento</span>
+                de {{numero1}}
+            </p>
+
+            <input style="width: 100%" v-show="mostrandoPorcentajesNumero1" type="range" min="1" max="100" value="100"
+                v-model="porcientosSeleccionadosNumero1">
+            <br>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo">El símbolo para <span class="resaltado" style="background-color: var(--paletaPrevio);">por ciento</span> es <span class="resaltado" style="background-color: var(--paletaPrevio);">%</span> </recuadro-component>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            var divisores100 = [2];
+            var divisor = 2;
+            while (divisor < 50) {
+                divisor++;
+                if (100 % divisor === 0) {
+                    divisores100.push(divisor);
+                }
+            }            
+            return {
+                anchoBolitaNumero1: 20,
+                numero1: 50,
+                mostrandoPorcentajesNumero1: false,
+                porcientosSeleccionadosNumero1: 1,
+                divisores100
+            }
+        },
+        computed: {           
+            cantidadColumnasNumero1() {
+                if (this.numero1<5 || !this.$refs || !this.$refs.numero1){
+                    console.log("Defaulting cantidad columnas");
+                    return 1;
+                } 
+                const cantidadColumnasMaximo = Math.floor(this.$refs.contenedorNumero1.offsetWidth / this.anchoBolitaNumero1);
+
+                var cantidad = cantidadColumnasMaximo;
+                for (var posibleCantidad=cantidadColumnasMaximo; posibleCantidad>=1;posibleCantidad--) {
+                    console.log("probando con "+posibleCantidad);
+                    if(this.numero1 % posibleCantidad!=0)continue;
+                    console.log("Es divisor")
+                    var cantidadFilasResultante=this.numero1/posibleCantidad;
+                    if (this.divisores100.includes(cantidadFilasResultante)) {
+                        cantidad = posibleCantidad;     
+                        console.log("ES");
+                        break;                   
+                    }
+                }
+                return cantidad;
+
+            },
+            cantidadFilasNumero1() {
+                return this.numero1 / this.cantidadColumnasNumero1;
+            },
+            estiloGridNumero1() {
+                return {
+                    gridTemplateColumns: "repeat(" + this.cantidadColumnasNumero1 + ", 1fr)"
+                }
+            },
+            estiloNumero1() {
+                return {
+                    width: (this.cantidadColumnasNumero1 * this.anchoBolitaNumero1) + 'px',
+                }
+            },
+            configGridPorcentajesNumero1() {
+                
+                const porcentajesFila=100/this.cantidadFilasNumero1;
+                const anchoPorcentajes = (this.anchoBolitaNumero1 * this.cantidadColumnasNumero1) / porcentajesFila;
+                console.log("Caben "+porcentajesFila+" porcentajes en cada fila");
+                return {
+                    gridTemplateColumns: "repeat(" + porcentajesFila + ", 1fr)",
+                    gridTemplateRows: this.anchoBolitaNumero1+"px"
+                }
+            },
+        },
+        methods: {
+            mostrarPorcentajesNumero1() {
+                this.mostrandoPorcentajesNumero1 = true;
+            },
+            inicializarNumero1(){
+                console.log("Iniciado número 1");
+                this.$nextTick(()=>{
+                    this.numero1=150;
+                })
+            }
+        },
+        watch: {
+            numero1() {
+                this.mostrandoPorcentajesNumero1 = false;
+                this.porcientosSeleccionadosNumero1 = 1;
+            },
+
+        },
+        
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    .bolita {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: chocolate;
+        border: 1px solid rgb(82, 39, 9);
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    .bolita:hover {
+        z-index: 10;
+        background-color: rgb(153, 77, 22);
+    }
+
+    .bolita>.etiquetaBolita {
+        display: none;
+
+    }
+
+    .bolita:hover>.etiquetaBolita {
+        display: block;
+    }
+
+    .etiquetaBolita {
+        position: absolute;
+        top: 101%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        padding: 10px 20px;
+        background-color: rgb(226, 161, 114);
+        border: 1px solid rgb(90, 43, 9);
+    }
+
+    .numeroEnBolitas {
+        display: grid;
+        border: 2px solid rgb(211, 179, 156);
+        flex-wrap: wrap;
+
+    }
+
+    .grupoCincoBolitas {
+        display: flex;
+    }
+
+    .overlayPorcentajes {
+        display: grid;
+    }
+
+    .porciento {
+        height: 20px;
+        border: 1px solid rgb(4, 43, 44);
+        background-color: rgba(95, 158, 160, 0.055);
+        box-sizing: border-box;
+        opacity: 0.8;
+    }
+
+    .porcientoNoUsado {
+        height: 20px;
+        border: 1px solid rgb(4, 43, 44);
+        background-color: rgba(95, 158, 160, 0.822);
+        box-sizing: border-box;
+        opacity: 0.8;
+    }
+
+    #contenedorNumero1 {
+        position: relative;
+        min-width: 50px;
+    }
+    #numero1{
+        margin: 0px auto;
+        position: relative;
+    }
+    #overlayPorcentajesNumero1 {
+        position: absolute;        
+        pointer-events: none;
+    }
+
+    .cuadroEjemplo {
+        padding: 10px;
+        border: 2px solid dashed;
+        border-color: rgb(46, 46, 46);
+    }
+</style>

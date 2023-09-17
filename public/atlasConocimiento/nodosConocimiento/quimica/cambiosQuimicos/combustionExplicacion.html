@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+   
+
+    <title>Combustión</title>
+</head>
+<body>  
+   
+    <div id="doc">      
+
+        <recuadro-component tipo="datoPrevio">
+            Un cuerpo sufre <span class="resaltado">combustión</span> cuando es consumido por el fuego.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La combustión es el cambio químico que ocurre en un cuerpo cuando el <span class="resaltado">oxigeno</span> reacciona
+            con una sustancia, transformándola en otra(s). Emitiendo energía en forma de luz 
+            y/o calor.
+        </recuadro-component>
+        <recuadro-component tipo="datoPrevio">
+            Frecuentemente la combustión ocurre cuando se aplica energía sobre una
+            sustancia en presencia de oxígeno. 
+        </recuadro-component>
+        <p>
+            Por ejemplo:
+
+            <ul>
+                <li>
+                    Al encender un fósforo, el oxígeno del aire reacciona con las sustancias
+                    que forman la cabecita del fósforo transformándolas en gases y emitiendo luz y calor. la fricción
+                    del fósforo con la lija causó la combustión.
+                </li>
+
+                <li>
+                    En el motor de un carro, la chispa de la bujía inicia la reacción de <span class="resaltado">combustión</span>
+                    entre el oxígeno y el combustible, que se transforma en gas. Durante la combustión se emite luz y calor dentro del motor.
+                </li>
+
+                <li>
+                    En una estufa de gas el oxígeno del aire reacciona con el gas
+                    emitiendo luz y calor.
+                </li>
+
+
+            </ul>
+        </p>
+
+        
+               
+
+           
+    </div>
+</body>
+</html>
+
+<script>
+    const doc=new Vue({
+        el:"#doc",
+        components:{
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data(){
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+ 
+</style>

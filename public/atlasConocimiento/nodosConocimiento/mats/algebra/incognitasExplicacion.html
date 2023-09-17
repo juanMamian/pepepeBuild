@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Incógnitas</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">Una incógnita es un número de valor desconocido.</recuadro-component>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se muestran algunos ejemplos de incógnitas.">
+            <p>Las siguientes son cantidades desconocidas. O sea incógnitas.</p>
+            <ul>
+                <li>El tiempo en minutos que tardarás en conciliar el sueño esta noche.</li>
+                <li>El año en el que nacerá tu tataranieto.</li>
+                <li>El año en el que moriras.</li>
+                <li>La cantidad de ladrillos que tiene la pared de una casa que no has visto.</li>
+            </ul>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Para escribir una incógnita se selecciona una letra. Esa letra representa el número aunque aún no sea
+            conocido.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La letra que representa la incógnita se puede usar en expresiones numéricas, pues la incógnita es un número.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran ejemplos de uso de letras para representar incógnitas">
+            <recuadro-component tipo="instruccionPointer">
+                Presiona en cada cuadro para ver el uso de una letra que representa a la incógnita.
+            </recuadro-component>
+            <div class="listaEjemplos">
+                <div class="itemEjemplo" @click="toggleEjemplo(0)">
+                    <div class="incognitaTexto" v-show="mostrandoEjemplo[0]">
+                        La edad que tiene el escritor de este texto.
+                    </div>
+                    <div class="incognitaSimbolos" v-show="!mostrandoEjemplo[0]">
+                        \(d\)
+                    </div>
+                </div>
+                <div class="itemEjemplo" @click="toggleEjemplo(1)">
+                    <div class="incognitaTexto" v-show="mostrandoEjemplo[1]">
+                        La mitad de la edad que tiene el escritor de este texto.
+                    </div>
+                    <div class="incognitaSimbolos" v-show="!mostrandoEjemplo[1]">
+                        \(d \over 2\)
+                    </div>
+                </div>
+                <div class="itemEjemplo" @click="toggleEjemplo(2)">
+                    <div class="incognitaTexto" v-show="mostrandoEjemplo[2]">
+                        El doble de la edad que tiene el escritor de este texto.
+                    </div>
+                    <div class="incognitaSimbolos" v-show="!mostrandoEjemplo[2]">
+                        \(d \times 2\)
+                    </div>
+                </div>
+                <div class="itemEjemplo" @click="toggleEjemplo(3)">
+                    <div class="incognitaTexto" v-show="mostrandoEjemplo[3]">
+                        La cantidad de gotas de agua que lloverán esta noche.
+                    </div>
+                    <div class="incognitaSimbolos" v-show="!mostrandoEjemplo[3]">
+                        \(L\)
+                    </div>
+                </div>
+                <div class="itemEjemplo" @click="toggleEjemplo(4)">
+                    <div class="incognitaTexto" v-show="mostrandoEjemplo[4]">
+                        El triple de la cantidad de gotas de agua que caerán esta noche.
+                    </div>
+                    <div class="incognitaSimbolos" v-show="!mostrandoEjemplo[4]">
+                        \(L \times 3\)
+                    </div>
+                </div>
+            </div>
+
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">También se suele usar una letra con un subindice para representar una
+            incógnita. </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se ven algunos ejemplos de uso de letra con subíndice para representar incógnitas.">
+            <div class=".itemEjemplo">La velocidad inicial: <span class="resaltado"
+                    >\( v_{i}\)</span></div>
+            <div class=".itemEjemplo">La velocidad final: <span class="resaltado" >\(v_{f}\)</span></div>
+            <div class=".itemEjemplo">Cantidad de naranjas maduras: <span class="resaltado">\( n_{m}\)</span></div>
+            <div class=".itemEjemplo">Cantidad de naranjas biches: <span class="resaltado">\( n_{b}\)</span></div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoLista1: false,
+                mostrandoEjemplo: [true, true, true, true, true]
+            }
+        },
+        methods: {
+            toggleEjemplo(num) {
+                this.$set(this.mostrandoEjemplo, num, !this.mostrandoEjemplo[num]);
+            }
+        }
+    });
+</script>
+
+<style>
+    .palabraCambiante {
+        padding: 10px;
+    }
+
+    .palabraCambiante>.primaria {
+        display: inline;
+        user-select: none;
+    }
+
+    .palabraCambiante:hover>.primaria {
+        display: none;
+    }
+
+    .palabraCambiante>.secundaria {
+        display: none;
+        user-select: none;
+    }
+
+    .palabraCambiante:hover>.secundaria {
+        display: inline;
+    }
+
+    .resaltadoHorizontal {
+        padding: 2px 4px;
+    }
+
+    .itemEjemplo {
+        width: min(300px, 80%);
+        text-align: center;
+    }
+</style>

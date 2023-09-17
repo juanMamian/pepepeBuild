@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Manipulador algebraico básico - explicación</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            La manipulación de expresiónes numéricas consiste en <span class="resaltado">reemplazar</span> expresiones
+            numéricas por otras idénticas que tengan una
+            forma conveniente.
+        </recuadro-component>
+
+        <p>
+            En algunos casos es conveniente que cierto número de la expresión aparezca en primer lugar.
+        </p>
+
+        <bloque-component tipo="ejemplo" @plegado="bloque1Reiniciar">
+            <template #cabecera>
+                En este cuadro se muestran casos de manipulación de expresiónes dirigidos a conseguir que un número
+                reciba operaciones en la expresión.
+            </template>
+
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+
+                    <div class="matsExpresion" :class="{activa: bloque1Ejemplo1Step===0}"
+                        v-show="bloque1Ejemplo1Step>=0">
+                        \( 4 + 8 \times 3 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" :class="{activa: bloque1Ejemplo1Step===1}"
+                            v-show="bloque1Ejemplo1Step>=1">
+                            \( 4 + 3 \times 8 \)
+                        </div>
+                    </transition>
+
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" :class="{activa: bloque1Ejemplo1Step===2}"
+                            v-show="bloque1Ejemplo1Step>=2">
+                            \( 3 \times 8 + 4 \)
+                        </div>
+                    </transition>
+
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoPrevio">
+                            Se manipulará esta expresión para que el número <span class="resaltado">3</span> aparezca
+                            como
+                            el primer número en recibir operaciones de la expresión.
+                        </recuadro-component>
+                    </transition>
+
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" v-show="bloque1Ejemplo1MostrandoAnuncio">
+                            Ahora el 3 es el primer número que recibe operaciones en la expresión.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="bloque1Ejemplo1MostrandoAnuncio"">
+                            Ahora el 3 es el primer número que recibe operaciones en la expresión.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name=" fadeIn">
+                            <div class="boton" v-show="bloque1Ejemplo1Step===0" @click="bloque1Ejemplo1Step=1">
+                                Reemplazar la expresión \(8 \times 3 \) por una expresión
+                                equivalente conmutada.
+                            </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" v-show="bloque1Ejemplo1Step===1" @click="bloque1Ejemplo1Step=2">
+                            Reemplazar la expresión por una expresión
+                            equivalente conmutada.
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <div class="boton" v-show="bloque1Ejemplo1MostrandoBotonReiniciar"
+                            @click="bloque1Ejemplo1Reiniciar">
+                            Reiniciar
+                        </div>
+                    </transition>
+                </div>
+
+                <div class="itemEjemplo">
+
+                    <div class="matsExpresion" :class="{activa: bloque1Ejemplo2Step===0}"
+                        v-show="bloque1Ejemplo2Step>=0">
+                        \( 8 \times 3 + 6 \times 10 \)
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" :class="{activa: bloque1Ejemplo2Step===1}"
+                            v-show="bloque1Ejemplo2Step>=1">
+                            \( (8 + 6) \times 10 \)
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" :class="{activa: bloque1Ejemplo2Step===2}"
+                            v-show="bloque1Ejemplo2Step>=2">
+                            \( 10 \times (8 + 6) \)
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoPrevio">
+                            Se manipulará esta expresión para que el número <span class="resaltado">10</span> aparezca
+                            como
+                            el primer número en recibir operaciones de la expresión.
+                        </recuadro-component>
+                    </transition>
+
+
+                    <transition name="fade">
+                        <recuadro-component tipo="datoNuevo" v-show="bloque1Ejemplo2MostrandoAnuncio">
+                            Ahora el 10 el primer número que recibe operaciones en la expresión.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <recuadro-component tipo="datoNuevo" v-show="bloque1Ejemplo2MostrandoAnuncio"">
+                            Ahora el 10 el primer número que recibe operaciones en la expresión.
+                        </recuadro-component>
+                    </transition>
+
+                    <transition name=" fadeIn">
+                            <div class="boton" v-show="bloque1Ejemplo2Step===0" @click="bloque1Ejemplo2Step=1">
+                                Reemplazar la expresión por una expresión
+                                equivalente con el 10 factorizado.
+                            </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" v-show="bloque1Ejemplo2Step===1" @click="bloque1Ejemplo2Step=2">
+                            Reemplazar la expresión por una expresión
+                            equivalente conmutada.
+                        </div>
+                    </transition>
+
+                    <transition name="fade">
+                        <div class="boton" v-show="bloque1Ejemplo2MostrandoBotonReiniciar"
+                            @click="bloque1Ejemplo2Reiniciar">
+                            Reiniciar
+                        </div>
+                    </transition>
+
+
+                </div>
+            </div>
+
+        </bloque-component>
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                bloque1Ejemplo1Step: 0,
+                bloque1Ejemplo1MostrandoAnuncio: false,
+                bloque1Ejemplo1MostrandoBotonReiniciar: false,
+
+                bloque1Ejemplo2Step: 0,
+                bloque1Ejemplo2MostrandoAnuncio: false,
+                bloque1Ejemplo2MostrandoBotonReiniciar: false,
+            }
+        },
+        methods: {
+            bloque1Reiniciar() {
+                this.bloque1Ejemplo1Reiniciar();
+                this.bloque1Ejemplo2Reiniciar();
+            },
+            bloque1Ejemplo1Reiniciar() {
+                this.bloque1Ejemplo1Step = 0;
+                this.bloque1Ejemplo1MostrandoAnuncio = false;
+                this.bloque1Ejemplo1MostrandoBotonReiniciar = false;
+            },
+            bloque1Ejemplo2Reiniciar() {
+                this.bloque1Ejemplo2Step = 0;
+                this.bloque1Ejemplo2MostrandoAnuncio = false;
+                this.bloque1Ejemplo2MostrandoBotonReiniciar = false;
+            }
+        },
+        watch: {
+            bloque1Ejemplo1Step(step) {
+                if (step >= 2) {
+                    setTimeout(() => {
+                        this.bloque1Ejemplo1MostrandoAnuncio = true;
+                    }, 1000);
+                    setTimeout(() => {
+                        this.bloque1Ejemplo1MostrandoBotonReiniciar = true;
+                    }, 3000);
+
+                }
+            },
+            bloque1Ejemplo2Step(step) {
+                if (step >= 2) {
+                    setTimeout(() => {
+                        this.bloque1Ejemplo2MostrandoAnuncio = true;
+                    }, 1000);
+                    setTimeout(() => {
+                        this.bloque1Ejemplo2MostrandoBotonReiniciar = true;
+                    }, 3000);
+
+                }
+            }
+
+        }
+
+    })
+</script>
+
+<style>
+    .matsExpresion:not(.activa) {
+        opacity: 0.3;
+    }
+</style>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Programación - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+        La <span class="resaltado">programación</span> es una actividad que consiste en escribir instrucciones para ser ejecutadas por un procesador.
+        </p>
+
+	<p>
+            Un procesador conoce un conjunto pequeño de instrucciones de computación que puede ejecutar:
+	</p> 
+
+	<p>
+	Los procesadores pueden procesar instrucciones si están escritas en un código llamado <span class="resaltado">lenguaje de máquina</span>.
+	</p>
+
+	<recuadro-component tipo="datoPrevio">
+		Un conjunto de instrucciones diseñadas para realizar una tarea de computación se llama <span class="resaltado">programa informático</span>
+	</recuadro-component>
+
+
+    </div>
+</body>
+</html>
+
+<script>
+	const app= new Vue({
+		el: "#doc",
+		components:{
+			recuadroComponent
+		},
+		data(){
+			return {
+
+			}
+		},
+		computed:{
+		},
+	});
+</script>
+<style>
+</style>

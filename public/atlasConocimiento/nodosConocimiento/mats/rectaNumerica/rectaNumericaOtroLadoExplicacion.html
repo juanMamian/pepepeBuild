@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Recta numérica - negativos</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La recta numérica es infinitamente larga. Así que se puede recorrer indefinidamente hacia la derecha... Y
+            hacia la izquierda.
+        </p>
+
+        <p>
+            La dirección natural para contar números es hacia la derecha del órigen. La izquierda es el otro lado.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Se usará el símbolo menos <span class="resaltado">-</span> para
+            señalar que un número está
+            hacia <span class="resaltado">el otro lado</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se puede recorrer la recta numérica hacia el otro lado (La izquierda).">
+            <div id="explicacionAnimada" class="recuadro">
+                <div class="boton"
+                    v-on:click="stepExplicacionAnimada=0; numeroActivo=0; panRectaNumerica=0;"
+                    v-show="stepExplicacionAnimada>0">Reiniciar</div>
+                <div class="boton" v-on:click="stepExplicacionAnimada=1"
+                    v-show="stepExplicacionAnimada==0">Iniciar</div>
+                <div id="contenedorRectaNumerica" v-show="stepExplicacionAnimada>=1">
+                    <transition name="unfoldHorizontal">
+                        <div id="rectaNumerica" v-show="stepExplicacionAnimada>=1"></div>
+                    </transition>
+                    <div id="contenedorBolitas">
+                        <transition-group name="popIn" tag="div" style="display: flex;">
+                            <div class="bolitaNumero" :key="numero"
+                                :class="{fondoActivo:numeroActivo==(40-numero), bolitaOrigen:(40-numero)==0}"
+                                :style="{left:  (40*(parseInt(41-numero) + panRectaNumerica))+'px', flexDirection:'row-reverse'}"
+                                v-for="numero of (40 + Math.abs(numeroActivo))" v-show="stepExplicacionAnimada>=3">
+                                <div class="nombreNumero" :class="{fondoActivo:numeroActivo==(40-numero)}">
+                                    {{40-numero}}
+                                </div>
+                            </div>
+                            </transition>
+                    </div>
+
+                    <div id="contenedorSegmentos" v-show="numeroActivo!=0"
+                        :style="[posicionSegmentos, transicionPanning]">
+                        <div style="display: flex; flex-direction: row-reverse;">
+                            <div class="segmentoUnidad" :key="numero"
+                                v-for="numero of Math.abs(parseInt(numeroActivo))">
+                            </div>
+                        </div>
+                    </div>
+
+                    <transition name="subir">
+                        <div id="unidadReferencia" v-show="stepExplicacionAnimada>=5">
+                            <div id="segmentoReferencia"></div>
+                            <div id="nombreUnidad">Unidad</div>
+                        </div>
+                    </transition>
+                </div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=2">
+                    <div class="comentario" v-show="stepExplicacionAnimada==1 || stepExplicacionAnimada==2">
+                        Aquí está la recta numérica
+                    </div>
+                </transition>
+
+                <div class="boton" v-on:click="stepExplicacionAnimada=3"
+                    v-show="stepExplicacionAnimada==2">¡Imaginar el origen y los números naturales!</div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=4">
+                    <div class="comentario" v-show="stepExplicacionAnimada==3 || stepExplicacionAnimada==4">Estos son
+                        los
+                        números naturales, a la derecha del orígen.
+                    </div>
+                </transition>
+
+                <div v-on:click="panHaciaIzquierda(); stepExplicacionAnimada=5" v-show="stepExplicacionAnimada==4"
+                    class="boton">¡Exploremos la izquierda del orígen!</div>
+
+                <transition name="travelTop" v-on:after-enter="stepExplicacionAnimada=6">
+                    <div class="comentario"
+                        v-show="(stepExplicacionAnimada==5 || stepExplicacionAnimada==6) && numeroActivo==0">
+                        Se usará la unidad para contar hacia la izquierda del orígen.
+                    </div>
+                </transition>
+
+                <div class="boton" v-show="stepExplicacionAnimada>=6"
+                    :class="{deshabilitado: panningRecta}" v-on:click="numeroActivo--">
+                    {{Math.abs(numeroActivo)>0?'¡Seguir contando':'¡Empezar a contar!'}}</div>
+                <transition name="travelTop">
+                    <div class="comentario" v-show="Math.abs(numeroActivo)>0" :key="numeroActivo">Este número está a
+                        {{Math.abs(numeroActivo)}}
+                        unidad{{Math.abs(numeroActivo)>1?'es':null}} de distancia desde el <span
+                            class="resaltado">cero</span> hacia
+                        el otro lado. Es el {{numeroActivo}}.</div>
+                </transition>
+
+            </div>
+        </bloque-component>
+        <recuadro-component tipo="datoPrevio">
+            Los números a la izquierda del orígen son llamados <span class="resaltado">Números negativos</span>
+        </recuadro-component>
+    </div>
+
+
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepExplicacionAnimada: 0,
+                numeroActivo: 0,
+                maxNumero: 19,
+                anchoSegmento: 10,
+                panRectaNumerica: 0,
+
+                panningRecta: false,
+            }
+        },
+        methods: {
+            panHaciaIzquierda() {
+                const anchoCuadro = document.getElementById("explicacionAnimada").offsetWidth;
+                const numerosQueCaben = Math.round(anchoCuadro / 40);
+                const pan = Math.round(numerosQueCaben * 0.7);
+                console.log(`Se paneará ${pan}`);
+                this.panRectaNumerica = this.panRectaNumerica + pan;
+            }
+        },
+        computed: {
+            anchoRecta() {
+                return Math.max(600, this.numeroActivo * 4 * this.anchoSegmento)
+            },
+            anchoNumeros() {
+                return {
+                    width: ((this.numeroActivo * 30) + 100) + "px",
+                }
+            },
+            posicionNumeros() {
+                return {
+                    left: Math.min(0, 200 - (this.numeroActivo * 30)) + "px"
+                }
+            },
+            posicionSegmentos() {
+                return {
+                    left: 45 + 40 * (this.panRectaNumerica + this.numeroActivo) + 'px'
+                }
+            },
+            transicionPanning() {
+                return {
+                    transition: this.panningRecta ? 'left 1s' : 'left 0s'
+                }
+            }
+        },
+        watch: {
+            numeroActivo() {
+                const anchoCuadro = document.getElementById("explicacionAnimada").offsetWidth;
+                const ventanaPan = Math.round(anchoCuadro * 0.3);
+                const leftSegmentos = parseInt(this.posicionSegmentos.left.substr(0, this.posicionSegmentos.left.length - 2));
+                console.log(`leftSegmentos: ${leftSegmentos}`);
+                if (leftSegmentos < ventanaPan) {
+                    console.log(`Acercándose al borde`);
+                    const dis = this;
+                    this.$nextTick(() => {
+                        this.panningRecta = true;
+                        setTimeout(function () {
+                            dis.panningRecta = false;
+                        }, 1100);
+
+                        setTimeout(function () {
+                            dis.panRectaNumerica = dis.panRectaNumerica + 5;
+                        }, 50);
+                    });
+                }
+            }
+        }
+
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }    
+
+    #explicacionAnimada {
+        margin: 5px auto;
+        display: block;
+        width: 90%;
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-bottom: 40px;
+    }
+
+    #contenedorRectaNumerica {
+
+        overflow: hidden;
+        height: 140px;
+        width: 100%;
+        position: relative;
+    }
+
+    #rectaNumerica {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        position: absolute;
+        top: 52px;
+    }
+
+    .comentario {
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 10px;
+        background-color: rgba(95, 158, 160, 0.767);
+        border: 1px solid black;
+        margin: 5px 20px;
+    }
+
+    .botonExplicacionAnimada {
+        margin: 10px auto;
+        display: block;
+    }
+
+    #contenedorBolitas {
+        display: flex;
+        position: relative;
+        position: absolute;
+        top: 50px;
+    }
+
+    .bolitaNumero {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: gray;
+        position: absolute;
+        transition: left 1s;
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+        width: 16px;
+        height: 16px;
+        transform: translate(-3px, -3px);
+    }
+
+    .nombreNumero {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    #contenedorSegmentos {
+        display: flex;
+        position: absolute;
+        top: 53px;
+    }
+
+    #unidadReferencia {
+        position: relative;
+        top: 110px;
+    }
+
+    .segmentoUnidad {
+        width: 39px;
+        height: 3px;
+        background-color: rgb(208, 192, 62);
+        margin-left: 1px;
+        border-radius: 2px;
+    }
+
+    #segmentoReferencia {
+        width: 39px;
+        height: 4px;
+        background-color: rgb(208, 192, 62);
+
+        margin: 0px auto;
+    }
+
+    #nombreUnidad {
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .fondoActivo {
+        background-color: rgb(255, 67, 67);
+    }
+
+    .deshabilitado {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+    }
+
+    .imgCuadro {
+        width: 25px;
+
+    }
+
+    .popIn-enter-active {
+        animation: pop-in 0.3s;
+
+    }
+
+    @keyframes pop-in {
+        0% {
+            transform: scale(0);
+        }
+
+        80% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .travelTop-leave-active{
+        animation: none;
+    }
+</style>

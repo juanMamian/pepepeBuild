@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+    src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>División - explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            Dividir significa repartir parejo. Por eso dividir un número significa repartirlo parejo en grupos.
+        </recuadro-component>
+        
+        <bloque-component id="ejemplo1" tipo="ejemplo" textoCabecera="En el siguiente cuadro se representa un número y se divide entre 3">
+
+                <div class="boton" v-show="stepEjemplo1==0" style="justify-self: center;" @click="stepEjemplo1=1">Iniciar</div>
+                <br>
+                <div class="boton" :style="{visibility: stepEjemplo1>=5?'visible':'hidden'}"
+                    @click="reiniciarEjemplo1">Reiniciar</div> <br>
+
+                <div class="boton" v-show="stepEjemplo1==1" @click="stepEjemplo1++">
+                    ¡Imaginar un 12!
+                </div>
+                <br>
+                <div id="contenedorNumeroDoce" class="contenedorNumeroBolitas" v-show="stepEjemplo1>0">
+                    <transition name="fade" v-on:after-enter="stepEjemplo1++">
+                        <div id="numeroDoce" class="numeroBolitas" v-show="stepEjemplo1>=2">
+                            <transition-group name="salirRestadas" v-on:after-leave="stepEjemplo1=5">
+                                <div class="bolita" v-for="numero of 12" :key="'numero1'+numero"
+                                    :style="{ left: stepEjemplo1>=4?(-15+(Math.ceil(numero/4)*33))+'%':(numero*Math.round(margenBolitas))+'px', bottom: stepEjemplo1>=4?( ((numero%4)*30))+'px': '170px'}">
+                                </div>
+                            </transition-group>
+                        </div>
+                    </transition>
+                </div>
+                <br>
+
+                <div class="boton" v-show="stepEjemplo1==3" @click="stepEjemplo1++">¡Repartir parejo en 3 grupos!</div>
+
+                <transition name="fadeEsperando" v-on:after-enter="stepEjemplo1++">
+                    <recuadro-component tipo="descubrimiento" v-show="stepEjemplo1>=4" style="text-align: center;">
+                        Cada grupo es un número 4. <br> ¡12 dividido entre 3 da como resultado 4!
+                    </recuadro-component>
+                </transition>
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo">
+            Para representar una <span class="resaltado">division de doce entre tres</span> se escribe         
+            <span class="resaltado">\(12 \over 3\) </span> </p>
+                        
+        </recuadro-component>
+
+
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepEjemplo1: 1,
+                margenBolitas:1000,
+            }
+        },
+        methods: {
+            reiniciarEjemplo1() {
+                this.stepEjemplo1 = 1;
+            }
+        },
+        mounted(){
+            if(screen.availWidth>800){
+                this.margenBolitas=screen.availWidth/40;
+            }
+            else{
+                this.margenBolitas=screen.availWidth/20;
+            }
+        }
+    }).mount("#doc")
+</script>
+
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .nota {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(600px, 90%);
+    }
+
+    button{
+        padding: 15px;
+    }
+
+    .cuadroEjemplo {
+        padding: 20px 20px;
+        border: 2px solid cadetblue;
+        border-radius: 10px;
+        margin: 20px 0px;
+    }
+
+    .contenedorNumeroBolitas {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    .bolita {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: chocolate;
+        margin: 5px;
+        position: absolute;
+        transition: left 3s, bottom 3s;
+    }
+
+    .numeroBolitas {
+        text-align: center;        
+        height: 200px;
+        position: relative;
+
+    }
+    #numeroDoce{
+        width: 420px;
+    }
+
+    .conclusion {
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin: 10px 5px;
+        width: min(90%, 650px);
+        background-color: rgb(209, 127, 33);
+        margin: 10px auto;
+    }
+
+    .fade-enter {
+        opacity: 0;
+    }
+
+    .fade-enter-active {
+        transition: opacity 0.8s;
+    }
+
+    .fade-enter-to {
+        opacity: 1;
+    }
+
+    .fadeEsperando-enter-active{
+        animation: entrarEsperando 4s
+    }
+
+    .resaltado {
+        padding: 2px 3px;
+        border-radius: 2px;
+    }
+    @keyframes entrarEsperando{
+        0%{opacity: 0;}
+        80%{opacity: 0;}
+        100%{opacity: 1;}
+    }
+    @media screen and (max-width:600px) {
+        .bolita{
+            width: 12px;
+            height: 12px;
+            margin: 3px;
+        }
+    }
+</style>

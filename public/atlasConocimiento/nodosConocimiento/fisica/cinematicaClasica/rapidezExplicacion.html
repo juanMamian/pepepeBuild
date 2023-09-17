@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/funciones/miscelanea.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Rapidez</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La rapidez es un concepto usado cotidianamente para hablar de cuerpos en movimiento.
+            Se habla de rapidez de diversos modos.
+
+        <ul>
+            <li>
+                Caminé dos horas y llegué hasta el río.
+            </li>
+            <li>
+                Viajé hasta la casa de mi tía y tardé 6 horas.
+            </li>
+            <li>
+                Tardo 5 minutos en llegar a la escuela.
+            </li>
+        </ul>
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Al expresar la rapidez de un cuerpo, se involucra la <span class="resaltado">distancia</span> recorrida y el
+            <span class="resaltado">tiempo</span> transcurrido.
+        </recuadro-component>
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+                En este cuadro se puede realizar un movimiento y se expresa su rapidez.
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Toca en cualquier lugar del cuadro para iniciar un movimiento.
+            </recuadro-component>
+
+            <div class="zonaInteraccion" ref="zonaInteraccion" @click.stop="setRecorrido">
+                <div id="zonaTiempo">
+                    <img src="https://pe-pe-pe.herokuapp.com/public/media/iconos/clock.svg"
+                        style="height: 12px; margin: 0px 10px; opacity: 0.85;" alt="Tiempo">
+                    {{segundosTranscurridos
+                    <10?'0'+segundosTranscurridos:segundosTranscurridos}}:{{centesimasTranscurridos<10?'0'+centesimasTranscurridos:centesimasTranscurridos}}
+                        </div>
+                        <div id="recorrido" ref="recorrido"
+                            :style="[{left: startRecorridoX+'px', top: startRecorridoY+'px', width: magnitudRecorrido+'px', transform: 'translateY(-50%) rotateZ('+direccionRecorrido+'rad)' }]">
+                            <div class="unidadRecorrido" :style="[{width: (sizeUnidadRecorrido-2)+'px'}]"
+                                v-for="num of unidadesRecorridas" :key="'unidad'+num"></div>
+                        </div>
+
+                        <div id="cuerpo" ref="cuerpo" :style="[{left: cuerpoX+'px', top: cuerpoY+'px'}]">
+
+                        </div>
+                </div>
+
+                <transition name="popIn">
+                    <recuadro-component id="anuncioResultado" ref="anuncioResultado" v-show="anuncioResultado"
+                        tipo="datoNuevo" class="centrado">
+                        <p style="text-align: center; color: rgb(179, 81, 81);">Rapidez </p>
+                        <p style="text-align: center;">
+                            {{anuncioResultado}}
+                        </p>
+                    </recuadro-component>
+                </transition>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                destinoX: 0,
+                destinoY: 0,
+
+                cuerpoX: 20,
+                cuerpoY: 20,
+
+                movimientoHabilitado: true,
+
+                magnitudRecorrido: 0,
+                direccionRecorrido: 0,
+
+                startRecorridoX: 0,
+                startRecorridoY: 0,
+
+                direccionRecorrido: 0,
+                duracionRecorrido: 0,
+                unidadesRecorridas: 0,
+                sizeUnidadRecorrido: 20,
+
+                anuncioResultado: null,
+
+                millisInicioRecorrido: Date.now(),
+                tiempoTranscurrido: 0,
+                stepCronometro: 60,
+            }
+        },
+        methods: {
+            setRecorrido(e) {
+                if (!this.movimientoHabilitado) return
+
+                this.anuncioResultado = null;
+                this.tiempoTranscurrido = 0;
+
+                this.movimientoHabilitado = false;
+                const boundZona = this.$refs.zonaInteraccion.getBoundingClientRect();
+
+                const posX = (e.clientX) - boundZona.left;
+                const posY = (e.clientY) - boundZona.top;
+
+                const distanciaRecorrida = Math.hypot(posX - this.cuerpoX, posY - this.cuerpoY);
+
+                const duracion = ((Math.random() + 1) * 5000);
+                this.duracionRecorrido = Math.round(duracion / 1000);
+
+                this.startRecorridoX = this.cuerpoX;
+                this.startRecorridoY = this.cuerpoY;
+
+                this.finRecorridoX = posX;
+                this.finRecorridoY = posY;
+
+                var {magnitud, direccion} = cartesian2Polar(this.finRecorridoX - this.startRecorridoX, this.finRecorridoY - this.startRecorridoY);
+
+                this.unidadesRecorridas = Math.ceil(magnitud / this.sizeUnidadRecorrido);
+                magnitud = this.sizeUnidadRecorrido * this.unidadesRecorridas;
+
+                console.log("Magnitud: " + magnitud);
+
+                this.finRecorridoX = this.startRecorridoX + (magnitud * Math.cos(direccion));
+                this.finRecorridoY = this.startRecorridoY + (magnitud * Math.sin(direccion));
+
+                this.$refs.recorrido.animate([{width: '0px'}, {width: magnitud + 'px'}], {duration: duracion});
+                this.$refs.cuerpo.animate([{left: this.cuerpoX + 'px', top: this.cuerpoY + 'px'}, {left: this.finRecorridoX + 'px', top: this.finRecorridoY + 'px'}], {duration: duracion});
+
+                this.magnitudRecorrido = magnitud;
+                this.direccionRecorrido = direccion;
+
+                this.cuerpoX = this.finRecorridoX;
+                this.cuerpoY = this.finRecorridoY;
+
+                this.millisInicioRecorrido = Date.now();
+                this.contarTiempo();
+
+                setTimeout(() => {
+                    this.tiempoTranscurrido = this.duracionRecorrido * 1000;
+                    this.anunciarResultado();
+                    this.movimientoHabilitado = true;
+
+                }, duracion);
+
+            },
+            contarTiempo() {
+
+                if (this.movimientoHabilitado) return;
+                console.log("Tiempo");
+                this.tiempoTranscurrido = (Date.now() - this.millisInicioRecorrido);
+
+                setTimeout(() => {
+                    this.contarTiempo()
+                }, this.stepCronometro);
+            },
+            anunciarResultado() {
+                this.anuncioResultado = this.unidadesRecorridas + " unidades recorridas en " + this.duracionRecorrido + " segundos";
+
+                this.$nextTick(() => {
+                    document.getElementById("anuncioResultado").scrollIntoView({behavior: "smooth"});
+                })
+            }
+        },
+        computed: {
+            centesimasTranscurridos() {
+                return Math.floor(this.tiempoTranscurrido % 1000 / 10*60/100);
+            },
+            segundosTranscurridos() {
+                return Math.floor(this.tiempoTranscurrido / 1000);
+            }
+        }
+    })
+</script>
+
+<style>
+    .zonaInteraccion {
+        position: relative;
+        height: 150px;
+    }
+
+    #cuerpo {
+        width: 15px;
+        height: 15px;
+        background-color: brown;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+
+    #recorrido {
+        height: 3px;
+        position: absolute;
+        transform-origin: left center;
+        overflow-x: hidden;
+        display: flex;
+    }
+
+    .unidadRecorrido {
+        height: 3px;
+        width: 18px;
+        margin-right: 2px;
+        flex-shrink: 0;
+        background-color: brown;
+
+    }
+
+    #zonaTiempo {
+        color: rgb(75, 75, 75);
+        font-size: 19px;
+        text-align: center;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+    }
+</style>

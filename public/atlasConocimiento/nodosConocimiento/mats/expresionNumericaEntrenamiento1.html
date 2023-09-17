@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/funciones/mixinsMaths.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Entrenamiento en expresiones numéricas simples</title>
+</head>
+
+<body>
+    <div id="doc">
+
+            <recuadro-component tipo="instruccion">
+                Practica tu comprensión de las expresiones numérica inventando algunas.
+            </recuadro-component>
+
+            <recuadro-component tipo="instruccionPointer">
+                <div class="bloqueSeleccionDificultad">
+                    <span>Selecciona la dificultad</span>
+                    <input type="range" step="1" min="1" max="3" v-model="dificultadReto" id="inputDificultadReto">
+
+                    <div class="valorDificultad">
+                        {{dificultadReto}}
+                    </div>
+
+                </div>
+                <div class="boton" @click="generarReto1()">
+                    ¡Generar un reto!
+                </div>
+            </recuadro-component>
+
+
+            <transition name="travelTop">
+                <recuadro-component tipo="reto" v-show="numero1 && operacion1">
+
+                    ¡Escribe una expresión numérica que represente el {{numero1}} usando una {{operacion1}} entre
+                    {{dificultadReto==2?'un número y una expresión':dificultadReto==3?'dos expresiones':'dos números'}}!
+
+                </recuadro-component>
+            </transition>
+
+
+
+    </div>
+
+</body>
+
+</html>
+
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        mixins: [mixinExpresionesNumericas],
+        data() {
+            return {
+                numero1: null,
+                operacion1: "suma",
+                dificultadReto: 1,
+            }
+        },
+        methods: {
+            generarReto1() {
+                console.log(`Generando numero 1`);
+
+                let lastNumero1 = this.numero1;
+
+                do {
+                    var nuevoNumero = Math.round(Math.random() * 25);
+                } while (nuevoNumero == this.numero1);
+                console.log(`Retornando ${nuevoNumero}`);
+
+                this.numero1 = null;
+
+                this.$nextTick(() => {
+                    this.numero1 = nuevoNumero;
+                    this.escogerOperacion1();
+                })
+            },
+            escogerOperacion1() {
+
+                if (this.operacion1 == "suma") {
+                    this.operacion1 = "multiplicación";
+                }
+                else if (this.operacion1 == "multiplicación") {
+                    this.operacion1 = "resta";
+                }
+                else if (this.operacion1 == "resta") {
+                    this.operacion1 = "división";
+                }
+                else if (this.operacion1 == "división") {
+                    this.operacion1 = "suma";
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    #numero1 {
+        margin: 10px auto;
+        display: inline-block;
+        padding: 20px;
+        border-radius: 7px;
+        background-color: cadetblue;
+    }
+
+
+    .fantasmaIn-enter {
+        opacity: 0;
+    }
+
+    .fantasmaIn-enter-active {
+        transition: opacity 0.5s;
+    }
+
+    .fantasmaIn-enter-to {
+        opacity: 1;
+    }
+</style>

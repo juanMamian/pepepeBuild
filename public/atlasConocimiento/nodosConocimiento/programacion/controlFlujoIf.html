@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Control de flujo - if</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            La instrucción especial <span class='resaltado'>if</span> señala que un bloque de instrucciones debe
+            ejecutarse <span class='resaltado'>condicionalmente</span>
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            La instrucción if incluye una <span class='resaltado'>expresión</span>que se resuelve en un valor <span
+                class='resaltado'>Booleano</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Las instrucciones de un bloque señalado en un <span class='resaltado'>if</span> se ejecutan si su expresión
+            se resuelve en
+            <span class='resaltado'>true</span>.
+        </recuadro-component>
+
+        <p>
+            Para escribir una instruccion <span class='resaltado'>if</span> se debe:
+        </p>
+        <ul>
+            <li>
+                Escribir la palabra clave <span class='resaltado'>if</span>.
+            </li>
+            <li>
+                Escribir la expresión.
+            </li>
+            <li>
+                Escribir el bloque de instrucciones que se ejecutarán condicionalmente.
+            </li>
+        </ul>
+        <bloque-component tipo="ejemplo" @plegado="reiniciarBloque1">
+            <template #cabecera>
+                En este bloque se muestra la creación de una instrucción especial <span class='resaltado'>if</span> en
+                lenguaje <span class='resaltado'>
+                    javascript</span>.
+            </template>
+
+            <recuadro-component tipo="datoNuevo">
+                Se quiere escribir un saludo especial para un usuario <br>
+                El saludo debe ejecutarse condicionalmente. Sólo si el nombre del usuario es
+                especial.
+            </recuadro-component>
+
+            <div class='programacionCodigo'>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step>=1"
+                        :class="[ejemplo1Step>ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step > 1?'programacionCodigoPrevio':'programacionCodigoActual'] ">if</span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step>=2"
+                        :class="[ejemplo1Step>ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step > 2?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        (nombreUsuario == 'Nabucodonosor')</span>
+                </transition>
+                <transition name="fadeIn">
+                    <span v-show="ejemplo1Step>=3"
+                        :class="[ejemplo1Step>ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step > 3?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        {</span>
+                </transition>
+                <transition name="fadeIn">
+                    <div v-show="ejemplo1Step>=3"
+                        :class="[ejemplo1Step>ejemplo1StepFinal?claseFinalEjemplo:ejemplo1Step > 3?'programacionCodigoPrevio':'programacionCodigoActual']">
+                        <div style="padding-left: 10px">
+                            console.log("que bueno verte otra vez");
+                        </div>
+                        <div style="padding-left: 10px">
+                            console.log("Sigue donde estabas");
+                        </div>
+                        <div>
+                            }
+                        </div>
+                    </div>
+                </transition>
+            </div>
+            {{ejemplo1Step}}
+            <div class='boton' @click="ejemplo1Step++" v-show="ejemplo1Step <= ejemplo1StepFinal"
+                :class="{deshabilitado:ejemplo1Step >= ejemplo1StepFinal}">
+                <span v-show="ejemplo1Step === 0">
+                    Escribir la palabra clave if
+                </span>
+                <span v-show="ejemplo1Step === 1">
+                    Escribir una expresión. Entre paréntesis.
+                </span>
+                <span v-show="ejemplo1Step === 2">
+                    Escribir un bloque de instrucciones. Entre llaves
+                </span>
+            </div>
+
+            <recuadro-component tipo="datoNuevo" v-show="ejemplo1Step > ejemplo1StepFinal">
+                La instrucción if está terminada; este bloque de instrucciones será ejecutado condicionalmente.
+            </recuadro-component>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo1StepFinal: 3,
+
+                claseFinalEjemplo: '',
+
+            }
+        },
+        computed: {
+        },
+        methods: {
+            reiniciarBloque1() {
+                this.reiniciarEjemplo1();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+        },
+        watch: {
+            ejemplo1Step(step) {
+                if (step === this.ejemplo1StepFinal) {
+                    setTimeout(() => {
+                        this.ejemplo1Step++;
+                    }, 3000);
+
+                }
+
+            }
+        }
+    }).mount("#doc");
+</script>
+<style>
+</style>

@@ -1,0 +1,393 @@
+@font-face {
+  font-family: "Salsa";
+  src: url("https://pe-pe-pe.herokuapp.com/public/resources/fonts/Salsa/Salsa-Regular.ttf");
+  font-style: normal;
+}
+
+:root {
+  --paletaMain: #e2c044;
+  --paletaPrevio: #f06449;
+  --paletaActual: #26547c;
+  --paletaCheck: #209c49;
+  --paletaFail: #cc2f2f;
+  --paletaActivo: #f06449
+}
+
+body {
+  font-family: "Salsa", Arial;
+  padding: 3vh 2vw;
+  font-size: 19px;
+}
+li {
+  margin: 10px 0px;
+}
+
+.fondoGris {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.233);
+  z-index: 100;
+}
+.fondoGris .recuadro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.selector.seleccionado {
+  background-color: var(--paletaPrevio);
+  box-shadow: 1px 1px 1px 1px gray;
+}
+.resaltado {
+  background-color: var(--paletaActual);
+  padding: 0px 5px;
+  border-radius: 5px;
+  color: whitesmoke;
+}
+
+.boton {
+  cursor: pointer;
+  background-color: var(--paletaMain);
+  padding: 10px;
+  text-align: center;
+  max-width: 300px;
+  margin: 10px auto;
+  font-size: 15px;
+  color: black;
+  box-shadow: 2px 2px 2px 2px gray;
+  border-radius: 3px;
+}
+
+.deshabilitado {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* #region listas de ejemplos */
+.listaEjemplos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.itemEjemplo {
+  border: 3px dotted gray;
+  border-spacing: 10px;
+  padding: 5%;
+  margin: 15px 10px;
+  text-align: center;
+}
+
+.itemEjemplo.anchoMediano {
+  max-width: min(300px, 90%);
+}
+/* #endregion */
+
+.zonaInteraccion {
+  border: 2px dashed gray;
+  padding: 5px;
+  position:relative;
+}
+
+.bloqueSeleccionDificultad {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+}
+
+.bloqueSeleccionDificultad .valorDificultad {
+  font-size: 18px;
+}
+
+.bloqueRespuestaUsuario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+  gap: 10px;
+}
+
+.bloqueRespuestaUsuario input {
+  padding: 10px 10px;
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0.19);
+}
+
+.contenedorFlex {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.flexVertical{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 30px;
+}
+.flexHorizontal{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.mensajeUsuario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border-color: var(--paletaMain);
+    font-size: 14px;
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    animation-duration: 0.3s;
+    background-color: whitesmoke;
+
+}
+.contenedorBotonesRespuesta{
+    display: flex;
+    gap: 20px;
+    align-items:center;
+    justify-content:center;
+}
+.botonRespuesta.activo{
+    background-color: var(--paletaActivo);
+
+}
+
+.operacionReto {
+  margin: 10px 10px;
+  background-color: #449ae6;
+  border-radius: 20px;
+  padding: 10px 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.bloqueInfoResultado {
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.mensajeInfoResultado {
+  padding: 20px;
+  text-align: center;
+  align-self: center;
+  border-radius: 20px;
+}
+.bolitaNumero {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: brown;
+  flex-shrink: 0;
+}
+.fade-enter-active {
+  animation: fade 0.8s;
+  animation-iteration-count: 1;
+}
+.fade-leave-active {
+  animation: fade 0.8s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+}
+.fadeIn-enter-active {
+  animation: fade 0.8s;
+}
+
+input {
+  font-size: 22px;
+  padding: 5px 5px;
+}
+.inputRespuestaEvaluacion {
+  font-size: 19px;
+  display: block;
+  margin: 10px auto;
+  padding: 5px 3px;
+  border-radius: 5px;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.travelRight-enter-active {
+  animation: travelRight;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.travelRight-leave-active {
+  animation: travelRight;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+  pointer-events: none;
+}
+
+@keyframes travelRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.travelLeft-enter-active {
+  animation: travelLeft;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+}
+
+.travelLeft-leave-active {
+  animation: travelLeft;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+  pointer-events: none;
+}
+
+@keyframes travelLeft {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  100% {
+    left: 0%;
+    opacity: 1;
+  }
+}
+
+.travelTop-enter-active {
+  animation: traveltop;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.travelTop-leave-active {
+  animation: travelTop;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+  pointer-events: none;
+}
+
+.enterTop-enter-active {
+  animation: traveltop;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.travelBottom-enter-active {
+  animation: travelBottom;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+}
+
+.travelBottom-leave-active {
+  animation: travelBottom;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+  pointer-events: none;
+}
+@keyframes travelbottom {
+  0% {
+    transform: translatey(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translatey(0%);
+    opacity: 1;
+  }
+}
+
+
+@keyframes traveltop {
+  0% {
+    transform: translatey(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translatey(0%);
+    opacity: 1;
+  }
+}
+.popIn-enter-active {
+  animation: popIn;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+}
+.popInOut-enter-active {
+  animation: popIn;
+  animation-direction: reverse;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+  animation-direction: reverse;
+}
+
+
+@keyframes popIn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.unfoldHorizontal-enter-active {
+  animation: unfoldHorizontal 1s;
+}
+
+@keyframes unfoldHorizontal {
+  0% {
+    transform: scaleX(0.1);
+  }
+  100% {
+    transform: scaleX(1.05);
+  }
+}
+
+@keyframes travelTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}

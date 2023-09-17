@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Números geométricos - Explicación</title>
+</head>
+
+<body onload="enPentagono()">
+    <div id="doc">
+        <p>Si se representa a los números como un grupo de punticos, es posible formar figuras con esos punticos.</p>
+
+        <p>El número 5 puede ser dibujado así:</p>
+
+        <div class="numeroPunticos">
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+        </div>
+
+        <p>O así</p>
+
+
+        <div class="numeroPunticos">
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+        </div>
+        <div class="numeroPunticos">
+
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+            <div class="puntico"></div>
+        </div>
+
+        <p>O así</p>
+
+        <div class="numeroPunticosAbsolute" id="cincoEnPentagono">
+            <div class="puntico punticoPentagono" style="top: 50px; left: 120px;"></div>
+            <div class="puntico punticoPentagono" style="top: 100px; left: 85px;"></div>
+            <div class="puntico punticoPentagono" style="top: 80px; left: 30px;"></div>
+            <div class="puntico punticoPentagono" style="top: 20px; left: 30px;"></div>
+            <div class="puntico punticoPentagono" style="top: 0px; left: 85px;"></div>
+        </div>
+
+        <p>Y de muchas otras formas.</p>
+
+        <p>Con algunos números se pueden formar figuras conocidas.</p>
+
+        <p>Con el 16 se puede formar un <span class="resaltadoHorizontal">cuadrado</span> así:</p>
+
+        <div class=" contenedorNumero contenedorNumVertical" style="background-color: rgb(232, 199, 255);">
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+        </div>
+
+        <recuadro-component tipo="datoNuevo">Así que se dice que el 16 es un número <span
+                class="resaltadoHorizontal">cuadrado</span> </recuadro-component>
+
+        <p>Con el 6 se puede formar un <span class="resaltadoHorizontal">triángulo</span> así:</p>
+
+        <div class="contenedorNumero contenedorNumVertical" style="background-color: rgb(126, 212, 145);">
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+            </div>
+            <div class="numeroPunticos" id="segundaFilaTriangulo">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+            <div class="numeroPunticos">
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+                <div class="puntico"></div>
+            </div>
+        </div>
+
+        <recuadro-component tipo="datoNuevo">Así que se dice que el 6 es un número <span
+                class="resaltadoHorizontal">triangular</span>.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoNuevo">
+            <p>También se pueden representar números imitando otras figuras. Entre ellas:</p>
+
+            <ul>
+                <li>Rectángulo</li>
+                <li>Cubo</li>
+                <li>Hexágono</li>
+                <li>Pentágono</li>
+            </ul>
+        </recuadro-component>
+
+
+    </div>
+</body>
+
+</html>
+
+
+<script>
+
+    function enPentagono() {
+        const contenedor = document.getElementById("cincoEnPentagono");
+        const punticosPentagono = document.getElementsByClassName("punticoPentagono");
+
+        console.log(`Hay ${punticosPentagono.length} punticos`);
+
+        for (var i = 0; i < punticosPentagono.length; i++) {
+            console.log(`Ubicando puntico ${i} en pentágono`);
+            let angulo = ((Math.PI * 2) / 5) * i;
+            let radio = 50;
+            let centrox = 70;
+            let centroy = 50;
+            punticosPentagono[i].style.top = (centroy + (radio * Math.sin(angulo).toFixed(1))) + "px";
+            punticosPentagono[i].style.left = (centrox + (radio * Math.cos(angulo).toFixed(1))) + "px";
+        }
+    }
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+
+
+<style scoped>
+    body {
+        padding: 2% 5%;
+    }
+
+    .puntico {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: brown;
+        margin: 10px;
+    }
+
+    .contenedorNumero {
+        width: 220px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid grey;
+        margin: 10px auto;
+    }
+
+    .numeroPunticos {
+        display: flex;
+        justify-content: center;
+        padding: 0px 15px;
+    }
+
+    .numeroPunticosAbsolute {
+        height: 150px;
+
+    }
+
+    #cincoEnPentagono {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+    }
+
+    .contenedorNumVertical {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .punticoPentagono {
+        position: absolute;
+    }
+
+    .resaltadoHorizontal {
+        border-radius: 5px;
+        padding: 0px 5px;
+    }
+
+    #segundaFilaTriangulo {
+        width: 66%;
+        margin: 0px auto;
+    }
+</style>

@@ -1,0 +1,25 @@
+.cuerpoDefault{
+    background-color: var(--paletaActual);
+    width: 40px;
+    height: 20px;
+}
+    .vectorFuerza {
+        height: 2px;
+        background-color: black;
+        transform-origin: 0px center;
+        left: 50%;
+        top: calc(50% - 1px);
+        position: absolute;
+    }
+
+    .vectorFuerza::after {
+        content: '';
+        width: 1px;
+        height: 1px;
+        border: 7px solid transparent;
+        border-left-color: black;
+        position: absolute;
+        left: 100%;
+        transform: translate(-50%, -50%);
+        top: 50%;
+    }

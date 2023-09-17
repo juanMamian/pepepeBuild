@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Identificación y clase - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Frecuentemente es útil hacer referencia a un elemento en particular. Para eso, los elementos pueden tener
+            una palabra que los identifica. Como un nombre.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            La palabra que identifica a un elemento se llama <span class="resaltado">identificación</span> del elemento.
+            <br>
+            Se abrevia <span class="resaltado">id</span>.
+        </recuadro-component>
+        <p>
+            Para asignar identificacion a un elemento se escribe la palabra clave <span
+                class="programacionNombreObjeto">id</span> dentro
+            de la etiqueta inicial del elemento.
+        </p>
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+                <span class="programacionCodigoPrevio">{{textoEtiquetaInicial1}}</span><span class="programacionCodigoActual">{{textoId}}</span><span class="programacionCodigoPrevio">{{textoEtiquetaInicial2}}</span>
+                <br>
+                <span class="programacionCodigoPrevio">
+                    {{textoEtiquetaFinal}}
+                </span>
+            </div>
+            <div class="programacionDescripcionCodigo">
+                En la etiqueta inicial está ahora el atributo <span class="programacionNombreObjeto">id</span>.
+            </div>
+        </div>
+
+        <p>
+            La palabra de identificacion se asigna <span class="resaltado">entre comillas</span> usando el operador de asignación <span class="resaltado">=</span>.
+        </p>
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+                <span class="programacionCodigoPrevio">{{textoEtiquetaInicial1+textoId}}</span><span class="programacionCodigoActual">{{textoAsign1}}</span><span class="programacionCodigoActual">menu</span><span class="programacionCodigoActual">{{textoAsign2}}</span><span class="programacionCodigoPrevio">{{textoEtiquetaInicial2}}</span><br>
+                <span class="programacionCodigoPrevio">{{textoEtiquetaFinal}}</span>
+            </div>
+
+            <div class="programacionDescripcionCodigo">
+                Ahora la palabra <span class="resaltado">menu</span> es la identificación del elemento.
+            </div>
+        </div>
+
+     
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+                textoEtiquetaInicial1: '<div ',
+                textoId: 'id',
+                textoAsign1: '="',
+                textoAsign2: '"',
+                textoEtiquetaInicial2: ' >',
+                textoEtiquetaFinal: '</div>'
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

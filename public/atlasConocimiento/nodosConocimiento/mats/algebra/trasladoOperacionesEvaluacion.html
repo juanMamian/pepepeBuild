@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script
+        src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/nodosConocimiento/mats/resources/expresionNumericaClass.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Traslado de operaciones - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo el concepto de traslado de operaciones si: </p>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada una igualdad o desigualdad, puedo saber cuál es la operación que se puede trasladar en cada miembro.">
+
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='flexVertical'>
+                    Selecciona la dificultad
+                    <input id='inputDificultadReto1' type="range" min="1" max="3" v-model="dificultadReto1">
+                    {{dificultadReto1}}
+                </div>
+            </recuadro-component>
+
+            <div class='flexVertical'>
+                <div class='boton' @click="generarReto1">
+                    Generar igualdad o desigualdad
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto1' v-if="reto1" :key="'reto1v'+versionReto1" class="matsExpresion"
+                        style="font-size: 30px">
+                        {{reto1.toMathJax()}}
+                    </div>
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada una igualdad, puedo ejecutar un traslado de operación indicado">
+
+            <recuadro-component tipo='instruccionPointer'>
+                <div class='flexVertical'>
+                    <div class='texto'>
+                        Selecciona la dificultad
+                    </div>
+                    <input id='inputDificultadReto2' type="range" min="1" max="3" v-model="dificultadReto2">
+                    <div class='textoDificultad'>
+                        {{dificultadReto2}}
+                    </div>
+
+                </div>
+            </recuadro-component>
+
+            <div class='flexVertical'>
+                <div class='boton' @click="generarReto2">
+                    Generar reto
+                </div>
+
+                <transition name="enterTop">
+                    <div id='reto2' class='matsExpresion' :key="'reto2'+versionReto2" v-if="reto2"
+                        style="font-size: 30px">
+                        {{reto2.toMathJax()}}
+                    </div>
+                </transition>
+
+                <transition name="fadeIn">
+                    <recuadro-component tipo='instruccion' v-if="ladoReto2" :key="'ladoReto2v' + ladoReto2">
+                        Traslada la operación del miembro {{ladoReto2}}
+                    </recuadro-component>
+
+                </transition>
+            </div>
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                dificultadReto1: 1,
+                reto1: null,
+                versionReto1: 0,
+
+                dificultadReto2: 1,
+                reto2: null,
+                versionReto2: 0,
+                ladoReto2: null,
+            }
+        },
+        methods: {
+            generarReto1() {
+                let primeraExpresion = new ExpresionNumerica();
+                let segundaExpresion = new ExpresionNumerica();
+                primeraExpresion.fillExpresion({keepInteger: true});
+                if (Math.random() < 0.4) {//Para hacer una igualdad. Un tantico más probable que un tercio.
+                    segundaExpresion.valor = primeraExpresion.valor;
+                }
+                segundaExpresion.fillExpresion({keepInteger: true});
+
+                primeraExpresion.reexpresionar(this.dificultadReto1 - 1, {keepInteger: true});
+                segundaExpresion.reexpresionar(this.dificultadReto1 - 2, {keepInteger: true});
+
+                this.reto1 = new EcInEcuacion({miembro1: primeraExpresion, miembro2: segundaExpresion});
+                this.versionReto1++;
+
+            },
+            generarReto2() {
+                this.ladoReto2=null;
+                let primeraExpresion = new ExpresionNumerica();
+                let segundaExpresion = new ExpresionNumerica();
+                primeraExpresion.fillExpresion({keepInteger: true});
+                if (Math.random() < 0.4) {//Para hacer una igualdad. Un tantico más probable que un tercio.
+                    segundaExpresion.valor = primeraExpresion.valor;
+                }
+                segundaExpresion.fillExpresion({keepInteger: true});
+
+                primeraExpresion.reexpresionar(this.dificultadReto2 - 1, {keepInteger: true});
+                segundaExpresion.reexpresionar(this.dificultadReto2 - 2, {keepInteger: true});
+
+                this.reto2 = new EcInEcuacion({miembro1: primeraExpresion, miembro2: segundaExpresion});
+                this.ladoReto2 = Math.random() < 0.5 ? "izquierdo" : "derecho";
+                this.versionReto2++;
+
+            },
+
+        },
+        watch: {
+            versionReto1() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+
+            },
+            versionReto2() {
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+
+            },
+
+        }
+
+    }).mount("#doc");
+</script>

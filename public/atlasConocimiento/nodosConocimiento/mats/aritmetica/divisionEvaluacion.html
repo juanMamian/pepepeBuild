@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>División - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Comprendo la división si: </p>
+
+
+        <bloque-component tipo="evaluacion">
+            <template #cabecera>
+                Puedo calcular el resultado de cualquier división exacta simple.
+            </template>
+            <div class="contenedorFlex">
+                <div class="boton" style="margin-top: 40px;" @click="generarDivision"
+                    :class="{deshabilitado:estadoRespuestaDivision!='correcto' && expresionDivision }">
+                    {{estadoRespuestaDivision=='correcto'?'¡Generar una nueva división':'¡Generar una división!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionDivision" v-show="expresionDivision">
+                        {{expresionDivision}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" v-show="expresionDivision">
+                    <span>Confirma aquí tu respuesta</span>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaDivision=='correcto'}"
+                        v-model="inputResultadoDivision" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarDivision" :class="{deshabilitado: !inputResultadoDivision}"
+                        v-show="estadoRespuestaDivision!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaDivision"
+                        :key="versionInputResultadoDivision">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaDivision=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaDivision=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada cualquier división, puedo determinar si es exacta o no y calcular su resultado y su residuo.">
+
+            <div class="contenedorFlex">
+                <div class="boton" style="margin-top: 40px;" @click="generarDivisionInexacta"
+                    :class="{deshabilitado:estadoRespuestaDivInexacta!='correcto' && expresionDivInexacta }">
+                    {{estadoRespuestaDivInexacta=='correcto'?'¡Generar una nueva división':'¡Generar una división!'}}
+                </div>
+
+                <transition name="travelTop">
+                    <div class="operacionReto" style="text-align: center; font-size: 35px;"
+                        :key="versionExpresionDivInexacta" v-show="expresionDivInexacta">
+                        {{expresionDivInexacta}}
+                    </div>
+                </transition>
+
+                <div class="bloqueConfirmarRespuesta" id="bloqueConfirmarRespuestaInexacta" v-show="expresionDivInexacta">
+                    <span>Confirma aquí tu respuesta</span> <br> <br>
+
+                    <label for="inputResultadoDivInexacta">Resultado</label>
+                    <input name="inputResultadoDivInexacta" type="number"
+                        :class="{deshabilitado: estadoRespuestaDivInexacta=='correcto'}"
+                        v-model="inputResultadoDivInexacta" style="max-width: 70px;">
+<br>
+                    <label for="inputResiduoDivInexacta">Residuo</label>
+                    <input type="number" :class="{deshabilitado: estadoRespuestaDivInexacta=='correcto'}"
+                        v-model="inputResiduoDivInexacta" style="max-width: 70px;">
+
+                    <div class="boton" @click="confirmarDivInexacta"
+                        :class="{deshabilitado: !inputResultadoDivInexacta}"
+                        v-show="estadoRespuestaDivInexacta!='correcto'">Aceptar</div>
+
+                </div>
+
+                <transition name="popIn">
+                    <div class="bloqueInfoResultado" v-show="estadoRespuestaDivInexacta"
+                        :key="versionInputResultadoDivInexacta">
+                        <div class="mensajeInfoResultado"
+                            :style="[{backgroundColor: estadoRespuestaDivInexacta=='correcto'?'#269d26':'#ea4b4b'}]">
+                            {{estadoRespuestaDivInexacta=='correcto'?'¡Correcto!':'Incorrecto... ¡Sigue intentando!'}}
+                        </div>
+                    </div>
+                </transition>
+            </div>
+        </bloque-component>
+        
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                // Division
+                versionExpresionDivision: 0,
+                expresionDivision: null,
+
+                dificultadDivision: 1,
+                minDivisor: 1,
+                maxDivisor: 10,
+                minResultadoDivision: 1,
+                maxResultadoDivision: 10,
+
+                numerador: 1,
+                denominador: 1,
+
+                estadoRespuestaDivision: null,
+                inputResultadoDivision: null,
+                versionInputResultadoDivision: 0,
+
+                // Division inexacta
+                versionExpresionDivInexacta: 0,
+                expresionDivInexacta: null,
+
+                dificultadDivInexacta: 1,
+                minNumeradorInexacta: 1,
+                maxNumeradorInexacta: 10,
+                minDenominadorInexacta: 1,
+                maxDenominadorInexacta: 10,
+
+                numeradorInexacta: 1,
+                denominadorInexacta: 1,
+
+                estadoRespuestaDivInexacta: null,
+                inputResultadoDivInexacta: null,
+                inputResiduoDivInexacta: null,
+                versionInputResultadoDivInexacta: 0,
+            }
+        },
+        methods: {
+            generarDivision() {
+
+                if (Number(this.dificultadDivision) === 1) {
+                    this.minResultadoDivision = 2;
+                    this.maxResultadoDivision = 6;
+
+                    this.minDivisor = 2;
+                    this.maxDivisor = 5;
+                }
+
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+
+                const resDivision = Math.round(Math.random() * (this.maxResultadoDivision - this.minResultadoDivision) + this.minResultadoDivision);
+                const divisor = Math.round(Math.random() * (this.maxDivisor - this.minDivisor) + this.minDivisor);
+
+
+                this.numerador = resDivision * divisor;
+                this.denominador = divisor;
+
+                this.expresionDivision = `\\(${this.numerador} \\over ${this.denominador} \\)`;
+
+                this.inputResultadoDivision = null;
+                this.estadoRespuestaDivision = null;
+
+                this.versionExpresionDivision++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarDivision() {
+                var respuesta = this.numerador / this.denominador;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoDivision}`)
+                if (this.inputResultadoDivision == respuesta) {
+                    this.estadoRespuestaDivision = "correcto";
+                }
+                else {
+                    this.estadoRespuestaDivision = "incorrecto";
+                }
+                this.versionInputResultadoDivision++;
+            },
+
+            generarDivisionInexacta() {
+
+                if (Number(this.dificultadDivInexacta) === 1) {
+                    this.minNumeradorInexacta = 6;
+                    this.maxNumeradorInexacta = 15;
+
+                    this.minDenominadorInexacta = 2;
+                    this.maxDenominadorInexacta = 5;
+                }
+
+                else {
+                    console.log("Dificultad desconocida");
+                    return;
+                }
+
+
+                const numerador = Math.round(Math.random() * (this.maxNumeradorInexacta - this.minNumeradorInexacta) + this.minNumeradorInexacta);
+                const denominador = Math.round(Math.random() * (this.maxDenominadorInexacta - this.minDenominadorInexacta) + this.minDenominadorInexacta);
+
+
+                this.numeradorInexacta = numerador;
+                this.denominadorInexacta = denominador;
+
+                this.expresionDivInexacta = `\\(${this.numeradorInexacta} \\over ${this.denominadorInexacta} \\)`;
+
+                this.inputResultadoDivInexacta = null;
+                this.estadoRespuestaDivInexacta = null;
+
+                this.versionExpresionDivInexacta++;
+
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            confirmarDivInexacta() {
+                var respuesta = Math.floor(this.numeradorInexacta / this.denominadorInexacta);
+                var residuo = this.numeradorInexacta % this.denominadorInexacta;
+                console.log(`Comparando ${respuesta} con ${this.inputResultadoDivInexacta} y en residuo comparando ${this.inputResiduoDivInexacta} con ${residuo}`);
+                if (this.inputResultadoDivInexacta == respuesta && this.inputResiduoDivInexacta == residuo) {
+                    this.estadoRespuestaDivInexacta = "correcto";
+                }
+                else {
+                    this.estadoRespuestaDivInexacta = "incorrecto";
+                }
+                this.versionInputResultadoDivInexacta++;
+            },
+
+        }
+    })
+</script>
+
+
+<style>
+    #bloqueConfirmarRespuestaInexacta{
+        width: min(400px, 90%);
+    }
+
+    #bloqueConfirmarRespuestaInexacta input{
+        float: right;
+    }
+
+</style>

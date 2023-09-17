@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.global.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Divisor - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Comprendo el concepto de divisor si:
+        </p>
+
+        <bloque-component tipo='evaluacion'>
+            <template #cabecera>
+                Dado cualquier número puedo hacer una lista de sus divisores
+            </template>
+
+            <div class='contenedorFlex'>
+                <button class='boton' @click="generarReto1">
+                    Generar número
+                </button>
+
+                <transition name="enterTop">
+                    <div class='reto' v-show="numeroReto1" :key="versionReto1">
+                        {{numeroReto1}}
+                    </div>
+                </transition>
+
+                <recuadro-component tipo='instruccionTeclado' v-show="numeroReto1!=null">
+                    <div class='contenedorFlex'>
+                        Escribe aquí la lista de divisores separados con comas
+                        <input type="text" @keypress.enter="inputRespuestaUsuarioReto1"
+                            ref="inputRespuestaUsuarioReto1" />
+                        <button class='boton' @click="inputRespuestaUsuarioReto1">Aceptar</button>
+                    </div>
+                </recuadro-component>
+
+                <transition name="enterTop">
+                    <recuadro-component tipo='infoResultado' ref="infoResultadoReto1"
+                        :key="versionRespuestaUsuarioReto1" v-show="respuestaUsuarioReto1Correcta!=null"
+                        :modo="respuestaUsuarioReto1Correcta===true?'correcto':'incorrecto'">
+
+                    </recuadro-component>
+
+                </transition>
+
+            </div>
+
+        </bloque-component>
+
+
+
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    const {createApp} = Vue;
+    createApp({
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroReto1: null,
+                versionReto1: 0,
+                respuestaReto1: [],
+                respuestaUsuarioReto1: null,
+                versionRespuestaUsuarioReto1: 0,
+                respuestaUsuarioReto1Correcta: null,
+            }
+        },
+        methods: {
+            reiniciarReto1() {
+                this.numeroReto1 = null;
+                this.respuestaReto1 = [];
+                this.respuestaUsuarioReto1 = null;
+                this.respuestaUsuarioReto1Correcta = null;
+                this.$refs.inputRespuestaUsuarioReto1.value = null;
+            },
+            generarReto1() {
+                this.reiniciarReto1();
+                this.numeroReto1 = Math.ceil(Math.random() * 30);
+                this.versionReto1++;
+                for (var i = 1; i <= Math.ceil(this.numeroReto1 / 2); i++) {
+                    if ((this.numeroReto1 / i) % 1 == 0) {
+                        this.respuestaReto1.push(i);
+                    }
+                }
+                if (this.numeroReto1 > 1) {
+                    this.respuestaReto1.push(this.numeroReto1);
+                }
+            },
+            inputRespuestaUsuarioReto1() {
+                let respuestaUsuario = this.$refs.inputRespuestaUsuarioReto1.value.trim().split(",").map(val => Number(val));
+                console.log("Comparando " + respuestaUsuario);
+                console.log("Con " + this.respuestaReto1);
+                this.versionRespuestaUsuarioReto1++;
+                if (respuestaUsuario.length != this.respuestaReto1.length) {
+                    console.log("Incorrecto por lenght incoherente");
+                    this.respuestaUsuarioReto1Correcta = false;
+                    return;
+                }
+                for (var i = 0; i < this.respuestaReto1.length; i++) {
+                    if (!respuestaUsuario.includes(this.respuestaReto1[i])) {
+                        this.respuestaUsuarioReto1Correcta = false;
+                        return;
+                    }
+                }
+
+                this.respuestaUsuarioReto1Correcta = true;
+            }
+        },
+        watch: {
+            numeroEjemplo1() {
+                this.divisoresPosibles[0].resultado = this.numeroEjemplo1;
+            }
+        }
+    }).mount("#doc")
+</script>
+
+
+<style>
+    #listaDivisores {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .itemDivisor {
+        padding: 10px 10px;
+        border: 2px solid var(--paletaPrevio);
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+    }
+
+    .resultadoDivision {
+        font-size: 30px;
+    }
+</style>

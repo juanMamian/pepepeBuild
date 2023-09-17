@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Nombre</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            La razón matemática es un modo de <span class="resaltado">comparar</span> dos cantidades.
+        </recuadro-component>
+
+        Cuando se comparan dos cantidades, es posible expresar que una de las cantidades es varias veces más grande que
+        la otra.
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciar">
+            <template #cabecera>
+                En este cuadro se muestran ejemplo de comparación de dos cantidades.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="boton" :class="{deshabilitado: mostrandoComparacion1}"
+                        @click="mostrandoComparacion1=true;">Comparar el 10 con el 5</div>
+
+                    <div class="comparacion" v-show="mostrandoComparacion1">
+                        El 10 es igual de grande que <span class="resaltado">dos veces</span> el 5.
+                    </div>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="boton" :class="{deshabilitado: mostrandoComparacion2}"
+                        @click="mostrandoComparacion2=true;">Comparar el 21 con el 7</div>
+
+                    <div class="comparacion" v-show="mostrandoComparacion2">
+                        El 21 es igual de grande que <span class="resaltado">tres veces</span> el 7.
+                    </div>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="boton" :class="{deshabilitado: mostrandoComparacion3}"
+                        @click="mostrandoComparacion3=true;">Comparar el 18 con el 3</div>
+
+                    <div class="comparacion" v-show="mostrandoComparacion3">
+                        El 18 es igual de grande que <span class="resaltado">seis veces</span> el 3.
+                    </div>
+                </div>
+                <div class="itemEjemplo">
+                    <div class="boton" :class="{deshabilitado: mostrandoComparacion4}"
+                        @click="mostrandoComparacion4=true;">Comparar el 100 con el 10</div>
+
+                    <div class="comparacion" v-show="mostrandoComparacion4">
+                        El 100 es igual de grande que <span class="resaltado">diez veces</span> el 5.
+                    </div>
+                </div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            La comparación entre las dos cantidades de puede expresar simplemente con un número. Ese número es la <span class="resaltado">ra</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestra la razón matemática de las comparaciones del cuadro anterior.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">                    
+                    <div class="comparacion">
+                        El 10 es igual de grande que <span class="resaltado">dos veces</span> el 5.
+                    </div>
+                    <div class="boton" :class="{deshabilitado: mostrandoRazon1}"
+                        @click="mostrandoRazon1=true;">Mostrar la razón matemática entre el 10 y el 5</div>
+                        <div class="razonMatematica" v-show="mostrandoRazon1">
+                            2
+                        </div>
+                </div>
+                <div class="itemEjemplo">                    
+                    <div class="comparacion">
+                        El 21 es igual de grande que <span class="resaltado">tres veces</span> el 7.
+                    </div>
+                    <div class="boton" :class="{deshabilitado: mostrandoRazon2}"
+                        @click="mostrandoRazon2=true;">Mostrar la razón matemática entre el 21 y el 7</div>
+                        <div class="razonMatematica" v-show="mostrandoRazon2">
+                            3
+                        </div>
+                </div>
+                <div class="itemEjemplo">                    
+                    <div class="comparacion">
+                        El 18 es igual de grande que <span class="resaltado">seis veces</span> el 3.
+                    </div>
+                    <div class="boton" :class="{deshabilitado: mostrandoRazon3}"
+                        @click="mostrandoRazon3=true;">Mostrar la razón matemática entre el 18 y el 3</div>
+                        <div class="razonMatematica" v-show="mostrandoRazon3">
+                            6
+                        </div>
+                </div>
+                <div class="itemEjemplo">                    
+                    <div class="comparacion">
+                        El 100 es igual de grande que <span class="resaltado">diez veces</span> el 10.
+                    </div>
+                    <div class="boton" :class="{deshabilitado: mostrandoRazon4}"
+                        @click="mostrandoRazon4=true;">Mostrar la razón matemática entre el 100 y el 10</div>
+                        <div class="razonMatematica" v-show="mostrandoRazon4">
+                            10
+                        </div>
+                </div>
+                
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo">
+            La razón matemática entre dos números se puede calcular dividiéndolos.
+        </recuadro-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                mostrandoComparacion1: false,
+                mostrandoComparacion2: false,
+                mostrandoComparacion3: false,
+                mostrandoComparacion4: false,
+
+                mostrandoRazon1: false,
+                mostrandoRazon2: false,
+                mostrandoRazon3: false,
+                mostrandoRazon4: false,
+            }
+        },
+        methods:{
+            reiniciar(){
+                this.mostrandoComparacion1=false;
+                this.mostrandoComparacion2=false;
+                this.mostrandoComparacion3=false;
+                this.mostrandoComparacion4=false;
+            },
+            reiniciarRazon(){
+                this.mostrandoRazon1=false;
+                this.mostrandoRazon2=false;
+                this.mostrandoRazon3=false;
+                this.mostrandoRazon4=false;
+            }
+        }
+    })
+</script>
+
+<style>
+    .itemEjemplo{
+        width:min(200px, 80%);
+    }
+
+    .razonMatematica{
+        width: 10px;
+        height: 10px;
+        padding: 10px;
+        border-radius: 50%;
+        background-color: brown;
+        margin: 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+        integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>La <i>celula</i> es una cosa</h1>
+
+    <div id="pedazo1" class="pedazos">
+        <h3>explicacion</h3>
+    </div>
+
+    <div id="pedazo2" class="pedazos" onclick="ocultarTodo()">
+        otro pedazo
+    </div>
+
+</body>
+
+</html>
+
+<style>
+    .pedazos {
+        background-color: brown;
+        margin: 20px;
+    }
+</style>
+
+<script>
+    const ocultarTodo = function () {
+        document.getElementById("pedazo1").style.display = "none";
+    }
+</script>
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three/build/three.module.js"            
+      }
+    }
+  </script>
+<script type="module">
+    const loader = new THREE.GLTFLoader();
+
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    const ambientLight = new THREE.AmbientLight(0xff9fff, 0.9);
+    scene.add(ambientLight);
+
+    loader.load('gaita.glb', function (gltf) {
+
+        scene.add(gltf.scene);
+
+    }, undefined, function (error) {
+
+        console.error(error);
+
+    });
+
+    camera.position.z = 5;
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>

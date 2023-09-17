@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/controlesAnimacion.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosFisica.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/controlesAnimacionEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Principio de superposición de fuerzas - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Si se aplican varias fuerzas sobre un cuerpo, el efecto es el mismo que si se aplicara una sola fuerza
+            resultante de sumar las primeras vectorialmente.
+        </p>
+
+        <recuadro-component tipo='datoPrevio'>
+            La fuerza obtenida mediante una suma vectorial de varias fuerzas se llama <span class='resaltado'>fuerza
+                resultante</span>.
+        </recuadro-component>
+
+
+        <bloque-component tipo='datoPrevio'>
+            <template #cabecera>
+                En este cuadro se puede ver el efecto de aplicar varias fuerzas o aplicar una sola fuerza resultante.
+            </template>
+
+
+            <div class='zonaInteraccion' style="overflow: hidden">
+                <div id='cuerpo' ref="cuerpoMovimiento" :style="[offsetCuerpo]">
+                    <div class='vectorFuerza' id="fuerza1" :style="[offsetComponenteX]"
+                        v-show="modoFuerza==='componentes'">
+
+                    </div>
+                    <div class='vectorFuerza' id="fuerza2" :style="[offsetComponenteY]"
+                        v-show="modoFuerza==='componentes'">
+
+                    </div>
+                    <div class='vectorFuerza' id="fuerzaResultante" :style="[offsetFuerzaResultante]"
+                        v-show="modoFuerza==='resultante'">
+
+                    </div>
+                </div>
+            </div>
+            <controles-animacion @estado-animacion="estadoAnimacion=$event">
+            </controles-animacion>
+            <div id='opcionesAplicacionFuerza'>
+                <button class='boton opcionAplicacionFuerza' :class="{deshabilitado: modoFuerza==='componentes'}"
+                    @click="setModoFuerzas('componentes')">Aplicar dos
+                    fuerzas</button>
+                <button class='boton opcionAplicacionFuerza' @click="setModoFuerzas('resultante')"
+                    :class="{deshabilitado: modoFuerza==='resultante'}">Aplicar una fuerza
+                    resultante</button>
+            </div>
+
+
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent,
+            controlesAnimacion,
+        },
+        data() {
+            return {
+                modoFuerza: "resultante",
+                factorAmplificacionVectores: 2,
+                estadoAnimacion: "stopped",
+                fuerza: {
+                    x: 20,
+                    y: 30,
+                },
+                cuerpo: {
+                    posicion: {
+                        x: 10,
+                        y: 10,
+                    },
+                    velocidad: {
+                        x: 0,
+                        y: 0,
+                    }
+                },
+
+            }
+        },
+        computed: {
+            offsetCuerpo() {
+                return {
+                    left: this.cuerpo.posicion.x + "px",
+                    top: this.cuerpo.posicion.y + "px",
+                }
+            },
+            offsetComponenteX() {
+                return {
+                    width: (this.fuerza.x) * this.factorAmplificacionVectores + 'px',
+                    transform: 'rotate(0rad)',
+                }
+            },
+            offsetComponenteY() {
+                return {
+                    width: this.fuerza.y * this.factorAmplificacionVectores + 'px',
+                    transform: 'rotate(90deg)',
+                }
+            },
+            offsetFuerzaResultante() {
+                let direccion = Math.atan(this.fuerza.y / this.fuerza.x);
+                if (this.fuerza.y < 0 && this.fuerza.x < 0) {
+                    direccion = Math.PI + direccion;
+                }
+
+                if (this.fuerza.x < 0 && this.fuerza.y > 0) {
+                    direccion = Math.PI + direccion;
+                }
+
+                if (direccion < 0) {
+                    direccion += Math.PI * 2;
+                }
+
+                let cuadradox = Math.pow(this.fuerza.x, 2);
+                let cuadradoy = Math.pow(this.fuerza.y, 2);
+                let magnitud = Math.round(Math.sqrt(cuadradox + cuadradoy));
+                console.log("Magnitud: " + magnitud);
+                return {
+                    width: magnitud * this.factorAmplificacionVectores + 'px',
+                    transform: 'rotate(' + direccion + 'rad)',
+                }
+            },
+
+        },
+        methods: {
+            animarMedioSegundo() {
+                let nuevaPosX = this.cuerpo.posicion.x;
+                let nuevaPosY = this.cuerpo.posicion.y;
+                if (this.estadoAnimacion === 'playing') {
+                    this.$set(this.cuerpo.velocidad, "x", this.cuerpo.velocidad.x + (this.fuerza.x / 10));
+                    this.$set(this.cuerpo.velocidad, "y", this.cuerpo.velocidad.y + this.fuerza.y / 10);
+
+                    nuevaPosX = this.cuerpo.posicion.x + this.cuerpo.velocidad.x / 10;
+                    nuevaPosY = this.cuerpo.posicion.y + this.cuerpo.velocidad.y / 10;
+                    this.$set(this.cuerpo.posicion, "x", nuevaPosX);
+                    this.$set(this.cuerpo.posicion, "y", nuevaPosY);
+                }
+                setTimeout(() => {
+                    this.animarMedioSegundo();
+
+                }, 100);
+            },
+            setModoFuerzas(nuevoModo) {
+                if (nuevoModo != 'resultante' && nuevoModo != 'componentes') {
+                    console.log("modoFuerza desconocido");
+                    return;
+                }
+                this.modoFuerza = nuevoModo;
+            }
+        },
+        mounted() {
+            console.log("Iniciando animación");
+            this.animarMedioSegundo();
+        },
+        watch: {
+            estadoAnimacion(estado) {
+                if (estado === 'stopped') {
+                    console.log("reiniciando");
+                    this.$set(this.cuerpo.posicion, "x", 10);
+                    this.$set(this.cuerpo.posicion, "y", 10);
+                    this.$set(this.cuerpo.velocidad, "x", 0);
+                    this.$set(this.cuerpo.velocidad, "y", 0);
+                }
+            }
+        }
+    })
+</script>
+<style>
+    .zonaInteraccion {
+        height: min(300px, 60vh);
+    }
+
+    #cuerpo {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: red;
+        position: absolute;
+        transition: left 100ms linear, top 100ms linear;
+    }
+
+    #opcionesAplicacionFuerza {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

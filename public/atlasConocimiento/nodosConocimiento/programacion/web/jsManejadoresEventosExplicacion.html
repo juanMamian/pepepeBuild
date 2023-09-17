@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Manejadores de eventos en javascript - Explicación</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Los elementos de una página web registran las acciones que ejecuta el usuario sobre ellos.
+        </p>
+
+        <p>
+            Algunos de los eventos que pueden realizarse sobre un elemento web son:
+        <ul>
+            <li>
+                <span class="programacionNombreObjeto">click</span>: Un usuario hace click sobre el elemento.
+            </li>
+            <li>
+                <span class="programacionNombreObjeto">dblclick</span>: Un usuario hace doble click sobre el elemento.
+            </li>
+            <li>
+                <span class="programacionNombreObjeto">focus</span>: Un usuario selecciona el elemento.
+            </li>
+            <li>
+                <span class="programacionNombreObjeto">blur</span>: Un usuario deselecciona el elemento.
+            </li>
+            <li>
+                <span class="programacionNombreObjeto">mouseenter</span>: El cursor entra en el elemento.
+            </li>
+            <li>
+                <span class="programacionNombreObjeto">mouseleave</span>: El cursor sale del elemento.
+            </li>
+        </ul>
+        </p>
+
+        <p>
+            Los eventos pueden ser manejados por funciones. Es decir: funciones que se ejecutan en respuesta a un evento.            
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Una función que responde a un evento se llama <span class="resaltado">manejador</span> del evento.
+        </recuadro-component>
+
+        <hr>
+
+        <h3>Registro de manejadores.</h3>
+
+        <p>
+            Para registrar un manejador para un evento, se empieza por escribir el nombre del evento precedido por la
+            palabra <span class="resaltado">on</span> en la etiqueta inicial de un elemento.
+        </p>
+
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+                <span class="programacionCodigoPrevio"> {{textoEtiqueta}}</span> <span
+                    class="programacionCodigoActual">onclick</span> <span class="programacionCodigoPrevio">></span> <br>
+                <span class="programacionCodigoPrevio"> {{textoFinEtiqueta}}</span>
+            </div>
+
+            <div class="programacionDescripcionCodigo">
+                Se ha creado el atributo <span class="programacionNombreObjeto">onclick</span> para referenciar que una
+                función manejará el evento <span class="programacionNombreObjeto">click</span> en este elemento.
+            </div>
+        </div>
+
+        <p>
+            A continuación se asigna la función que manejará el evento.
+        </p>
+        <div class="programacionZonaCodigoEjemplo">
+            <div class="programacionCodigo">
+                <span class="programacionCodigoPrevio"> {{textoEtiqueta}}</span> <span
+                    class="programacionCodigoPrevio">onclick</span> <span
+                    class="programacionCodigoActual">="oscurecer()"</span> <span
+                    class="programacionCodigoPrevio">></span> <br>
+                <span class="programacionCodigoPrevio"> {{textoFinEtiqueta}}</span>
+            </div>
+
+            <div class="programacionDescripcionCodigo">
+                Se ha declarado que la función <span class="programacionNombreObjeto">oscurecer</span> manejará el
+                evento <span class="programacionNombreObjeto">click</span> en este elemento.
+            </div>
+        </div>
+
+        <p>
+            Hecho el registro, ahora cada vez que ocurra el evento <span class="programacionNombreObjeto">click</span> en el elmento, 
+            la función <span class="programacionNombreObjeto">oscurecer</span> será ejecutada.
+        </p>
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+                textoEtiqueta: '<div ',
+                textoFinEtiqueta: '</div>'
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

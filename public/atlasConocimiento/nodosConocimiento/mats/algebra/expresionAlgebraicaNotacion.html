@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Expresión algebraica</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>Las expresiones algebraicas usan reglas de notación especial para escribir multiplicaciones.</p>
+
+
+        <recuadro-component tipo="datoPrevio">
+            En las expresiones algebraicas no se usa el símbolo <span class="resaltado" >\(
+                \times \)</span> para las multiplicaciones.
+            En su lugar se usa un punto a media altura. <span class="resaltado">\( \cdot
+                \)</span>
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran ejemplos de multiplicaciones escritas usando el punto a media altura.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">\(3 \cdot 17 \)</div>
+                <div class="itemEjemplo">\(d \cdot 14\)</div>
+                <div class="itemEjemplo">\( k \cdot 22\)</div>
+                <div class="itemEjemplo">\(y \cdot 7 \)</div>
+                <div class="itemEjemplo">\(25 \cdot 2 \)</div>
+            </div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si la magnitud de una multiplicación es una incógnita o una expresión numérica no se escribe el símbolo de multiplicación.
+        </recuadro-component>
+        <bloque-component tipo="ejemplo"
+            textoCabecera="En este cuadro se muestran ejemplos de multiplicaciones escritas sin usar símbolo.">
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">\(3 t \)</div>
+                <div class="itemEjemplo">\(d (4 + 3)\)</div>
+                <div class="itemEjemplo">\( k (a - 3)\)</div>
+                <div class="itemEjemplo">\(2 m \)</div>
+                <div class="itemEjemplo">\(3 p \)</div>
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+    .expresionEnLista {
+        font-size: 35px;
+    }
+</style>

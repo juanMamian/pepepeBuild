@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Cancelación de operaciones</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+
+        <recuadro-component tipo="datoPrevio">
+            Si dos operaciones aritméticas causan efectos contrarios cuando son aplicadas se dice que son <span
+                class="resaltado">operaciones aritméticas opuestas</span>.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo">
+            <template #cabecera>
+                En este cuadro se muestran algunos ejemplos de operaciones aritméticas opuestas.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <recuadro-component tipo="datoPrevio">
+                        La suma causa un efecto de adición. Es una operación que <span class="resaltado">pone</span>.
+                    </recuadro-component>
+
+                    <recuadro-component tipo="datoPrevio">
+                        La resta causa un efecto de sustracción. Es una operación que <span
+                            class="resaltado">quita</span>.
+                    </recuadro-component>
+                    <recuadro-component tipo="datoNuevo">
+                        !Son operaciones opuestas!
+                    </recuadro-component>
+                </div>
+                <div class="itemEjemplo">
+                    <recuadro-component tipo="datoPrevio">
+                        La multiplicación causa un efecto de repetición. Es una operación que <span
+                            class="resaltado">repite</span>.
+                    </recuadro-component>
+
+                    <recuadro-component tipo="datoPrevio">
+                        La división causa un efecto de repartición. Es una operación que <span
+                            class="resaltado">reparte</span>.
+                    </recuadro-component>
+                    <recuadro-component tipo="datoNuevo">
+                        !Son operaciones opuestas!
+                    </recuadro-component>
+                </div>
+                <div class="itemEjemplo">
+                    <recuadro-component tipo="datoPrevio">
+                        La potenciación causa un efecto de repetición sucesiva. Es una operación que <span
+                            class="resaltado">repite repetidamente</span>.
+                    </recuadro-component>
+
+                    <recuadro-component tipo="datoPrevio">
+                        La división causa un efecto de repartición sucesiva. Es una operación que <span
+                            class="resaltado">reparte repetidamente</span>.
+                    </recuadro-component>
+                    <recuadro-component tipo="datoNuevo">
+                        !Son operaciones opuestas!
+                    </recuadro-component>
+                </div>
+
+            </div>
+        </bloque-component>
+
+        <p>
+            Cuando se aplica cierta operación sobre un número y sobre el resultado se aplica la operación opuesta con
+            la misma magnitud, se obtiene otra vez el número original. Sus efectos quedan <span
+                class="resaltado">cancelados</span>.
+        </p>
+
+        <bloque-component tipo="ejemplo" @desplegado="reiniciarCuadro">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de cancelación de operaciones.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo anchoMediano">
+                    <div class="resultado1" ref="resultado1">
+                        {{resultado1}}
+                    </div>
+
+                    <div class="boton selector" @click="iniciarOperacion1"
+                        :class="{deshabilitado: resultado1 != numeroInicial1 || operacionOpuesta1Aplicada, seleccionado:operacion1Aplicada}">
+                        Aplicar una suma de magnitud 4
+                    </div>
+
+                    <div class="boton selector" @click="iniciarOperacionOpuesta1"
+                        :class="{deshabilitado: resultado1 != numeroInicial1 + magnitudOperacion1, seleccionado: operacionOpuesta1Aplicada}">
+                        Aplicar una resta de magnitud 4
+                    </div>
+
+                    <transition name="fade">
+                    <recuadro-component tipo="datoNuevo" v-show="mostrandoAnuncio1">
+                        Se tiene otra vez el número original. ¡Las operaciones se cancelaron!
+                    </recuadro-component>
+                    </transition>
+
+                    <transition name="fade">
+                    <div class="boton" v-show="mostrandoBotonReinicio1" @click="reiniciarEjemplo1">
+                       Reiniciar 
+                    </div>
+                    </transition>
+
+                </div>
+                <div class="itemEjemplo anchoMediano">
+                    <div class="resultado" ref="resultado2" style="position: relative;">
+                        <div id="contenedorPartesResultado2" ref="contenedorPartesResultado2">
+                            <div class="parteResultado2" style="left: 2px">
+                                5
+                            </div>
+                            <div class="parteResultado2" style="right: 2px">
+                                5
+                            </div>
+                        </div>
+                        {{resultado2}}
+                    </div>
+
+                    <div class=" boton selector" @click="iniciarOperacion2"
+                        :class="{deshabilitado:resultado2 != numeroInicial2 || aplicandoOperacion2 || operacionOpuesta2Aplicada, seleccionado: operacion2Aplicada}">
+                        Aplicar una multiplicación de magnitud 3
+                    </div>
+
+                    <div class="boton selector" @click="iniciarOperacionOpuesta2"
+                        :class="{deshabilitado: resultado2 != numeroInicial2 * magnitudOperacion2 || aplicandoOperacionOpuesta2, seleccionado: operacionOpuesta2Aplicada}">
+                        Aplicar una división de magnitud 3
+                    </div>
+
+                    <transition name="fade">
+                    <recuadro-component tipo="datoNuevo" v-show="mostrandoAnuncio2">
+                        Se tiene otra vez el número original. ¡Las operaciones se cancelaron!
+                    </recuadro-component>
+                    </transition>
+
+                    <transition name="fade">
+                    <div class="boton" v-show="mostrandoBotonReinicio2" @click="reiniciarEjemplo2">
+                       Reiniciar 
+                    </div>
+                    </transition>
+
+                </div>
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                numeroInicial1: 6,
+                resultado1: 6,
+                magnitudOperacion1: 4,
+                operacion1Aplicada: false,
+                operacionOpuesta1Aplicada: false,
+                mostrandoAnuncio1:false,
+                mostrandoBotonReinicio1:false,
+
+                numeroInicial2: 5,
+                resultado2: 5,
+                magnitudOperacion2: 3,
+                operacion2Aplicada: false,
+                operacionOpuesta2Aplicada: false,
+                aplicandoOperacion2:false,
+                aplicandoOperacionOpuesta2:false,
+                mostrandoAnuncio2:false,
+                mostrandoBotonReinicio2:false,
+            }
+        },
+        methods: {
+            reiniciarCuadro() {
+                this.reiniciarEjemplo1();
+                this.reiniciarEjemplo2();
+            },
+            reiniciarEjemplo1() {
+                this.resultado1 = this.numeroInicial1;
+                this.operacion1Aplicada = false;
+                this.operacionOpuesta1Aplicada = false;
+                this.mostrandoAnuncio1=false;
+                this.mostrandoBotonReinicio1=false;
+            },
+            iniciarOperacion1() {
+                if (this.resultado1 === this.numeroInicial1 && this.magnitudOperacion1 > 0) {
+                    this.stepOperacion1();
+                }
+                else {
+                    console.log("Error de configuración");
+                }
+
+            },
+            stepOperacion1() {
+                this.resultado1++;
+                this.$refs.resultado1.animate([
+                    {
+                        transform: 'scale(1)'
+                    },
+                    {
+                        transform: 'scale(1.2)'
+                    },
+                    {
+                        transform: 'scale(1)'
+                    },
+                ], {duration: 200, iterations: 1});
+                if (this.resultado1 < this.numeroInicial1 + this.magnitudOperacion1) {
+                    setTimeout(() => {
+                        this.stepOperacion1();
+                    }, 400);
+                    return;
+                }
+                this.operacion1Aplicada = true;
+            },
+            iniciarOperacionOpuesta1() {
+                if (this.resultado1 != this.numeroInicial1 + this.magnitudOperacion1) {
+                    console.log("Aun no se puede aplicar la operación opuesta");
+                    return;
+                }
+                this.stepOperacionOpuesta1()
+            },
+            stepOperacionOpuesta1() {
+                this.resultado1--;
+                this.$refs.resultado1.animate([
+                    {
+                        transform: 'scale(1)'
+                    },
+                    {
+                        transform: 'scale(1.2)'
+                    },
+                    {
+                        transform: 'scale(1)'
+                    },
+                ], {duration: 200, iterations: 1});
+                if (this.resultado1 > this.numeroInicial1) {
+                    setTimeout(() => {
+                        this.stepOperacionOpuesta1();
+                    }, 400);
+                    return;
+                }
+                this.operacionOpuesta1Aplicada = true;
+            },
+
+            //Ejemplo2.
+            reiniciarEjemplo2() {
+                this.resultado2 = this.numeroInicial2;
+                this.operacion2Aplicada = false;
+                this.operacionOpuesta2Aplicada = false;
+                this.mostrandoAnuncio2=false;
+                this.mostrandoBotonReinicio2=false;
+            },
+            iniciarOperacion2() {
+                this.aplicandoOperacion2 = true;
+                this.$refs.contenedorPartesResultado2.animate([
+                    {
+                        width: '15px',
+                        opacity: '1',
+                    },
+                    {
+                        width: '80px',
+                        offset: 0.1,
+                    },
+                    {
+                        width: '80px',
+                        offset: 0.9,
+                    },
+                    {
+                        width: '15px',
+                        opacity: 1,
+                    },
+                ], {duration: 1600, iterations: 1})
+                    .finished.then(() => {
+                        this.resultado2 = this.numeroInicial2 * this.magnitudOperacion2;
+                        this.$refs.resultado2.animate([
+                            {
+                                transform: 'scale(1)'
+                            },
+                            {
+                                transform: 'scale(1.2)'
+                            },
+                            {
+                                transform: 'scale(1)'
+                            },
+                        ], {duration: 200, iterations: 1})
+                            .finished.then(() => {
+                                this.operacion2Aplicada = true;
+                                this.aplicandoOperacion2 = false;
+
+                            });
+                    })
+            },
+            iniciarOperacionOpuesta2() {
+                this.aplicandoOperacionOpuesta2 = true;
+                this.$refs.resultado2.animate([
+                    {
+                        transform: 'scale(1)'
+                    },
+                    {
+                        transform: 'scale(1.2)'
+                    },
+                    {
+                        transform: 'scale(1)'
+                    },
+                ], {duration: 200, iterations: 1})
+                    .finished.then(() => {
+                        this.resultado2 = this.numeroInicial2;
+                        this.$refs.contenedorPartesResultado2.animate([
+                            {
+                                width: '15px',
+                                opacity: '1',
+                            },
+                            {
+                                width: '80px',
+                                offset: 0.1,
+                            },
+                            {
+                                width: '80px',
+                                opacity: 1,
+                                offset: 0.7,
+                            },
+                            {
+                                width: '80px',
+                                opacity: 0,
+                            },
+                        ], {duration: 1600, iterations: 1})
+                            .finished.then(() => {
+                                this.operacionOpuesta2Aplicada = true;
+                                this.aplicandoOperacionOpuesta2 = false;
+                            })
+                    })
+            },
+        },
+        watch:{
+            operacionOpuesta1Aplicada(aplicada){
+                if(aplicada){
+                    setTimeout(()=>{
+                        this.mostrandoAnuncio1=true;
+                    }, 500);
+                    setTimeout(()=>{
+                        this.mostrandoBotonReinicio1=true;
+                    },2500);
+                }
+            },
+            operacionOpuesta2Aplicada(aplicada){
+                if(aplicada){
+                    setTimeout(()=>{
+                        this.mostrandoAnuncio2=true;
+                    }, 500);
+                    setTimeout(()=>{
+                        this.mostrandoBotonReinicio2=true;
+                    },2500);
+                }
+            }
+
+        }
+
+    })
+</script>
+<style>
+    #contenedorPartesResultado2 {
+        width: 15px;
+        opacity: 0;
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #contenedorPartesResultado2 .parteResultado2 {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: opacity: 0.5s
+    }
+</style>

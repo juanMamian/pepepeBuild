@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Lugares en el plano cartesiano</title>
+</head>
+<body>
+    <div id="doc">
+
+        <p>Cada punto del plano cartesiano es indicado por una pareja de números</p>
+
+        <recuadro-component tipo="instruccionPointer">
+            En el siguiente plano cartesiano, presiona el botón para escoger un punto del plano y ver los números que lo señalan.
+        </recuadro-component>
+
+        <div id="planoCartesiano">            
+            <div class="boton botonInternoPlano" id="botonEscogerPunto" @click="escogerPunto" v-show="stepCoordenadasPuntoEscogido==0">
+                Escoger un punto del plano
+            </div>
+            <div class="boton botonInternoPlano" id="botonReiniciarEscogerPunto" @click="stepCoordenadasPuntoEscogido=0" v-show="stepCoordenadasPuntoEscogido>=10">
+                Reiniciar
+            </div>
+
+            <transition name="popIn">
+                <div :style="[estiloPosPuntoEscogido]" id="puntoEscogido" v-show="puntoEscogido.x!=null && puntoEscogido.y!=null && stepCoordenadasPuntoEscogido>=1" :key="puntoEscogido.x+puntoEscogido.y">
+                    <div class="boton botonRevelarCoords" id="botonRevelarAbscisa" :style=[posBotonRevelarAbscisa] v-show="stepCoordenadasPuntoEscogido==4" @click="stepCoordenadasPuntoEscogido++">Primer número</div>
+                    <div class="boton botonRevelarCoords" id="botonRevelarOrdenada" :style=[posBotonRevelarOrdenada] v-show="stepCoordenadasPuntoEscogido==7" @click="stepCoordenadasPuntoEscogido++">Segundo número</div>
+
+                    <transition name="despliegueV" @after-enter="stepCoordenadasPuntoEscogido++">
+                        <div class="lineaMarca" id="lineaMarcaV" :style="[estiloLineaMarcaV]" v-show="stepCoordenadasPuntoEscogido>=5"></div>
+                    </transition>
+                    <transition name="despliegueH" @after-enter="stepCoordenadasPuntoEscogido++">
+                        <div class="lineaMarca" id="lineaMarcaH" :style="[estiloLineaMarcaH]" v-show="stepCoordenadasPuntoEscogido>=8"></div>
+                    </transition>
+
+                    <transition name="popIn" @after-enter="stepCoordenadasPuntoEscogido++">
+                        <div id="coordenadasPuntoEscogido" :style="estiloCoordenadasPuntoEscogido" v-show="stepCoordenadasPuntoEscogido>=3">
+                            <transition name="popIn" @after-enter="stepCoordenadasPuntoEscogido++">
+                                <div class="campoCoordenada" id="abscisa" v-show="stepCoordenadasPuntoEscogido>=6">{{puntoEscogido.x}}</div>
+                            </transition>
+                            ,
+                            <transition name="popIn" @after-enter="stepCoordenadasPuntoEscogido++">
+                                <div class="campoCoordenada" id="ordenada" v-show="stepCoordenadasPuntoEscogido>=9">{{puntoEscogido.y}}</div>
+                            </transition>
+                        </div>
+                    </transition>
+
+                    <div class="mensajePuntoEscogido" :style="[posicionMensajePuntoEscogido]" v-show="stepCoordenadasPuntoEscogido==2">
+                        Este punto es señalado por dos números
+                        <div class="boton" @click="stepCoordenadasPuntoEscogido++">¿Cuáles números?</div>
+                    </div>
+                </div>
+            </transition>
+            
+            <div id="zonaEjes" @mousedown.left.self="planoAgarrado=true" @mouseup.left="mouseUpPlano" @mousemove="panPlano" @touchstart="inicioPanMobile" @touchmove.stop.prevent="panPlanoMobile">
+                <div class="eje" id="ejeHorizontal" :style="[posEjeH]">
+                    <div class="bolita" :class="{bolitaOrigen:Math.ceil(posEsquina.x)+numero-2==0}" v-for="numero of numerosHorizontales+2" :style="[ {left: ( ((numero-2)*distanciaNumeros)-((posEsquina.x%1)*distanciaNumeros) )+'px'} ]">
+                        <div class="etiquetaNumero etiquetaNumeroH" :style="[estiloNumero]">
+                            {{(posEsquina.x>0?Math.floor(posEsquina.x):Math.ceil(posEsquina.x))+numero-2}}
+                        </div>
+                    </div>
+                </div>                    
+            
+                <div class="eje" id="ejeVertical" :style="[posEjeV]">
+                    <div class="bolita" v-for="numero of (numerosVerticales+1)" :class="{bolitaOrigen:Math.ceil(posEsquina.y)-numero==0}" :style="[ {top: ( ((numero-1)*distanciaNumeros)+((posEsquina.y%1==0?1:posEsquina.y%1)*distanciaNumeros) )+'px'} ]">
+                        <div class="etiquetaNumero etiquetaNumeroV" :style="[estiloNumero]">
+                            {{(posEsquina.y>0?Math.floor(posEsquina.y):Math.ceil(posEsquina.y))-(numero-1)}}
+                        </div>
+                    </div>
+                </div>             
+            </div>
+        </div>        
+
+        <recuadro-component tipo="datoPrevio">
+            El primer número corresponde al eje horizontal. Es llamado <span class="resaltado">La abscisa</span>
+        </recuadro-component>
+        <recuadro-component tipo="datoPrevio">
+            El segundo número corresponde al eje vertical. Es llamado <span class="resaltado">La ordenada</span>
+        </recuadro-component>
+    </div>
+</body>
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {                   
+                sizePlano:{
+                    x: 1,
+                    y:1,
+                },
+                planoPreparado:false,
+                distanciaNumeros:50,
+                posEsquina:{
+                    x:0,
+                    y:0
+                },
+
+                puntoEscogido:{
+                    x:null,
+                    y:null,
+                },
+
+                stepCoordenadasPuntoEscogido:0,
+
+                planoAgarrado:false,
+                planoPanned:false,
+                zoom:100,
+
+                lastPlanoX:0,
+                lastPlanoY:0,
+            }
+        },
+        methods:{
+            inicioPanMobile(e){
+                this.lastPlanoX = e.changedTouches[0].clientX;
+                this.lastPlanoY = e.changedTouches[0].clientY;
+            },
+            panPlanoMobile(e){
+                const deltaX = e.changedTouches[0].clientX - this.lastPlanoX;
+                const deltaY = e.changedTouches[0].clientY - this.lastPlanoY;
+                this.lastPlanoX = e.changedTouches[0].clientX;
+                this.lastPlanoY = e.changedTouches[0].clientY;
+                
+                this.desplazarVista(deltaX, deltaY);
+            },
+            panPlano(e){
+                if(!this.planoAgarrado){
+                    return
+                }
+                this.desplazarVista((e.movementX/this.factorZoom), (e.movementY/this.factorZoom));
+                e.preventDefault();
+                this.planoPanned = true;
+            },
+            desplazarVista(deltaX, deltaY) {
+                this.$set(this.posEsquina, "x",this.posEsquina.x - (deltaX/(this.factorZoom*20)));
+                this.$set(this.posEsquina, "y",this.posEsquina.y + (deltaY/(this.factorZoom*20)));
+                //this.actualizarTrazos++;
+            },
+            mouseUpPlano(){
+                this.planoPanned=false,
+                this.planoAgarrado=false
+            },
+            escogerPunto(){
+                this.stepCoordenadasPuntoEscogido++;
+                const rangox=this.numerosHorizontales-4;
+                var posx=0;
+                do{
+                    posx=Math.round((Math.random()*rangox) + this.posEsquina.x+2);
+                }while(posx==0)                
+
+                const rangoy=this.numerosVerticales-4
+                var posy=0;
+                do{
+                    posy=Math.round( (this.posEsquina.y-2) - (Math.random()*rangoy))
+                }while(posy==0)
+
+                this.$set(this.puntoEscogido, "x", posx);
+                this.$set(this.puntoEscogido, "y", posy);
+                this.$nextTick(()=>{
+                    document.getElementById("puntoEscogido").scrollIntoView({behavior:'smooth', })
+                })
+
+                setTimeout(()=>{
+                    this.stepCoordenadasPuntoEscogido++;
+                }, 700)
+            }   
+        },
+        computed:{
+            estiloNumero(){
+                return {
+                    fontSize: Math.round(this.distanciaNumeros/3)+"px"
+                }
+            },
+            factorZoom(){
+                console.log(`Factor: ${this.zoom/100}`);
+                return Number((this.zoom/100).toFixed(2));
+            },
+            posEjeH(){
+                if(!this.planoPreparado)return{top: '1px'}
+                return {
+                    top: ((this.posEsquina.y*this.distanciaNumeros)-1)+"px"
+                }
+            },
+            posEjeV(){
+                if(!this.planoPreparado)return{left: '1px'}
+                return {
+                    left: -1-(this.posEsquina.x*this.distanciaNumeros)+"px"
+                }
+            },
+            numerosHorizontales(){
+                if(!this.planoPreparado)return 0;
+                return Math.ceil(this.sizePlano.x/this.distanciaNumeros);
+            },
+            numerosVerticales(){
+                if(!this.planoPreparado)return 0;
+                return Math.ceil(this.sizePlano.y/this.distanciaNumeros);
+            },
+            estiloPosPuntoEscogido(){
+                return {
+                    left: ((this.puntoEscogido.x-this.posEsquina.x)*this.distanciaNumeros)+"px",
+                    top: ((this.posEsquina.y-this.puntoEscogido.y)*this.distanciaNumeros)+"px"
+                }
+            },
+            posBotonRevelarAbscisa(){
+                if(this.puntoEscogido.y>0){
+                    return{
+                        top: '101%'
+                    }
+                }
+                else{
+                    return {
+                        bottom: '101%'
+                    }
+                }
+            },
+            posBotonRevelarOrdenada(){
+                if(this.puntoEscogido.x>0){
+                    return{
+                        right: '101%'
+                    }
+                }
+                else{
+                    return {
+                        left: '101%'
+                    }
+                }
+            },
+            estiloLineaMarcaV(){
+                
+                if(this.puntoEscogido.y>0){
+                    return {
+                        top:'100%',
+                        height:(Math.round(this.puntoEscogido.y*this.distanciaNumeros)-5)+"px"
+                    }
+                }
+                else{
+                    return {
+                        bottom:'100%',
+                        height:(Math.round(Math.abs(this.puntoEscogido.y)*this.distanciaNumeros)-5)+"px"
+                    }
+                }
+            },
+            estiloLineaMarcaH(){
+                
+                if(this.puntoEscogido.x<0){
+                    return {
+                        left:'100%',
+                        width:(Math.round(Math.abs(this.puntoEscogido.x)*this.distanciaNumeros)-5)+"px"
+                    }
+                }
+                else{
+                    return {
+                        right:'100%',
+                        width:(Math.round(Math.abs(this.puntoEscogido.x)*this.distanciaNumeros)-5)+"px"
+                    }
+                }
+            },
+            estiloCoordenadasPuntoEscogido(){
+                var estilo={}
+                if(this.puntoEscogido.x>0){
+                    estilo.left="102%"
+                }
+                else{
+                    estilo.right="102%"
+                }
+                if(this.puntoEscogido.y>0){
+                    estilo.bottom="102%"
+                }
+                else{
+                    estilo.top="102%"
+                }
+                return estilo
+            },
+            posicionMensajePuntoEscogido(){
+                var estilo={}
+                if(this.puntoEscogido.x<0){
+                    estilo.left="110%"
+                }
+                else{
+                    estilo.right="110%"
+                }
+                if(this.puntoEscogido.y<0){
+                    estilo.bottom="110%"
+                }
+                else{
+                    estilo.top="110%"
+                }
+                return estilo
+            }
+        },
+        mounted(){
+            
+
+            const elemPlano=document.getElementById("planoCartesiano");
+            
+            const anchoVentana=screen.width;
+            var ancho=Math.round(anchoVentana*0.7);
+            if(ancho>650)ancho=650
+            const alto=ancho;
+            elemPlano.style.height=alto+"px";
+            elemPlano.style.width=ancho+"px";
+
+
+            this.distanciaNumeros=Math.ceil(ancho/13);
+            if(this.distanciaNumeros<30)this.distanciaNumeros=30;
+
+            this.$set(this.sizePlano, "x", ancho);
+            this.$set(this.sizePlano, "y", alto);
+
+            this.$set(this.posEsquina, "x", -ancho/(this.distanciaNumeros*2));
+            this.$set(this.posEsquina, "y", alto/(this.distanciaNumeros*2));
+            this.planoPreparado=true;                        
+        }
+       
+    })
+</script>
+
+<style>
+    #planoCartesiano{
+        position: relative;
+        width: min(200px, 90%);
+        height: 200px;
+        background-color: rgb(214, 214, 214);
+        margin: 10px auto;
+        position: relative;
+        overflow: hidden;
+    }
+    .botonInternoPlano{
+        position: relative;
+        z-index: 2;
+    }
+    #botonEscogerPunto{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    #botonReiniciarEscogerPunto{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    #puntoEscogido{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ea6e32;
+        position: absolute;
+        transform: translate(-5px, -5px);
+        z-index: 5;
+    }
+    .mensajePuntoEscogido{
+        position: absolute;
+        border: 2px solid rgb(112, 55, 14);
+        background-color: rgb(224, 174, 138);
+        border-radius: 15px;
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+    #coordenadasPuntoEscogido{
+        border: 2px solid cadetblue;
+        border-radius: 4px;
+        padding: 5px 7px;
+        position: absolute;
+        width: 80px;
+        text-align: center;
+    }
+    .campoCoordenada{
+        display: inline-block;
+    }
+    .botonRevelarCoords{
+        position: absolute;
+    }
+    #botonRevelarAbscisa{
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #botonRevelarOrdenada{
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    #lineaMarcaV{
+        width: 1px;
+        background-color: red;
+        position: absolute;
+        left: 50%;
+    }
+    #lineaMarcaH{
+        height: 1px;
+        background-color: green;
+        position: absolute;
+        top: 50%;
+    }
+    #zonaEjes{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+    .eje{
+        position: absolute;
+    }
+    #ejeHorizontal{
+        width: 100%;
+        height: 3px;
+        background-color: gray;
+    }
+    #ejeHorizontal>.bolita{
+        top: 50%;
+    }
+    #ejeVertical{
+        top:0%;
+        height: 100%;
+        width: 3px;
+        background-color: gray;
+    }
+    #ejeVertical>.bolita{
+        left: 50%;
+    }
+    .bolita{
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: gray;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .bolitaOrigen{
+        background-color: purple;
+    }
+    .etiquetaNumero{
+        position: absolute;        
+    }
+    .etiquetaNumeroH{
+        left: 50%;
+        top: 105%;
+        transform: translateX(-50%);
+    }
+    .etiquetaNumeroV{
+        right: 102%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .despliegueH-enter{
+        transform: scaleX(0.1);
+    }
+    .despliegueH-enter-to{
+        transform: scaleX(1);
+    }
+    .despliegueH-enter-active{
+        transition: transform 0.9s;
+        overflow-x: hidden;
+    }
+
+    .despliegueV-enter{
+        transform: scaleY(0.1);
+    }
+    .despliegueV-enter-to{
+        transform: scaleY(1);
+    }
+    .despliegueV-enter-active{
+        transition: transform 0.9s;
+        overflow-x: hidden;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .mensajePuntoEscogido{
+            font-size: 17px;
+        }
+        
+    }
+
+</style>

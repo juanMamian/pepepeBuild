@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosMats.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Despeje</title>
+</head>
+
+<body>
+    <div id="doc">
+        <recuadro-component tipo="datoPrevio">
+            Cuando una incógnita está sola en uno de los miembros de una ecuación, se dice
+            que está <span class="resaltado">despejada<span>.
+
+        </recuadro-component>
+
+        <p>Como en el siguiente ejemplo:</p>
+
+
+        <div class="matsExpresion" style="margin: 10px auto; font-size: 45px;">\({r}= {{3 \times 8 + 2} \over 4} \)
+        </div>
+
+
+        <p>Esta ecuación afirma que la incógnita \(r\) es igual de grande que
+            la expresión numérica que aparece en el miembro de la derecha. Así que al conocer
+            el valor de esa expresión numérica, se descubre también el valor de la incógnita.
+        </p>
+
+        <recuadro-component tipo="datoNuevo">
+            Cuando una incógnita está despejada, es fácil descubrir su valor.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Frecuentemente se trabaja con ecuaciones donde la incógnita no está despejada.
+        </recuadro-component>
+
+        <p>En la siguiente ecuación la incógnita <span style="font-size: 40px;">\(m\) </span> no está despejada.</p>
+
+        <div class="matsExpresion" style="font-size: 40px">
+            \( (m \times 3) -2 = ({7 \over 2 }) + 5 \)
+        </div>
+
+        <p>
+            Sobre la incógnita <span style="font-size:40px"> \(m\) </span> está aplicada una multiplicación por 3 y
+            sobre ese resultado
+            aparece aplicada una resta de 2.
+        </p>
+
+        <p>
+            Si esas dos operaciones no estuvieran, entonces la <span style="font-size: 40px;"> \(m\) </span> estaría
+            despejada.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Si se logra construir una nueva ecuación equivalente en la cual la incógnita
+            esté despejada, será posible descubrir el valor de la incógnita.
+        </recuadro-component>
+
+
+
+
+        <recuadro-component tipo="datoPrevio">
+
+            <p>Si se sigue la siguiente estrategia, es posible deducir una ecuación donde la incógnita esté despejada:
+            </p>
+
+            <ul>
+                <li>Construir una nueva ecuación equivalente en la cual haya operaciones cancelándose en el miembro
+                    donde está la incógnita.</li>
+                <li>Reemplazar la expresión con operaciones que se cancelan por una versión simplificada.</li>
+                <li>Repetir hasta que la incógnita esté despejada.</li>
+            </ul>
+
+        </recuadro-component>
+
+
+    </div>
+</body>
+
+</html>
+
+
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },
+
+    })
+</script>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        padding: 2% 5%;
+    }
+
+    li {
+        margin: 5px 0px;
+    }
+
+    .nota {
+        background-color: rgb(233, 185, 150);
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px auto;
+        width: min(650px, 90%);
+    }
+
+    .ecuacionEjemplo {
+        min-width: 100px;
+        text-align: center;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: cadetblue;
+        display: inline-block;
+    }
+</style>

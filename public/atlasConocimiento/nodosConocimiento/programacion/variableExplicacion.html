@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+	<script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosProgramacion.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+	<link rel="stylesheet"
+		href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+	<title>Variable - explicación</title>
+</head>
+
+<body>
+	<div id="doc">
+		<p>
+			Para computar información, los procesadores almacenan datos en su memoria para leerlos después y realizar acciones con ellos.
+		</p>
+
+		<p>
+			En los programas informáticos, se usa el concepto de <span class="resaltado">variable</span>
+			para escribir instrucciones relacionadas con guardar y leer
+			datos de la memoria.
+		<p>
+
+			<recuadro-component tipo="datoPrevio">
+				Una variable es un lugar en la memoria dentro del cual se
+				puede almacenar algún dato.
+			</recuadro-component>
+
+			<recuadro-component tipo="datoPrevio">
+				Cada variable tiene un nombre.
+			</recuadro-component>
+
+
+			El procesador puede crear variables, asignar un dato para ser almacenado dentro de una variable
+			o leer el dato almacenado dentro de una variable.
+		</p>
+
+
+		<bloque-component tipo="ejemplo">
+			<template #cabecera>
+				En este cuadro se muestran ejemplos de instrucciones relacionadas con variables.
+			</template>
+			<div class="listaEjemplos">
+				<div class="itemEjemplo">
+					<div class="programacionCodigo" style="text-align: left">
+						variable año
+						<br>
+						variable añoPasado
+					</div>
+
+					<div class="programacionDescripcionCodigo">
+						Crear una variable llamada <span
+							class="programacionNombreObjeto">año</span>
+						y otra llamada <span class="programacionNombreObjeto">añoPasado</span>.
+					</div>
+
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="programacionCodigo">
+						año ← 2023
+					</div>
+
+					<div class="programacionDescripcionCodigo">
+						Almacenar en la variable <span
+							class="programacionNombreObjeto">año</span> el número 2023.
+					</div>
+
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="programacionCodigo">
+						año
+					</div>
+
+					<div class="programacionDescripcionCodigo">
+						Leer el dato contenido en la variable <span
+							class="programacionNombreObjeto">año</span>.
+					</div>
+				</div>
+
+				<div class="itemEjemplo">
+					<div class="programacionCodigo">
+						añoPasado ← año
+					</div>
+
+					<div class="programacionDescripcionCodigo">
+						Almacenar en <span class="programacionNombreObjeto">añoPasado</span> el
+						contenido de <span class="programacionNombreObjeto">año</span>
+					</div>
+				</div>
+
+			</div>
+		</bloque-component>
+
+	</div>
+</body>
+
+</html>
+
+<script>
+	const app = new Vue({
+		el: "#doc",
+		components: {
+			recuadroComponent,
+			bloqueComponent
+		},
+		data() {
+			return {
+
+			}
+		},
+		computed: {
+		},
+	});
+</script>
+<style>
+</style>

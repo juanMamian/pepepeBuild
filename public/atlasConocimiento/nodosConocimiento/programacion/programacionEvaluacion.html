@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Programacion - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+	    <p>
+	    Comprendo el concepto de programación si:
+
+	    </p>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Puedo explicar qué es la programación, quién la hace y a quién está dirigida.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Puedo explicar qué es un programa informático.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Conozco los nombres de algunos lenguajes de programación.
+		    </template>
+	    </bloque-component>
+
+	    <bloque-component tipo="evaluacion">
+		    <template #cabecera>
+			    Puedo explicar en qué consisten la compilación y la interpretación de programas informáticos.
+		    </template>
+	    </bloque-component>
+	    <bloque-component tipo='evaluacion'>
+	    	<template #cabecera>
+	    		Puedo crear y ejecutar un programa informático de prueba.
+	    	</template>
+	    	
+	    </bloque-component>
+	    
+
+    </div>
+</body>
+</html>
+
+<script>
+	const app= new Vue({
+		el: "#doc",
+		components:{
+			recuadroComponent,
+			bloqueComponent
+		},
+		data(){
+			return {
+
+			}
+		},
+		computed:{
+		},
+	});
+</script>
+<style>
+</style>

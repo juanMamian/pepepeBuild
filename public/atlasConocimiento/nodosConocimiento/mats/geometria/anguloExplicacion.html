@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Ángulo</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>Cuando dos lineas se encuentran, se forma una punta así:</p>
+
+        <div id="puntaAngulo" class="revealOnHover">
+            <img src="anguloPunta.png" alt="punta" title="Estas dos lineas forman una punta">
+            <img class="hoverDependent" :style="[visibilidadAngulo1]" src="anguloPuntaConAngulo.png"
+                alt="punta y ángulo" title="Entres estas dos líneas hay un ángulo">
+        </div>
+        <p>Se llama <span v-on:mouseenter="mostrandoAngulo1=true" v-on:mouseleave="mostrandoAngulo1=false"
+                class="resaltado">ángulo</span> a la apertura
+            que se forma entre las dos líneas
+        </p>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se puede ver un ángulo y se puede ampliarlo o reducirlo.">
+            
+
+            <canvas id="canvasAngulo1" width="300" height="300"></canvas>
+            <div id="contenedorBotones">
+                <div class="boton" v-on:click.stop="ampliarAngulo1">Ampliar ángulo</div>
+                <div class="boton" v-on:click.stop="reducirAngulo1">Reducir ángulo</div>
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const lapiz1 = document.getElementById("canvasAngulo1")
+    const doc = new Vue({
+        el: "#doc",
+        data() {
+            return {
+                mostrandoAngulo1: false,
+                angulo1: 30,
+                lapiz1: null,
+                radioAngulo1: 100,
+                centroAngulo1: {
+                    x: 150,
+                    y: 150
+                }
+            }
+        },
+        computed: {
+            visibilidadAngulo1() {
+                var valor = this.mostrandoAngulo1 ? 'visible' : 'hidden';
+                return {
+                    visibility: valor
+                }
+            },
+            radAngulo1() {
+                return ((this.angulo1 * Math.PI) / 180);
+            },
+            punta1Angulo1() {
+                const x = this.centroAngulo1.x + Math.round(this.radioAngulo1 * Math.cos(this.radAngulo1 / 2));
+                const y = this.centroAngulo1.y + Math.round(-this.radioAngulo1 * Math.sin(this.radAngulo1 / 2));
+                return {
+                    x, y
+                }
+            },
+            punta2Angulo1() {
+                const x = this.centroAngulo1.x + Math.round(this.radioAngulo1 * Math.cos(this.radAngulo1 / 2));
+                const y = this.centroAngulo1.y + Math.round(this.radioAngulo1 * Math.sin(this.radAngulo1 / 2));
+                return {
+                    x, y
+                }
+            }
+        },
+        methods: {
+            trazarAngulo1() {
+                this.lapiz1.fillStyle = "#5f9ea0";
+                this.lapiz1.beginPath();
+                this.lapiz1.moveTo(this.centroAngulo1.x, this.centroAngulo1.y);
+                this.lapiz1.arc(this.centroAngulo1.x, this.centroAngulo1.y, 30, -(this.radAngulo1 / 2), this.radAngulo1 / 2);
+                this.lapiz1.fill();
+
+                this.lapiz1.lineWidth = 3;
+                this.lapiz1.beginPath();
+                this.lapiz1.moveTo(150, 150);
+                this.lapiz1.lineTo(this.punta1Angulo1.x, this.punta1Angulo1.y);
+
+                this.lapiz1.moveTo(150, 150);
+                this.lapiz1.lineTo(this.punta2Angulo1.x, this.punta2Angulo1.y);
+
+
+                this.lapiz1.stroke();
+            },
+            ampliarAngulo1() {
+                if (this.angulo1 <= 350) {
+                    this.angulo1 = this.angulo1 + 10;
+                }
+                Vue.nextTick(() => {
+                    this.lapiz1.clearRect(0, 0, 300, 300);
+                    this.trazarAngulo1();
+                })
+
+            },
+            reducirAngulo1() {
+                if (this.angulo1 >= 10) {
+                    this.angulo1 = this.angulo1 - 10;
+                }
+                Vue.nextTick(() => {
+                    this.lapiz1.clearRect(0, 0, 300, 300);
+                    this.trazarAngulo1();
+                })
+            }
+        },
+        mounted() {
+            this.lapiz1 = document.getElementById("canvasAngulo1").getContext("2d");
+            this.trazarAngulo1();
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    .hoverDependent {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+
+    .revealOnHover {
+        position: relative;
+    }
+
+    #puntaAngulo {
+        margin: 30px auto;
+        width: 150px;
+    }
+
+    #canvasAngulo1{
+        display: block;
+        margin: 10px auto;
+    }
+
+    #puntaAngulo img {
+        width: 100%;
+    }
+
+    #contenedorBotones {
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style>

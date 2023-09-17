@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+    <title>Ejemplos de despeje</title>
+</head>
+
+<body>
+    <div id="doc">
+        <bloque-component tipo="ejemplo">
+
+            <template #cabecera>
+                En este ejemplo se despeja la ecuación <span style="font-size: 40px;"> \( m \cdot 3 -2 = {7 \over 2 } +
+                    5 \)</span>.
+            </template>
+
+            <div class="ecuacion ecuacionOriginal">
+                \( m \cdot 3 -2 = {7 \over 2 } + 5 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio">
+                En el miembro de la izquierda, la última operación aplicada es la
+                <span class="subrayado">resta de dos</span>.
+                Se construirá una ecuación equivalente aplicando la operación
+                opuesta en los miembros de la ecuación.
+            </recuadro-component>
+            <br>
+            <div class="boton" v-on:click="stepEjemplo1=1">
+                Construir una ecuación equivalente aplicando una <span class="subrayado">suma de 2</span> en
+                los miembros de la ecuación.
+            </div>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=1" v-show="stepEjemplo1>=1">
+                    \( m \cdot 3 -2+2 = {7 \over 2 } + 5+2 \)
+                </div>
+            </transition>
+
+            <recuadro-component tipo="datoNuevo" v-show="stepEjemplo1>=1">
+                Ahora, en el miembro de la izquierda, hay operaciones que se cancelan.
+            </recuadro-component>
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo1>=1" class="boton" v-on:click="stepEjemplo1=2">
+                    Reescribir sin las operaciones que se cancelan.
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=2">
+                    \( m \cdot 3 = {7 \over 2 } + 5 + 2 \)
+                </div>
+            </transition>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo1>=2">
+                En el miembro de la izquierda la última (Y única) operación aplicada
+                es la <span class="subrayado">multiplicación por 3</span>. Se construirá una ecuación equivalente
+                aplicando su operación opuesta en los
+                miembros de la ecuación.
+            </recuadro-component>
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo1>=2" class="boton" v-on:click="stepEjemplo1=3">
+                    Construir una ecuación equivalente aplicando una <span class="subrayado">división entre 3</span> en
+                    los miembros de la ecuación.
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=3">
+                    \( {{m \cdot 3} \over 3 }= {{ {7 \over 2 } + 5 + 2 } \over 3 } \)
+
+                </div>
+            </transition>
+
+            <recuadro-component tipo="datoNuevo" v-show="stepEjemplo1>=3">
+                En esta ecuación hay operaciones que se cancelan.
+            </recuadro-component>
+
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo1>=3" class="boton" v-on:click="stepEjemplo1=4">
+                    Reescribir sin las operaciones que se cancelan.
+                </div>
+            </transition>
+
+            <transition name="travelTop">
+                <div class="ecuacion" v-show="stepEjemplo1>=4">
+                    \( m = {{7 \over 2 } + 5+2 \over 3 } \)
+
+                </div>
+            </transition>
+
+            <recuadro-component tipo="descubrimiento" v-show="stepEjemplo1>=4">
+                La \(m\) está despejada.
+            </recuadro-component>
+
+        </bloque-component>
+
+        <!--  -->
+
+        <bloque-component tipo="ejemplo">
+
+            <template #cabecera>
+                En este ejemplo se despeja la ecuación <span style="font-size: 40px"> \( {{(p - 8 )} \over 2 }= 8 \)
+                </span>.
+            </template>
+
+            <div class="ecuacion ecuacionOriginal">
+                \( {{(p - 8 )} \over 2 }= 8 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio">
+                En el miembro de la izquierda, la última operación aplicada es la
+                <span class="subrayado">división entre 2</span>.
+                Se construirá una ecuación equivalente aplicando la operación
+                opuesta en los miembros de la ecuación.
+            </recuadro-component>
+            <br>
+            <div class="boton" v-on:click="stepEjemplo2=1">
+                Construir una ecuación equivalente aplicando una <span class="subrayado">multiplicación por 2</span> en
+                los miembros de la ecuación.
+            </div>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=1" v-show="stepEjemplo2>=1">
+                \( ({{(p - 8 )} \over 2 }) \cdot 2 = 8 \cdot 2 \)
+            </div>
+
+            <recuadro-component tipo="datoNuevo" v-show="stepEjemplo2>=1">
+                Ahora, en el miembro de la izquierda, hay operaciones que se cancelan.
+            </recuadro-component>
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo2>=1" class="boton" v-on:click="stepEjemplo2=2">
+                    Reescribir sin las operaciones que se cancelan.
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=2">
+                \( p-8 = 8 \cdot 2 \)
+            </div>
+
+            <recuadro-component tipo="datoPrevio" v-show="stepEjemplo2>=2">
+                En el miembro de la izquierda la última (Y única) operación aplicada
+                es la <span class="subrayado">resta de 8</span>. Se construirá una ecuación equivalente aplicando la
+                operación opuesta en los
+                miembros de la ecuación.
+            </recuadro-component>
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo2>=2" class="boton" v-on:click="stepEjemplo2=3">
+                    Construir una ecuación equivalente aplicando una <span class="subrayado">suma de 8</span> en
+                    los miembros de la ecuación.
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=3">
+                \( (p-8) + 8 = (8 \cdot 2) + 8 \)
+            </div>
+
+            <recuadro-component tipo="datoNuevo" v-show="stepEjemplo2>=3">
+                En esta ecuación hay operaciones que se cancelan.
+            </recuadro-component>
+
+
+            <transition name="fadeLimpio">
+                <div v-show="stepEjemplo2>=3" class="boton" v-on:click="stepEjemplo2=4">
+                    Reescribir sin las operaciones que se cancelan.
+                </div>
+            </transition>
+
+            <div class="ecuacion" v-show="stepEjemplo2>=4">
+                \( p = (8 \cdot 2) + 8 \)
+            </div>
+
+            <recuadro-component tipo="descubrimiento" v-show="stepEjemplo2>=4">
+                La \(p\) está despejada.
+            </recuadro-component>
+
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                stepEjemplo1: 0,
+                stepEjemplo2: 0,
+
+            }
+        }
+    })
+</script>
+
+<style>
+    .ecuacion {
+        text-align: center;
+    }
+</style>

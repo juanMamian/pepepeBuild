@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Fracciones</title>
+</head>
+
+<body>
+    <div id="doc">
+
+
+        <p>Si se representan los números mediante unas bolitas, como este 3:</p>
+
+        <div class="numeroBolitas" style="margin: 10px auto">
+            <div class="bolitaUnidad"></div>
+            <div class="bolitaUnidad"></div>
+            <div class="bolitaUnidad"></div>
+        </div>
+
+        <p>
+            Es posible imaginar que la unidad está formada por varios trozos iguales.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Los trozos iguales que forman la unidad se llaman <span class="resaltado">fracciones</span>.
+        </recuadro-component>
+
+
+        <p>
+            Se puede imaginar que la unidad está formada por pocas fracciones o por muchas fracciones.
+        </p>
+
+        <recuadro-component tipo="datoPrevio">
+            Si se imagina la unidad formada por muchas fracciones, entonces son fracciones pequeñas.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si se imagina la unidad formada por pocas fracciones, entonces son fracciones más grandes.
+        </recuadro-component>
+
+        <p>
+            Las fracciones reciben un nombre especial según su tamaño.
+        </p>
+
+        <bloque-component tipo="ejemplo" textoCabecera="En este cuadro se ve una representación de fracciones y se puede cambiar el tamaño de ellas. También se ve el nombre de las fracciones.">
+            <div id="ejemploRomper">
+
+                <p>Esta es una unidad.
+                </p>
+                <canvas id="canvasRomperUnidad" width="300" height="300"></canvas>
+                <input style="margin: 5px auto; display: block;" type="range" min="1" max="10" v-model="trozosUnidad1">
+
+                <div id="comentarioEjemplo1" v-show="trozosUnidad1>1">
+                    Está formada por {{trozosUnidad1==1?'Unidad': trozosUnidad1}} fracciones. Por su tamaño se llaman {{ nombresFracciones[parseInt(trozosUnidad1)]}}.
+                </div>
+
+                <recuadro-component tipo="instruccionPointer">
+                    Mueve el selector para cambiar la cantidad de fracciones.
+                </recuadro-component>
+            </div>
+        </bloque-component>
+        <recuadro-component tipo="datoPrevio">
+            ¡Hay infinitos tamaños de fracciones!
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                lapiz1: null,
+                montado: false,
+                radioUnidad1: 40,
+                trozosUnidad1: 1,
+                nombresFracciones: ["ceros", "unidad", "mitades", "tercios", "cuartos", "quintos", "sextos", "séptimos", "octavos", "novenos", "décimos", "onceavos", "doceavos", "treceavos"],
+                nombreFraccionEjemplo1: "tercios",
+                unidad1Rota: false,
+            }
+        },
+        methods: {
+            trazarUnidad1() {
+                this.lapiz1.fillStyle = "#d2691e";
+                this.lapiz1.clearRect(0, 0, 300, 300);
+
+                this.lapiz1.moveTo(150 + this.radioUnidad1, 150);
+                this.lapiz1.beginPath();
+                this.lapiz1.arc(150, 150, this.radioUnidad1, 0, (Math.PI) * 2);
+                this.lapiz1.fill();
+            },
+
+            trazarUnidad1Rota() {
+                console.log(`Trazando una unidad rota`);
+                this.lapiz1.clearRect(0, 0, 300, 300);
+
+                const centroTrozos = 2;
+                const gapAngular = 0.08;
+                const arcoFraccion = ((Math.PI * 2) / this.trozosUnidad1);
+                var anguloActual = 0;
+
+                this.lapiz1.fillStyle = "#d2991e";
+                this.lapiz1.beginPath();
+
+                for (var i = 0; i < this.trozosUnidad1; i++) {
+                    this.lapiz1.moveTo(150 + (centroTrozos * Math.cos(anguloActual + (arcoFraccion / 2))), 150 + (centroTrozos * Math.sin(anguloActual + (arcoFraccion / 2))));
+
+                    console.log(`Trazando desde ${anguloActual} hasta ${anguloActual + arcoFraccion}`);
+                    this.lapiz1.arc(150, 150, (this.radioUnidad1 + 5), (anguloActual + gapAngular), anguloActual + arcoFraccion);
+                    anguloActual = anguloActual + arcoFraccion;
+                    this.lapiz1.moveTo(centroTrozos * Math.cos(anguloActual), centroTrozos * Math.sin(anguloActual));
+
+                }
+
+                this.lapiz1.fill();
+            },
+            romperUnidad1() {
+                this.trazarUnidad1Rota();
+                this.unidad1Rota = true;
+            },
+            unirUnidad1() {
+                this.trazarUnidad1();
+                this.unidad1Rota = false;
+                this.trozosUnidad1 = (((Math.random() * 10) + 2).toFixed());
+                this.nombreFraccionEjemplo1 = this.nombresFracciones[this.trozosUnidad1];
+            }
+
+        },
+        watch: {
+            trozosUnidad1() {
+                if (this.trozosUnidad1 == 1) {
+                    this.trazarUnidad1();
+                }
+                else {
+                    this.trazarUnidad1Rota();
+                }
+            }
+        },
+        mounted() {
+            this.lapiz1 = document.getElementById("canvasRomperUnidad").getContext("2d");
+            montado = true;
+            this.trazarUnidad1();
+        }
+
+    });
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+        padding-bottom: 10%;
+    }
+
+    #canvasRomperUnidad {
+        margin: 2px auto;
+        display: block;
+    }
+
+    button {
+        padding: 1px;
+        display: block;
+    }
+
+    .bManipularUnidad1 {
+        margin: 10px auto;
+    }
+
+    .numeroBolitas {
+        padding: 10px;
+        border: 2px solid var(--paletaPrevio);
+        border-radius: 10px;
+        width: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 90%;
+        flex-wrap: wrap;
+    }
+
+    .bolitaUnidad {
+        border-radius: 50%;
+        background-color: chocolate;
+        margin: 5px;
+        width: 25px;
+        height: 25px;
+        display: inline-block;
+    }
+
+    #comentarioEjemplo1 {
+        text-align: center;
+    }
+
+    .hoverRevelable>.onHover {
+        display: none;
+    }
+
+    .hoverRevelable:hover>.onHover {
+        display: inline-block;
+    }
+
+    .hoverRevelable>.noHover {
+        display: inline-block;
+    }
+
+    .hoverRevelable:hover>.noHover {
+        display: none;
+    }
+</style>

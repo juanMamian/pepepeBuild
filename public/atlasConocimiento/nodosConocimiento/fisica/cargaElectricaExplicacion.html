@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Carga eléctrica</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>
+            Al frotar un objeto de vidrio con el pelaje de un animal, se observa que algunos otros objetos
+            experimentan una atracción hacia él. Especialmente si están cerca.
+        </p>
+
+        <p>
+            Lo mismo pasa con la goma. Los objetos de goma que son frotados con el pelaje de un animal
+            atraen a algunos otros objetos. Especialmente cuando están cerca.
+        </p>
+
+        <p>
+            Las personas que observaron este fenómeno llegaron a la conclusión de que
+            los objetos pueden tener una sustancia secreta en su interior. La llamaron <span class="resaltado">fuego
+                interno</span>.
+        </p>
+
+        <p>
+            Se planteó la hipótesis de que cuando un objeto de vidrio o goma es frotado con el pelaje
+            de un animal, va acumulando ese misterioso fuego interno.
+        </p>
+        <recuadro-component tipo="datoPrevio">
+            El fuego interno de los objetos recibió luego el nombre: <span class="resaltado">Carga eléctrica</span>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si un objeto tiene carga eléctrica, se dice que está <span class="resaltado">cargado</span>.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+
+</style>

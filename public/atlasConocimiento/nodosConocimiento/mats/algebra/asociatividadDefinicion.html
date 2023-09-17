@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Asociatividad - definición</title>
+
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Si la aplicación doble de una operación causa siempre el mismo efecto que una aplicación asociada de ellas,
+            se dice que es una
+            <span class="resaltado">operación asociativa</span>.
+        </p>
+
+        <recuadro-component tipo="datoNuevo">
+            La suma es una operación asociativa.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoNuevo">
+            La multiplicación es una operación asociativa.
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Si en una expresión numérica hay aplicación doble de una operación asociativa, entonces es idéntica a una versión alterna con asociación de las operaciones.
+        </recuadro-component>
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+            }
+        },
+
+    })
+</script>
+
+<style>
+</style>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Deducción de igualdades- encadenamiento</title>
+</head>
+
+<body>
+    <div id="doc">
+        <p>
+            Cuando a partir de una comparación se deduce una nueva, ésta es tan verdadera como la original.
+        </p>
+
+        <p>
+            Y si se toma la segunda comparación
+            para deducir una tercera, dicha tercera comparación es tan verdadera como la segunda
+        </p>
+
+        <recuadro-component tipo="datoNuevo">
+            Así que la tercera comparación es tan verdadera como la primera.
+        </recuadro-component>
+
+        <p>
+            Deducir comparaciones y usarlas para hacer nuevas deducciones es una <span class='resaltado'>deducción
+                encadenada</span>.
+        </p>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciarBloque">
+            <template #cabecera>
+                En este cuadro se muestran ejemplos de deducción encadenada.
+            </template>
+
+            <div class="listaEjemplos">
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 16 \times 2 = 32 \)
+                    </div>
+
+                    <div class="boton" @click="ejemplo1Step=1" :class="{deshabilitado: ejemplo1Step !=0}">
+                        Deducir una nueva comparación
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo1Step >= 1">
+                            \( 16 \times 2 + 4 = 32 + 4 \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=2" v-show="ejemplo1Step>=1"
+                            :class="{deshabilitado: ejemplo1Step!=1}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo1Step >= 2">
+                            \( {{{16 \times 2} + 4 } \over 2} = {{32 + 4} \over 2} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo1Step=3" v-show="ejemplo1Step>=2"
+                            :class="{deshabilitado: ejemplo1Step!=2}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo1Step>=3">
+                            \( { { { {16 \times 2} + 4} \over 2 }- 10 } = {{{32 + 4} \over 2} }- 10 \)
+                        </div>
+                    </transition>
+
+                </div>
+
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( \sqrt[3]{27} = {6 \over 2 }\)
+                    </div>
+
+                    <div class="boton" @click="ejemplo2Step=1" :class="{deshabilitado: ejemplo2Step !=0}">
+                        Deducir una nueva comparación
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo2Step >= 1">
+                            \( { \sqrt[3]{27} \over 10} = { {6 \over 2} \over 10 }\)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo2Step=2" v-show="ejemplo2Step>=1"
+                            :class="{deshabilitado: ejemplo2Step!=1}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo2Step >= 2">
+                            \( {{ \sqrt[3]{27} \over 10} + 4 } = {{ {6 \over 2} \over 10 } + 4}\)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo2Step=3" v-show="ejemplo2Step>=2"
+                            :class="{deshabilitado: ejemplo2Step!=2}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo2Step>=3">
+                            \( {({{ \sqrt[3]{27} \over 10} + 4 }) ^ 2} = {({{ {6 \over 2} \over 10 } + 4})^2}\)
+                        </div>
+                    </transition>
+
+                </div>
+                <div class="itemEjemplo">
+                    <div class="matsExpresion">
+                        \( 12 < 21 \times 2 \)
+                    </div>
+
+                    <div class="boton" @click="ejemplo3Step=1" :class="{deshabilitado: ejemplo3Step !=0}">
+                        Deducir una nueva comparación
+                    </div>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo3Step >= 1">
+                            \( {12 ^ 3} < {(21 \times 2)^3} \)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo3Step=2" v-show="ejemplo3Step>=1"
+                            :class="{deshabilitado: ejemplo3Step!=1}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo3Step >= 2">
+                            \({{12 ^ 3} \over 4 }< {{(21 \times 2)^3} \over 4 }\)
+                        </div>
+                    </transition>
+
+                    <transition name="fadeIn">
+                        <div class="boton" @click="ejemplo3Step=3" v-show="ejemplo3Step>=2"
+                            :class="{deshabilitado: ejemplo3Step!=2}">
+                            Deducir una nueva comparación
+                        </div>
+                    </transition>
+
+                    <transition name="travelTop">
+                        <div class="matsExpresion" v-show="ejemplo3Step>=3">
+                            \( {{{12 ^ 3} \over 4} - 1 }< {{{(21 \times 2)^3} \over 4 } - 1}\)
+                        </div>
+                    </transition>
+
+                </div>
+
+            </div>
+        </bloque-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            Las comparaciones que se deducen encadenamente son todas tan verdaderas como la primera.
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                ejemplo1Step: 0,
+                ejemplo2Step: 0,
+                ejemplo3Step: 0,
+
+            }
+        },
+        methods: {
+            reiniciarBloque() {
+                this.reiniciarEjemplo1();
+                this.reiniciarEjemplo2();
+            },
+            reiniciarEjemplo1() {
+                this.ejemplo1Step = 0;
+            },
+            reiniciarEjemplo2() {
+                this.ejemplo2Step = 0;
+            },
+            reiniciarEjemplo3() {
+                this.ejemplo3Step = 0;
+            }
+        },
+        watch: {
+        }
+
+    })
+</script>
+
+<style>
+    .itemEjemplo {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+    }
+</style>

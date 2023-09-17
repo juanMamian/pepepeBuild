@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script id="MathJax-script" async
+        src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet"
+        href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Recta numérica - evaluación</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <p>Comprendo el concepto de recta numérica si: </p>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Puedo imaginar la recta numérica y representarla con un dibujo.">
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dado cualquier número, puedo señalar su ubicación en una representación de la recta numérica.">
+            <div class="cuadroEntrenamiento">
+
+
+                <transition name="popIn">
+                    <div id="numero" :key="'num'+numeroGenerado" v-show="numeroGenerado!=null">
+                        <span>
+                            {{numeroGenerado}}
+                        </span>
+                    </div>
+                </transition>
+
+                <recuadro-component tipo="instruccionPointer" style="text-align: center;" v-show="esperandoRespuesta">
+                    ¡Encuéntralo en la recta numérica!
+                </recuadro-component>
+
+                <div ref="contenedorRectaNumerica" class="contenedorRectaNumerica" v-show="numeroGenerado!=null">
+                    <img class="pannerRecta" src="flecha.png" style="left: 0px; transform: rotate(180deg);"
+                        @click="panRectaNumerica+=2">
+                    <img class="pannerRecta" src="flecha.png" style="right: 0px;" @click.stop="panRectaNumerica-=2">
+
+                    <div class="rectaNumerica"></div>
+                    <div class="contenedorBolitas">
+                        <div class="bolitaNumero" :key="numero" v-for="numero of 200"
+                            :class="{bolitaOrigen: (numero+numeroVisibleInicial)==0, bolitaTocada: (numero+numeroVisibleInicial)===numeroTocado, bolitaRespuesta:respuesta==numeroGenerado && numeroGenerado==numero+numeroVisibleInicial, bolitaErrada:respuesta!=numeroGenerado && respuesta==numero+numeroVisibleInicial}"
+                            @click="marcarRespuesta(numero+numeroVisibleInicial)"
+                            @contextmenu.prevent="numeroTocado=numeroTocado===numero+numeroVisibleInicial?null:numero+numeroVisibleInicial"
+                            :style="{left:  40*(parseInt(numero)+numeroVisibleInicial+panRectaNumerica)+'px'}">
+                            <div class="nombreNumero"
+                                v-show="(numero+numeroVisibleInicial)==0 || ((numero+numeroVisibleInicial)==numeroGenerado && respuesta==numeroGenerado)">
+                                {{numero+numeroVisibleInicial}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <transition name="popIn">
+                    <div id="mensajeEvaluacion" :key="'respuesta'+respuesta" v-show="respuesta!=null"
+                        :style="{backgroundColor:respuesta==numeroGenerado?'#55a255':'#d75050'}">
+                        {{respuesta==numeroGenerado?'¡Correcto!':'Ese no es... ¡Sigue intentando!'}}
+                    </div>
+                </transition>
+                <div class="boton" @click="generarNumero" v-show="!numeroGenerado || respuesta==numeroGenerado">
+                    {{numeroGenerado?'¡Generar otro!':'¡Generar un número!'}}</div>
+            </div>
+
+        </bloque-component>
+
+        <bloque-component tipo="evaluacion"
+            textoCabecera="Dada una representación de la recta numérica, y dado cualquier punto señalado sobre ella, sé qué número está representado por ese punto.">
+
+
+            <div ref="contenedorRectaNumerica2" class="contenedorRectaNumerica">
+                <img class="pannerRecta" src="flecha.png" style="left: 0px; transform: rotate(180deg);"
+                    :class="{flechaResaltada: numeroSignaled && numeroSignaled<0}" @click="panRectaNumerica2+=2">
+                <img class="pannerRecta" :class="{flechaResaltada: numeroSignaled && numeroSignaled>0}" src="flecha.png"
+                    style="right: 0px;" @click.stop="panRectaNumerica2-=2">
+
+                <div class="rectaNumerica"></div>
+                <div class="contenedorBolitas">
+                    <div class="bolitaNumero" :key="numero" v-for="numero of 200"
+                        :class="{bolitaOrigen: (numero+numeroVisibleInicial2)==0, bolitaTocada: (numero+numeroVisibleInicial2)===numeroTocado2,  bolitaSignaled: (numero+numeroVisibleInicial2)===numeroSignaled}"
+                        @contextmenu.prevent="numeroTocado2=numeroTocado2===numero+numeroVisibleInicial2?null:numero+numeroVisibleInicial2"
+                        :style="{left:  40*(parseInt(numero)+numeroVisibleInicial2+panRectaNumerica2)+'px'}">
+                        <div class="nombreNumero"
+                            v-show="(numero+numeroVisibleInicial2)==0 || ((numero+numeroVisibleInicial2)==numeroSignaled && respuesta2==numeroSignaled)">
+                            {{numero+numeroVisibleInicial2}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boton" @click="signalNumero" v-show="respuesta2===numeroSignaled || !numeroSignaled">
+                ¡Señalar {{!numeroSignaled?'un': 'otro'}} punto!
+            </div>
+
+            <div class='contenedorFlex'>
+
+                <recuadro-component v-show="numeroSignaled && respuesta2!=numeroSignaled" tipo="instruccionTeclado"
+                    v-show="numeroSignaled && numeroSignaled!=0">
+                    Identifica el número señalado.
+                </recuadro-component>
+
+                <input v-show="numeroSignaled && respuesta2!=numeroSignaled"
+                    @keypress.enter="setRespuesta2" class="inputRespuestaEvaluacion" type="number"
+                    v-show="numeroSignaled && numeroSignaled!=0" ref="inputRespuestaUsuario2">
+
+                <button class='boton' @click="setRespuesta2" v-show="numeroSignaled && respuesta2!=numeroSignaled">
+                    Aceptar
+                </button>
+
+                <transition name="popIn">
+                    <div id="mensajeEvaluacion" :key="'respuesta2'+respuesta2" v-show="respuesta2!=null"
+                        :style="{backgroundColor:respuesta2==numeroSignaled?'#55a255':'#d75050'}">
+                        {{respuesta2==numeroSignaled?'¡Correcto!':'Ese no es... ¡Sigue intentando!'}}
+                    </div>
+                </transition>
+
+            </div>
+        </bloque-component>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                esperandoRespuesta: false,
+                numeroGenerado: null,
+                numeroVisibleInicial: -100,
+                panRectaNumerica: 5,
+                numeroTocado: null,
+                respuesta: null,
+
+                generarNegativo: false,
+
+                numeroSignaled: null,
+                numeroVisibleInicial2: -100,
+                panRectaNumerica2: 5,
+                respuesta2: null,
+                numeroTocado2: null,
+
+            }
+        },
+        methods: {
+            generarNumero() {
+                this.numeroGenerado = parseInt(Math.random() * 20);
+                this.generarNegativo = !this.generarNegativo;
+                if (this.generarNegativo) {
+                    this.numeroGenerado = -this.numeroGenerado;
+                }
+                this.esperandoRespuesta = true;
+                this.respuesta = null;
+            },
+            marcarRespuesta(resp) {
+                if (!this.esperandoRespuesta) return
+                this.respuesta = resp;
+                if (this.respuesta == this.numeroGenerado) {
+                    this.esperandoRespuesta = false;
+                }
+            },
+            signalNumero() {
+                this.respuesta2 = null;
+                this.numeroSignaled = Math.round((Math.random() * 40) - 20);
+                if (this.numeroSignaled === 0) {
+                    this.numeroSignaled++;
+                }
+                this.$refs.inputRespuestaUsuario2.value = null;
+                this.panRectaNumerica2 = 5;
+            },
+            setRespuesta2(e) {
+                this.respuesta2 = Number(this.$refs.inputRespuestaUsuario2.value);
+            }
+        },
+        watch: {
+            respuesta(val) {
+                if (val == this.numeroGenerado) {
+                    this.esperandoRespuesta = false;
+                }
+            }
+        }
+    })
+</script>
+
+<style>
+    body {
+        padding: 2% 5%;
+    }
+
+    #cuadroEntrenamiento {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #numero {
+        margin: 30px auto;
+        font-size: 24px;
+        padding: 15px;
+        border-radius: 50%;
+        background-color: rgb(40, 148, 40);
+        width: 50px;
+        height: 50px;
+        position: relative;
+    }
+
+    #numero>span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+
+    .contenedorRectaNumerica {
+        overflow: hidden;
+        height: 100px;
+        width: 100%;
+        position: relative;
+    }
+
+    .rectaNumerica {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        position: absolute;
+        top: 72px;
+    }
+
+    .contenedorBolitas {
+        display: flex;
+        position: relative;
+        transition: left 0.3s;
+        position: absolute;
+        top: 70px;
+
+    }
+
+    .bolitaNumero {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgb(128, 128, 128);
+        position: absolute;
+        cursor: pointer;
+        transition: left 0.3s;
+        user-select: none;
+    }
+
+    .bolitaOrigen {
+        background-color: purple;
+        width: 16px;
+        height: 16px;
+        transform: translate(-3px, -3px);
+    }
+
+    .bolitaOrigen>.nombreNumero {
+        background-color: rgba(128, 0, 128, 0.384);
+    }
+
+    .bolitaRespuesta {
+        scale: 1.3;
+        transform: translate(-6%, -6%);
+        background-color: rgb(19, 54, 5);
+    }
+
+    .bolitaErrada {
+        background-color: rgb(219, 75, 75);
+    }
+
+    .bolitaSignaled {
+        background-color: rgb(226, 43, 104);
+        transform: scale(1.3);
+    }
+
+    .bolitaTocada {
+        background-color: yellow;
+    }
+
+    .nombreNumero {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 13px;
+    }
+
+
+    .pannerRecta {
+        position: absolute;
+        top: 0px;
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 3px;
+        z-index: 10;
+    }
+
+    .pannerRecta:hover {
+        background-color: rgba(128, 128, 128, 0.637);
+
+    }
+
+    .flechaResaltada {
+        border: 1px solid yellow;
+    }
+
+    .instruccion {
+        margin: 5px auto;
+        border-radius: 15px;
+        background-color: rgb(233, 185, 150);
+        padding: 15px;
+        width: min(800px, 80%);
+        font-size: 19px;
+    }
+
+    .imgBandera {
+        width: 35px;
+    }
+
+    .popIn-enter-active {
+        animation: popIn 0.3s;
+    }
+
+    #mensajeEvaluacion {
+        width: min(500px, 90%);
+        margin: 10px auto;
+        border-radius: 20px;
+        padding: 20px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    @keyframes popIn {
+        0% {
+            scale: 0.1;
+        }
+
+        100% {
+            scale: 1.1;
+        }
+    }
+</style>

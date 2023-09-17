@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>Lenguaje de etiquetas</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Un texto puede ser enriquecido si se introducen marcas que ayudan al lector a interpretarlo.
+        </recuadro-component>
+
+
+        <recuadro-component tipo="datoPrevio">
+            El lenguaje de etiquetas es un sistema para marcar texto introduciendo <span
+                class="resaltado">etiquetas</span> .
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Las etiquetas se escriben entre los símbolos: <span class="resaltado">
+                <>
+            </span>
+        </recuadro-component>
+
+        <bloque-component tipo="herramientaInteractiva">
+            <template #cabecera>
+                En este cuadro se puede marcar un texto de distintos modos.
+            </template>
+
+            <recuadro-component tipo="instruccionPointer">
+                Puedes presionar sobre el texto para escuchar una interpretación.
+            </recuadro-component>
+
+            <div class="textoMarcar">
+                <span class="etiqueta" v-show="marca=='cantando'">&lt;cantando&gt;</span>
+                <span class="etiqueta" v-show="marca=='gritando'">&lt;gritando&gt;</span>
+                <span class="etiqueta" v-show="marca=='susurrando'">&lt;susurrando&gt;</span>
+                Maestra Vida
+                <span class="etiqueta" v-show="marca=='cantando'">&lt;/cantando&gt;</span>
+                <span class="etiqueta" v-show="marca=='gritando'">&lt;/gritando&gt;</span>
+                <span class="etiqueta" v-show="marca=='susurrando'">&lt;/susurrando&gt;</span>
+            </div>
+
+
+
+            <div class="boton" @click="marca='cantando'">Marcar el texto con las etiquetas para <span
+                    class="resaltado">Cantando</span></div>
+            <div class="boton" @click="marca='gritando'">Marcar el texto con las etiquetas para <span
+                    class="resaltado">Gritando</span></div>
+            <div class="boton" @click="marca='susurrando'">Marcar el texto con las etiquetas para <span
+                    class="resaltado">Susurrando</span></div>
+            <div class="boton" @click="marca=null">Desmarcar</div>
+        </bloque-component>
+
+        <recuadro-component tipo="datoNuevo" id="elDeEsconder">
+            Las etiquetas para marcar texto se escriben en pares.
+
+            <ul>
+                <li>
+                    La primera etiqueta indica el inicio de la marca.
+                </li>
+                <li>
+                    La segunda etiqueta indica el final de la marca. Incluye el símbolo "slash" <span
+                        class="resaltado">/</span>.
+                </li>
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoNuevo">
+            Se puede aplicar varias marcas sobre el mismo texto.
+        </recuadro-component>
+
+        <bloque-component>
+            <template #cabecera>
+                En este cuadro se muestra un ejemplo de un texto con varias marcas superpuestas.
+            </template>
+
+            <div class="textoMarcar">
+                <span class="etiqueta">&lt;gritando&gt;&lt;cantando&gt;</span> Maestra Vida <span class="etiqueta">
+                    &lt;/cantando&gt;&lt;/gritando&gt;</span>
+            </div>
+
+            <recuadro-component tipo="datoNuevo">
+                Este texto está marcado para ser gritado y cantado.
+            </recuadro-component>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                marca: null,
+            }
+        }
+    })
+</script>
+
+<style>
+    .textoMarcar {
+        text-align: center;
+        margin: 10px auto;
+        font-size: 20px;
+        cursor: pointer;
+        margin-bottom: 30px;
+
+    }
+
+    .etiqueta {
+        color: brown;
+    }
+</style>

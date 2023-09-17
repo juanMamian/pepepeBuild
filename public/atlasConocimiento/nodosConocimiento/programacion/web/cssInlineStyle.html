@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+
+    <title>CSS Inline: atributo style</title>
+</head>
+
+<body>
+    <div id="doc">
+
+
+        <recuadro-component tipo="datoPrevio">
+            En la primera etiqueta de un elemento se pueden introducir instrucciones de <span
+                class="resaltado">estilo</span> en lenguaje CSS.
+        </recuadro-component>
+
+        <bloque-component tipo="ejemplo" @plegado="reiniciar">
+            <template #cabecera>
+                En este cuadro se muestra el lugar en el que se escribe instrucciones de estilo para un elemento.
+            </template>
+
+            Este documento web tiene un solo elemento HTML de tipo <span class="resaltado">div</span> y tiene una
+            palabra dentro.
+            <div class="documentoWeb">
+                <div class="tituloBloque">
+                    Este es el código.
+                </div>
+                &lt;div
+                <transition name="fade">
+                    <span v-show="mostrandoAtributoStyle" class="codigoNuevo">style="
+                        <transition name="fade">
+                            <span v-show="colorEncadenado">color: "red"</span>
+                        </transition>
+                        <transition name="fade">
+                            <span v-show="anchoEncadenado">; width: 130px</span>
+                        </transition>
+                        <transition name="fade">
+                            <span v-show="altoEncadenado"> ; height: 50px</span>
+                        </transition>
+                        <span v-show="!colorEncadenado" class="textoPlaceHolderCodigo">Aquí van las instrucciones de
+                            estilo</span> "
+                    </span>
+                </transition>
+                &gt;
+                <br>
+                &lt;/div&gt;
+            </div>
+            <div class="contenedorRepresentacion">
+                
+                <div class="representacionElemento" :style="[{color: colorEncadenado?'red':'black', width: anchoEncadenado?'200px':'unset', height: altoEncadenado?'50px':'unset'}]">
+                    <div class="tituloBloque" style="color: black">
+                        Así se ve el elemento
+                    </div>
+
+                    Hola
+                </div>
+            </div>
+
+            <div class="boton" v-show="!mostrandoAtributoStyle" @click="crearStyle">
+                Crear un espacio para escribir instrucciones de estilo en este elemento.
+            </div>
+
+            <div v-show="mostrandoAtributoStyle">
+                <div class="boton" :class="{deshabilitado:colorEncadenado}" @click="colorEncadenado=true">Escribir una
+                    instruccion CSS para color del texto en el elemento</div>
+                <div class="boton" :class="{deshabilitado:anchoEncadenado || !colorEncadenado}"
+                    @click="anchoEncadenado=true">Escribir una
+                    instruccion CSS para ancho del elemento</div>
+                <div class="boton" :class="{deshabilitado:altoEncadenado || !anchoEncadenado}"
+                    @click="altoEncadenado=true">Escribir una
+                    instruccion CSS para alto del elemento</div>
+            </div>
+            <div class="boton" v-show="mostrandoAtributoStyle" @click="reiniciar">
+                Reiniciar
+            </div>
+        </bloque-component>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                colorEncadenado: false,
+                anchoEncadenado: false,
+                altoEncadenado: false,
+                mostrandoAtributoStyle: false,
+            }
+        },
+        methods: {
+            crearStyle() {
+                this.mostrandoAtributoStyle = true;
+            },
+            reiniciar() {
+                this.mostrandoAtributoStyle = false;
+                this.colorEncadenado = false;
+                this.anchoEncadenado = false;
+                this.altoEncadenado = false;
+            }
+        }
+    })
+</script>
+
+<style>
+    .documentoWeb {
+        background-color: whitesmoke;
+        margin: 5px 10px;
+        position: relative;
+        margin-top: 50px;
+    }
+
+    .codigoNuevo {
+        background-color: brown;
+        padding: 2px 1px;
+        border-radius: 2px;
+    }
+
+    .textoPlaceHolderCodigo {
+        color: whitesmoke;
+    }
+
+    .contenedorRepresentacion {
+        display: flex;
+        position: relative;
+        margin:50px 0px;
+    }
+
+    .representacionElemento {
+        background-color: whitesmoke;
+    }
+
+    .tituloBloque{
+        position: absolute;
+        top: -20px;
+        font-size: 14px;
+    }
+</style>

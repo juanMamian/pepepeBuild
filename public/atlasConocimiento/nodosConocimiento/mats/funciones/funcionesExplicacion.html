@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+    <script id="MathJax-script" async src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/MathJax/mathjax.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+    <title>Funciones</title>
+
+</head>
+
+<body>
+    <div id="doc">
+
+        <recuadro-component tipo="datoPrevio">
+            Las funciones son <span class="resaltado">relaciones</span> con una característica especial:.
+            <ul>
+                <li>cada elemento del dominio se conecta con un solo elemento del rango</li>
+            </ul>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            Cuando se escoje un elemento del dominio para que la función lo conecte con un elemento del rango, se dice
+            que:
+            <ul>
+                <li>La función es aplicada a ese elemento</li>
+                <li>Las función es evaluada en ese elemento</li>
+            </ul>
+        </recuadro-component>
+
+
+
+        <bloque-component tipo="ejemplo" id="ejemplo1" style="position: relative;" v-show="ejemplo1Desplegado">
+            <template #cabecera>
+                En este cuadro se puede ver una representación animada de algunas funciones.
+            </template>
+            <p>
+                En este ejemplo:
+            <ul>
+                <li>Los elementos del conjunto <span style="font-style: italic;">P</span> son algunos paises.</li>
+                <li>Los elementos del conjunto <span style="font-style: italic;">C</span> son algunas ciudades.</li>
+            </ul>
+            </p>
+
+            <recuadro-component tipo="instruccionPointer">
+                Selecciona una función y luego selecciona elementos del primer conjunto.
+            </recuadro-component>
+
+            <canvas id="canvasLineas1"></canvas>
+
+            <div class="conjunto dominio" :style="[sizeConjuntos]" id="dominio1" @click.self="indexElementoDominioSeleccionado=null">
+                <div class="nombreConjunto">P</div>
+                <div class="elemento elementoDominio" ref="elementosDominio1"
+                    :class="{elementoSeleccionado:indexElementoDominioSeleccionado==index}"
+                    v-for="(pais, index) of paises" :key="index"
+                    :style="[pais.posicion, {opacity: funcionSeleccionada==null || funcionSeleccionada==-1?0.5:1}]"
+                    @click="selectElementoDominio1(index)">
+                    {{pais.nombre}}
+                </div>
+            </div>
+            <br>
+            <div id="zonaFuncion" style="text-align: center; position: relative; z-index: 2;">
+                <select :class="{elementoSeleccionado: elementoDominioSeleccionado!=null}" type="select"
+                    name="selectFuncion" id="selectFuncion" v-model="funcionSeleccionada"
+                    @click="indexElementoDominioSeleccionado=null">
+                    <option disabled selected value=-1>Selecciona una función</option>
+                    <option :key="'opt0'+versionNotacion" value=0>
+                        Relacionar el elemento con un elemento de C que sea su capital.
+                    </option>
+                    <option :key="'opt1'+versionNotacion" value=1>
+                        Relacionar el elemento con un elemento de C que sea la ciudad más lejana.
+                    </option>
+                    <option :key="'opt2'+versionNotacion" value=2>
+                        Relacionar {{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:'el elemento'}}
+                        con un elemento de C que sea la ciudad extranjera más cercana.
+                    </option>
+                </select>
+                <div class="notacion" id="notacion"
+                    v-show="funcionSeleccionada!=null && funcionSeleccionada!=-1 && elementoDominioSeleccionado"
+                    :key="versionNotacion" @click="tipoNotacion>=1?tipoNotacion=0:tipoNotacion++">
+                    <div v-show="tipoNotacion==0">
+                        Al aplicar la función a <span
+                            class="lugarDominio">{{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:''}}</span>
+                        se obtiene <span
+                            class="lugarRango">{{elementoDominioSeleccionado?ciudades[elementoDominioSeleccionado.target[funcionSeleccionada][0]].nombre:'\\(c\\)'}}</span>
+                    </div>
+                    <div v-show="tipoNotacion==1">
+                        Al evaluar la función en <span
+                            class="lugarDominio">{{elementoDominioSeleccionado?elementoDominioSeleccionado.nombre:''}}</span>
+                        se obtiene <span
+                            class="lugarRango">{{elementoDominioSeleccionado?ciudades[elementoDominioSeleccionado.target[funcionSeleccionada][0]].nombre:'\\(c\\)'}}</span>
+                    </div>
+
+                </div>
+            </div>
+            <br><br>
+            <div class="conjunto rango" :style="[sizeConjuntos]" id="rango1">
+                <div class="nombreConjunto">C</div>
+                <div class="elemento" ref="elementosRango1"
+                    :class="{elementoSeleccionado: elementoDominioSeleccionado!=null && paises[indexElementoDominioSeleccionado].target[funcionSeleccionada].includes(index)}"
+                    v-for="(ciudad, index) of ciudades" :key="index" :style="[ciudad.posicion]">
+                    {{ciudad.nombre}}
+                </div>
+            </div>
+        </bloque-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+                sizeConjuntos:{
+                    width:'300px',
+                    height: "300px",
+                },
+                funciones: ["v", "w", "j"],
+                paises: [
+                    {
+                        nombre: "Colombia",
+                        target: [[0], [5], [9]],
+                        posicion: {
+                            left: 47 + "%",
+                            top: 10 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Argentina",
+                        target: [[2], [5], [2]],
+                        posicion: {
+                            left: 20 + "%",
+                            top: 50 + "%"
+                        }
+                    },
+                    {
+                        nombre: "India",
+                        target: [[4], [1], [5]],
+                        posicion: {
+                            left: 63 + "%",
+                            top: 47 + "%"
+                        }
+                    },
+                    {
+                        nombre: "China",
+                        target: [[5], [2], [4]],
+                        posicion: {
+                            left: 50 + "%",
+                            top: 94 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Noruega",
+                        target: [[3], [2], [6]],
+                        posicion: {
+                            left: 70 + "%",
+                            top: 70 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Irlanda",
+                        target: [[6], [2], [3]],
+                        posicion: {
+                            left: 23 + "%",
+                            top: 77 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Canadá",
+                        target: [[8], [4], [0]],
+                        posicion: {
+                            left: 70 + "%",
+                            top: 27 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Brasil",
+                        target: [[11], [5], [2]],
+                        posicion: {
+                            left: 15 + "%",
+                            top: 30 + "%"
+                        }
+                    },
+                ],
+                ciudades: [
+                    {
+                        nombre: "Bogotá",
+                        posicion: {
+                            left: 80 + "%",
+                            top: 63 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Popayán",
+                        posicion: {
+                            left: 40 + "%",
+                            top: 10 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Buenos Aires",
+                        posicion: {
+                            left: 20 + "%",
+                            top: 50 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Oslo",
+                        posicion: {
+                            left: 63 + "%",
+                            top: 47 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Nueva Delhi",
+                        posicion: {
+                            left: 37 + "%",
+                            top: 63 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Pekín",
+                        posicion: {
+                            left: 17 + "%",
+                            top: 73 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Dublin",
+                        posicion: {
+                            left: 37 + "%",
+                            top: 33 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Atenas",
+                        posicion: {
+                            left: 83 + "%",
+                            top: 33 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Ottawa",
+                        posicion: {
+                            left: 67 + "%",
+                            top: 83 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Ibarra",
+                        posicion: {
+                            left: 43 + "%",
+                            top: 92 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Cali",
+                        posicion: {
+                            left: 13 + "%",
+                            top: 30 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Brasilia",
+                        posicion: {
+                            left: 60 + "%",
+                            top: 20 + "%"
+                        }
+                    },
+                    {
+                        nombre: "Guayaquil",
+                        posicion: {
+                            left: 18 + "%",
+                            top: 260 + "%"
+                        }
+                    },
+
+                ],
+                indexElementoDominioSeleccionado: null,
+                ejemplo1Desplegado: true,
+                funcionSeleccionada: -1,
+
+                versionNotacion: 0,
+                tipoNotacion: 0,
+
+                montado:false,
+            }
+        },
+        methods: {
+            selectElementoDominio1(index) {
+                if (this.funcionSeleccionada == null || this.funcionSeleccionada == -1) return
+                console.log(`Seleccionando elemento ${index} de dominio`);
+                var canvas = document.getElementById("canvasLineas1");
+                var lapiz = canvas.getContext("2d");
+
+                this.indexElementoDominioSeleccionado = index;
+
+                this.$nextTick(() => {
+                    console.log(`Trazando linea`);
+                    const posicionCuadroEjemplo = document.getElementById("ejemplo1").getBoundingClientRect();
+                    const posicionDominio = { left: document.getElementById("dominio1").offsetLeft, top: document.getElementById("dominio1").offsetTop };
+                    console.log(`Posicion dominio: ${posicionDominio.left}, ${posicionDominio.top}`);
+                    canvas.width = posicionCuadroEjemplo.width;
+                    canvas.height = posicionCuadroEjemplo.height;
+                    const elementoDominio = this.paises[index];
+                    const posicionDescripcion = { left: document.getElementById("zonaFuncion").offsetLeft + document.getElementById("selectFuncion").offsetLeft, top: document.getElementById("zonaFuncion").offsetTop + document.getElementById("selectFuncion").offsetTop }
+                    const domDescripcion = document.getElementById("selectFuncion");
+                    const domElementoDominio = this.$refs.elementosDominio1[index];
+                    
+
+                    lapiz.lineWidth = 3;
+                    lapiz.strokeStyle = "#b05412";
+                    lapiz.beginPath();
+
+                    lapiz.moveTo(0, 0);
+                    var inicioLinea={left: domElementoDominio.offsetLeft+posicionDominio.left, top: domElementoDominio.offsetTop+posicionDominio.top};
+                    // lapiz.moveTo(parseInt(posicionDominio.left + parseInt(elementoDominio.posicion.left) + (domElementoDominio.offsetWidth / 2)), parseInt(posicionDominio.top + parseInt(elementoDominio.posicion.top) + (domElementoDominio.offsetHeight / 2)));
+                    lapiz.moveTo(inicioLinea.left, inicioLinea.top );
+                    lapiz.lineTo(parseInt(posicionDescripcion.left + (domDescripcion.offsetWidth / 2)), parseInt(posicionDescripcion.top + (domDescripcion.offsetHeight / 2)));
+
+                    elementoDominio.target[this.funcionSeleccionada].forEach(indexTarget => {
+                        const elementoRango = this.ciudades[indexTarget];
+                        const posicionRango = { left: document.getElementById("rango1").offsetLeft, top: document.getElementById("rango1").offsetTop };
+                        const domElementoRango = this.$refs.elementosRango1[indexTarget]
+                        lapiz.moveTo(parseInt(posicionDescripcion.left + (domDescripcion.offsetWidth / 2)), parseInt(posicionDescripcion.top + (domDescripcion.offsetHeight / 2)));
+                        lapiz.lineTo(parseInt(posicionRango.left + domElementoRango.offsetLeft), parseInt(posicionRango.top + domElementoRango.offsetTop));
+                    })
+
+                    lapiz.stroke();
+                })
+
+            }
+        },
+        computed: {
+            elementoDominioSeleccionado() {
+                if (this.indexElementoDominioSeleccionado != null) {
+                    return this.paises[this.indexElementoDominioSeleccionado]
+                }
+                return null;
+            }
+        },
+        watch: {
+            elementoDominioSeleccionado(nuevo) {
+                if (!nuevo) {
+                    var canvas = document.getElementById("canvasLineas1");
+                    var lapiz = canvas.getContext("2d");
+
+                    lapiz.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                this.versionNotacion++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            funcionSeleccionada() {
+                this.versionNotacion++;
+                this.$nextTick(() => {
+                    MathJax.typeset();
+                })
+            },
+            montado(){
+                const anchoDocumento=this.getElementById("doc").offsetWidth;
+                var anchoConjuntos=300;
+                if(anchoDocumento<375){
+                    factorReduccion=Math.round(anchoDocumento/375);
+                    anchoConjuntos=300*factorReduccion;
+                    this.$set(this.sizeConjuntos, "width", anchoConjuntos+'px');
+                    this.$set(this.sizeConjuntos, "height", anchoConjuntos+'px');
+                    
+                }
+            },
+        },
+        onMounted(){
+            this.montado=true;
+        }
+
+    })
+</script>
+
+<style>
+    li {
+        margin: 10px 0px;
+    }
+
+    .cuadroEjemplo {
+        padding: 20px 20px;
+        border: 2px solid cadetblue;
+        border-radius: 10px;
+        margin: 20px 0px;
+        position: relative;
+    }
+
+    .expresion {
+        padding: 2px 5px;
+        border: 1px solid rgb(5, 35, 92);
+        border-radius: 3px;
+        background-color: rgb(171, 193, 217);
+    }
+
+    #zonaFuncion {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .notacion {
+        padding: 7px 15px;
+        border-radius: 5px;
+        font-size: 18px;
+        text-align: center;
+        display: inline-block;
+        border: 2px solid rgb(104, 50, 12);
+        background-color: rgb(236, 203, 179);
+        z-index: 2;
+        cursor: pointer;
+    }
+
+    .variable {
+        background-color: rgba(210, 105, 30, 0.637);
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+
+    #selectFuncion {
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+        white-space: pre-wrap;
+        width: min(400px, 90%);
+
+    }
+
+    #selectFuncion option {
+        white-space: pre-wrap;
+    }
+
+    .lugarDominio {
+        background-color: chocolate;
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+
+    .lugarRango {
+        background-color: rgb(155, 199, 155);
+        padding: 1px 5px;
+        border-radius: 3px;
+    }
+
+    #canvasLineas1 {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .conjunto {
+        border-radius: 50%;
+        position: relative;
+        
+        border: 1px solid black;
+        padding: 15px;
+        margin: 15px auto;
+
+    }
+
+    .nombreConjunto {
+        font-size: 25px;
+        font-style: italic;
+    }
+
+    .elemento {
+        padding: 2px;
+        border: 1px solid chocolate;
+        border-radius: 2px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .elementoDominio {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .dominio>.elementoSeleccionado {
+        background-color: chocolate;
+    }
+
+    .rango>.elementoSeleccionado {
+        background-color: rgb(155, 199, 155);
+    }
+
+    .elementoSeleccionado>.variable {
+        display: block;
+    }
+
+    .variableRango {
+        top: 100%;
+        ;
+    }
+
+
+
+
+    .opcionFuncion {
+        font-size: 20px;
+        padding: 5px 7px;
+        border: 1px solid chocolate;
+        border-radius: 5px;
+        text-align: center;
+        display: inline-block;
+        margin: 10px auto;
+        z-index: 1;
+    }
+</style>

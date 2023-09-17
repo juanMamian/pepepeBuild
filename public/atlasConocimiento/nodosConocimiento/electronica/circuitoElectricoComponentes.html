@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/resources/libraries/vue.js"></script>
+
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloque.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlace.js"></script>
+    <script src="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadro.js"></script>
+
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/estilos/estilosGenerales.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/recuadroEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/bloqueEstilo.css">
+    <link rel="stylesheet" href="https://pe-pe-pe.herokuapp.com/public/atlasConocimiento/recursos/components/enlaceEstilo.css">
+
+
+    <title>Circuito eléctrico</title>
+</head>
+
+<body>
+    <div id="doc">
+
+        Algunos componentes usados en la construcción de circuitos eléctricos.
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Fuente de voltaje DC</div>
+            <div class="listaRepresentaciones">
+                <div class="representacion">
+                    <img src="dcSource.svg" alt="Fuente DC">
+                </div>
+            </div>
+            <div class="descripcion">
+                Es un componente que presenta un voltaje entre sus terminales.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Fuente de voltaje AC</div>
+
+            <div class="representacion">
+                <img src="acSource.svg" alt="Fuente DC">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que presenta un voltaje alterno entre sus terminales.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Resistencia</div>
+
+            <div class="representacion">
+                <img src="resistencia.svg" alt="Resistencia">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que presenta resistencia al paso de la corriente eléctrica.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Interruptor</div>
+
+            <div class="representacion">
+                <img src="interruptor.svg" alt="Interruptor">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que puede interrumpir o permitir el paso de la corriente eléctrica.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Diodo</div>
+
+            <div class="representacion">
+                <img src="diodo.svg" alt="Diodo">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que sólo permite el paso de corriente eléctrica en una dirección.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Diodo emisor de luz (LED)</div>
+
+            <div class="representacion">
+                <img src="diodoLed.svg" alt="DiodoLed">
+            </div>
+
+            <div class="descripcion">
+                Es un diodo que emite luz cuando la corriente eléctrica lo recorre.
+            </div>
+        </recuadro-component>
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Capacitor</div>
+
+            <div class="representacion">
+                <img src="capacitor.svg" alt="Capacitor">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que acumula carga eléctrica en sus placas y la libera.
+            </div>
+        </recuadro-component>
+
+
+
+        <recuadro-component tipo="datoPrevio">
+            <div class="nombreComponente">Inductor</div>
+
+            <div class="representacion">
+                <img src="inductor.svg" alt="Inductor">
+            </div>
+
+            <div class="descripcion">
+                Es un componente que almacena energía eléctrica y la libera.
+            </div>
+        </recuadro-component>
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    const doc = new Vue({
+        el: "#doc",
+        components: {
+            recuadroComponent,
+            bloqueComponent,
+            enlaceComponent
+        },
+        data() {
+            return {
+
+            }
+        }
+    })
+</script>
+
+<style>
+    .nombreComponente {
+        font-weight: bold;
+        text-align: center;
+        color: whitesmoke;
+    }
+
+    .descripcionComponente {
+        margin: 10px 5px;
+    }
+
+    .representacion img {
+        height: 90px;
+        margin: 5px auto;
+        display: block;
+    }
+</style>
